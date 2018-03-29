@@ -1,0 +1,300 @@
+﻿@using ShipOnline.Resources;
+@using ShipOnline.Models.Entity;
+@using ShipOnline.Models.Define;
+
+@model TownModel
+@{
+    ViewBag.Title = AdminLabel.TownRegisterTitle;
+    if (@Model.TOWN_CD != null && @Model.TOWN_CD > 0)
+    {
+        ViewBag.Title = AdminLabel.TownUpdateTitle;
+    }
+    Layout = "~/Views/Layout/_LayoutAdmin.cshtml";
+}
+
+<div id="CityRegister" class="edit-screen">
+    @using (Html.BeginForm("Edit", "AdminManageTown", FormMethod.Post, new { id = "formTownRegis", enctype = "multipart/form-data", @class = "form-horizontal" }))
+    {
+        <div id="title">@ViewBag.Title</div>
+        <input id="CITY_CD_HIDDEN" name="CITY_CD_HIDDEN" type="hidden" value="@Model.CITY_CD">
+        <input id="DISTRICT_CD_HIDDEN" name="DISTRICT_CD_HIDDEN" type="hidden" value="@Model.DISTRICT_CD">
+        <input id="TOWN_CD_HIDDEN" name="TOWN_CD_HIDDEN" type="hidden" value="@Model.TOWN_CD">
+        @Html.HiddenFor(m => m.DEL_FLG, new { @class = "sp-id" })
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.CityName <span class="RequiredField">*</span></label>
+            @if (Model.CITY_CD == 0)
+            {
+                @Html.DropDownListFor(m => m.CITY_CD, Model.CITY_LIST, new { @class = "margin-0 renderCity" })
+                @Html.DropDownListFor(m => m.DISTRICT_CD_KEY, Model.DISTRICT_LIST, "", new { @class = "renderDistrict" })
+                @Html.HiddenFor(m => m.DISTRICT_CD)
+            }
+            else
+            {
+                @Html.Label(Model.CITY_NAME ?? "", new { @class = "margin-left-5 readonly" })
+                <span>/</span>
+                @Html.Label(Model.DISTRICT_NAME ?? "", new { @class = "margin-left-5 readonly" })
+            }
+        </div>
+
+        <span style="display:none">
+            <input name="autoComplete" type="text" value="reset" />
+        </span>
+
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.TownCode <span class="RequiredField">*</span></label>
+            @if (Model.TOWN_CD == 0)
+            {
+                @Html.TextBoxFor(m => m.TOWN_CD, new { @class = "txt-w-250 numeric", style = "ime-mode: auto; ", maxlength = 5 })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.TOWN_CD, new { @class = "ime-mode border-none txt-w-250 disabled", @readonly = "readonly" })
+            }
+        </div>
+
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.TownName <span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.TOWN_NAME, new { @class = "txt-w-250", maxlength = 50 })
+        </div>
+
+        <div class="form-group">
+            @Html.Label(@AdminLabel.CityDispaly, new { @for = "STATUS", @class = "title-row" })
+            @if (String.IsNullOrEmpty(Model.STATUS) || Model.STATUS.Equals("0"))
+            {
+                <input id="STATUS" type="checkbox">
+                <input id="STATUS_HIDDEN" name="STATUS" type="hidden" value="0">
+            }
+            else
+            {
+                <input id="STATUS" type="checkbox" checked="checked">
+                <input id="STATUS_HIDDEN" name="STATUS" type="hidden" value="1">
+            }
+        </div>
+
+        <div class="form-group action-button-bottom">
+            <button type="button" id="btnBack" name="btnBack" class="btn btn-default"><i class="btn-icon btn-back">@AdminLabel.btnBack</i></button>
+            <div class="pull-right">
+                <button type="button" id="btnClear" name="btnClear" class="btn btn-default"><i class="btn-icon btn-clear">@AdminLabel.btnClear</i></button>
+                <button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-orange"><i class="btn-icon btn-edit">@AdminLabel.btnRegister</i></button>
+            </div>
+        </div>
+    }
+
+</div>
+
+<script>
+
+    @*var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new { area = "Common" })';*@
+    var TownListUrl = '@Url.Action("TownList", "AdminManageTown")';
+
+    $(function () {
+        $("#STATUS").prop('checked', true).change();
+        $('#STATUS_HIDDEN').val('1');
+
+        $('.renderCity').val('');
+        $('.renderDistrict').val('');
+        ShipOnline.utility.bindDistrictExtend($('.renderCity'), $('.renderDistrict'));
+    });
+
+    function validateData() {
+        var invalidMess = [];
+        var cityCD = $('#CITY_CD').val();
+        var districtCodeKey = $('#DISTRICT_CD_KEY').val();
+        var townCD = $('#TOWN_CD').val();
+        var townName = $('#TOWN_NAME').val();
+        var townOld = $('#TOWN_CD_HIDDEN').val();
+
+        var displayFlg = $('#STATUS').val();
+        var errContent = [];
+        var errDisplay = [];
+        var invalidMess = [];
+
+        if (townOld == 0) {
+            if (cityCD == null || cityCD.trim() == "" || cityCD == 0) { // required content
+                errDisplay = '@AdminLabel.CityName' + Constant.ERR_REQUIRED;
+                invalidMess.push(errDisplay);
+            }
+            var districtCode = districtCodeKey.split('_')[1];
+            if (districtCodeKey == null || districtCodeKey.trim() == "" || districtCode == 0) {
+                errDisplay = '@AdminLabel.DistricName' + Constant.ERR_REQUIRED;
+                invalidMess.push(errDisplay);
+            }
+
+            if (townCD == null || townCD.trim() == "" || townCD == 0) {
+                errDisplay = '@AdminLabel.TownCode' + Constant.ERR_REQUIRED;
+                invalidMess.push(errDisplay);
+            }
+        }
+
+
+        if (townName == null || townName.trim() == "") {
+            errDisplay = '@AdminLabel.TownName' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+        else if (townName.trim().length > Constant.CITY_NAME_LENGTH) {
+            invalidMess.push("@string.Format(Message.DistrictNameLength, AdminLabel.TownName)");
+        }
+
+        return invalidMess;
+    }
+
+    $(document).off('#STATUS');
+    $(document).on('change', '#STATUS', function () {
+        if ($('#STATUS').is(":checked")) {
+            $('#STATUS_HIDDEN').val('1');
+        } else {
+            $('#STATUS_HIDDEN').val('0');
+        }
+    });
+
+    $(document).off('#CITY_CD');
+    $(document).on('change', '#CITY_CD', function () {
+        //if (!iseiQ.utility.getDataByAjax(checkTimeoutUrl, null)) return;
+
+        $('.renderDistrict').val('');
+
+        ShipOnline.utility.bindDistrictExtend($('.renderCity'), $('.renderDistrict'));
+    });
+
+    $(document).off('#btnSubmit');
+    $(document).on('click', '#btnSubmit', function () {
+        //var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+        //if (!result) return;
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+        if (invalidMess.length > 0) {
+            ShipOnline.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        var existTownCD = false;
+        var townCdOld = $('#TOWN_CD_HIDDEN').val();
+
+        // Chi truong hop dang ki moi thi moi check trung code
+        if (townCdOld == 0) {
+            var cityCd = $('#CITY_CD').val().trim();
+            var districtCodeKey = $('#DISTRICT_CD_KEY').val().trim();
+            var townCD = $('#TOWN_CD').val().trim();
+
+            var districtCd = parseInt(districtCodeKey.split('_')[1]);
+            var paramCheckExistCd = {
+                cityCd: cityCd,
+                districtCd: districtCd,
+                townCD: townCD,
+                townCdOld: townCdOld
+            };
+
+            if (cityCd.length > 0) {
+                var data = ShipOnline.utility.getDataByAjax('@Url.Action("CheckExistTownCd", "AdminManageTown")', paramCheckExistCd);
+                if (typeof (data) != 'undefined' || data != null) {
+                    existTownCD = data.exist;
+                }
+            }
+        }
+
+        var confirmMess = existTownCD ? '@string.Format(Message.msgConfirmExistTownCd)' : '@string.Format(Message.ConfirmSubmitData, (Model.TOWN_CD > 0 ? Message.Update : Message.Register))';
+        if (existTownCD) {
+            ShipOnline.utility.showMessageModal(confirmMess, true);
+        } else {
+            ShipOnline.utility.showConfirmModal(confirmMess, function (action) {
+                if (action) {
+                    if (townCdOld == 0) {
+                        $('#DISTRICT_CD').val(districtCd);
+                    }
+
+                    $("#formTownRegis").submit();
+                }
+            })
+        }
+
+    });
+
+    $('#formTownRegis').submit(function (event) {
+        var formData = new FormData($(this)[0]);
+        $.ajax(
+            {
+                url: '@Url.Action("Edit", "AdminManageTown")',
+                data: formData,
+                mimeType: "multipart/form-data",
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    var result = jQuery.parseJSON(res);
+                    var message = "";
+                    if (result.ErrorMessages) {
+                        for (var i = 0; i < result.ErrorMessages.length; i++) {
+                            message += result.ErrorMessages[i] + "\n";
+                        }
+                        ShipOnline.utility.showMessageModal(message, true);
+                    } else {
+                        message = result.isNew == true ? "@Message.RegisterSuccess" : "@Message.UpdateSuccess";
+                        ShipOnline.utility.showMessageModal(message, false, function () {
+                            window.location.href = TownListUrl;
+                        });
+                    }
+                },
+                error: function (xhr) {
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    window.location.href = '/Common/Common/CloseIframe/';
+                }
+            });
+        event.preventDefault();
+    });
+
+    $(document).off('#btnClear');
+    $(document).on('click', '#btnClear', function () {
+        ShipOnline.utility.showConfirmModal('@string.Format(@Message.ConfirmClear)', function (action) {
+            $('.validation-summary-errors').remove();
+
+            if (action) {
+                if ($('#TOWN_CD_HIDDEN').val() == 0) {
+                    //var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+                    //if (!result) return;
+                    $("#CITY_CD").val(0);
+                    $("#DISTRICT_CD").val(0);
+                    $('.renderCity').val('');
+                    $('.renderDistrict').val('');
+                    ShipOnline.utility.bindDistrictExtend($('.renderCity'), $('.renderDistrict'));
+
+                    $("#TOWN_CD").val(0);
+                    $("#TOWN_NAME").val('');
+
+                    $("#STATUS").prop('checked', true).change();
+                    $('#STATUS_HIDDEN').val('0');
+                } else {
+                    $("#CITY_CD").val('@Model.CITY_CD');
+                    $("#DISTRICT_CD").val(@Model.DISTRICT_CD);
+                    $("#TOWN_CD").val(@Model.TOWN_CD);
+                    $("#TOWN_NAME").val('@Model.TOWN_NAME');
+
+                    $("#STATUS_HIDDEN").val('@Model.STATUS').change();
+                    if ('@Model.STATUS' == '0') {
+                        $("#STATUS").prop("checked", false);
+                    } else {
+                        $("#STATUS").prop("checked", true);
+                    }
+
+                }
+            }
+        })
+    });
+
+    // Button Back
+    $(document).off('#btnBack');
+    $(document).on('click', '#btnBack', function () {
+        ShipOnline.utility.showConfirmModal('@string.Format(@Message.ConfirmBack)', function (action) {
+            if (action) {
+
+                $(window).off('beforeunload');
+                window.location.href = TownListUrl;
+            }
+        })
+    });
+
+</script>
+
+
+
+

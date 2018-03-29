@@ -1,0 +1,245 @@
+﻿@using ShipOnline.Resources;
+@using ShipOnline.Models.Entity;
+@using ShipOnline.Models.Define;
+
+@model CityModel
+@{
+    ViewBag.Title = AdminLabel.CityRegisterTitle;
+    if (@Model.CITY_CD != null && @Model.CITY_CD > 0)
+    {
+        ViewBag.Title = AdminLabel.CityUpdateTitle;
+    }
+    Layout = "~/Views/Layout/_LayoutAdmin.cshtml";
+}
+
+<div id="CityRegister" class="edit-screen">
+    @using (Html.BeginForm("Edit", "AdminManageCity", FormMethod.Post, new { id = "formCityRegis", enctype = "multipart/form-data", @class = "form-horizontal" }))
+    {
+        <div id="title">@ViewBag.Title</div>
+        <input id="CITY_CD_HIDDEN" name="CITY_CD_HIDDEN" type="hidden" value="@Model.CITY_CD">
+        @Html.HiddenFor(m => m.DEL_FLG, new { @class = "sp-id" })
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.CityCode <span class="RequiredField">*</span></label>
+            @if (Model.CITY_CD == 0)
+            {
+                @Html.TextBoxFor(m => m.CITY_CD, new { @class = "txt-w-250 numeric", style = "ime-mode: auto; ", maxlength = 5 })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.CITY_CD, new { @class = "ime-mode border-none txt-w-250", @readonly = "readonly" })
+            }
+        </div>
+
+        <span style="display:none">
+            <input name="autoComplete" type="text" value="reset" />
+        </span>
+
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.CityZipCode <span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.CITY_ZIP_CD, new { @class = "txt-w-250 numeric", maxlength = 6 })
+        </div>
+
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.CityName <span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.CITY_NAME, new { @class = "txt-w-250", maxlength = 50 })
+        </div>
+
+        <div class="form-group">
+            @Html.Label(@AdminLabel.CityDispaly, new { @for = "STATUS", @class = "title-row" })
+            @if (String.IsNullOrEmpty(Model.STATUS) || Model.STATUS.Equals("0"))
+            {
+                <input id="STATUS" type="checkbox">
+                <input id="STATUS_HIDDEN" name="STATUS" type="hidden" value="0">
+            }
+            else
+            {
+                <input id="STATUS" type="checkbox" checked="checked">
+                <input id="STATUS_HIDDEN" name="STATUS" type="hidden" value="1">
+            }
+        </div>
+
+        <div class="form-group action-button-bottom">
+            <button type="button" id="btnBack" name="btnBack" class="btn btn-default"><i class="btn-icon btn-back">@AdminLabel.btnBack</i></button>
+            <div class="pull-right">
+                <button type="button" id="btnClear" name="btnClear" class="btn btn-default"><i class="btn-icon btn-clear">@AdminLabel.btnClear</i></button>
+                <button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-orange"><i class="btn-icon btn-edit">@AdminLabel.btnRegister</i></button>
+            </div>
+        </div>
+    }
+
+</div>
+
+<script>
+
+    @*var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new { area = "Common" })';*@
+    var CityListUrl = '@Url.Action("CityList", "AdminManageCity")';
+
+    $(function () {
+        $("#STATUS").prop('checked', true).change();
+        $('#STATUS_HIDDEN').val('1');
+    });
+
+    function validateData() {
+        var invalidMess = [];
+        var cityCD = $('#CITY_CD').val();
+        var CityZipCode = $('#CITY_ZIP_CD').val();
+        var cityName = $('#CITY_NAME').val();
+
+        var displayFlg = $('#STATUS').val();
+        var errContent = [];
+        var errDisplay = [];
+        var invalidMess = [];
+
+        if (cityCD == null || cityCD.trim() == "" || cityCD == 0) { // required content
+            errDisplay = '@AdminLabel.CityCode' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (CityZipCode == null || CityZipCode.trim() == "") { // required DSP_Priority
+            errDisplay = '@AdminLabel.CityZipCode' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+        else if (CityZipCode.trim().length != Constant.CITY_ZIP_CD_LENGTH) {
+            invalidMess.push("@string.Format(Message.CityZipCdLength)");
+        }
+
+        if (cityName == null || cityName.trim() == "") { // required DSP_Priority
+            errDisplay = '@AdminLabel.CityName' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+        else if (cityName.trim().length > Constant.CITY_NAME_LENGTH) {
+            invalidMess.push("@string.Format(Message.CityNameLength)");
+        }
+
+        return invalidMess;
+    }
+
+    $(document).off('#STATUS');
+    $(document).on('change', '#STATUS', function () {
+        if ($('#STATUS').is(":checked")) {
+            $('#STATUS_HIDDEN').val('1');
+        } else {
+            $('#STATUS_HIDDEN').val('0');
+        }
+    });
+
+    $(document).off('#btnSubmit');
+    $(document).on('click', '#btnSubmit', function () {
+        //var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+        //if (!result) return;
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+        if (invalidMess.length > 0) {
+            ShipOnline.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        var existcityCD = false;
+        var cityCd = $('#CITY_CD').val().trim();
+        var cityCdOld = $('#CITY_CD_HIDDEN').val().trim();
+        var paramCheckExistCd = {
+            cityCd: cityCd,
+            cityCdOld: cityCdOld
+        };
+
+        if (cityCd.length > 0) {
+            var data = ShipOnline.utility.getDataByAjax('@Url.Action("CheckExistCityCd", "AdminManageCity")', paramCheckExistCd);
+            if (typeof (data) != 'undefined' || data != null) {
+                existcityCD = data.exist;
+            }
+        }
+        var confirmMess = existcityCD ? '@string.Format(Message.msgConfirmExistCd)' : '@string.Format(Message.ConfirmSubmitData, (Model.CITY_CD > 0 ? Message.Update : Message.Register))';
+        if (existcityCD) {
+            ShipOnline.utility.showMessageModal(confirmMess, true);
+        } else {
+            ShipOnline.utility.showConfirmModal(confirmMess, function (action) {
+                if (action) {
+                    $("#formCityRegis").submit();
+                }
+            })
+        }
+
+    });
+
+    $('#formCityRegis').submit(function (event) {
+        var formData = new FormData($(this)[0]);
+        $.ajax(
+            {
+                url: '@Url.Action("Edit", "AdminManageCity")',
+                data: formData,
+                mimeType: "multipart/form-data",
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    var result = jQuery.parseJSON(res);
+                    var message = "";
+                    if (result.ErrorMessages) {
+                        for (var i = 0; i < result.ErrorMessages.length; i++) {
+                            message += result.ErrorMessages[i] + "\n";
+                        }
+                        ShipOnline.utility.showMessageModal(message, true);
+                    } else {
+                        message = result.isNew == true ? "@Message.RegisterSuccess" : "@Message.UpdateSuccess";
+                        ShipOnline.utility.showMessageModal(message, false, function () {
+                            window.location.href = CityListUrl;
+                        });
+                    }
+                },
+                error: function (xhr) {
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    window.location.href = '/Common/Common/CloseIframe/';
+                }
+            });
+        event.preventDefault();
+    });
+
+    $(document).off('#btnClear');
+    $(document).on('click', '#btnClear', function () {
+        ShipOnline.utility.showConfirmModal('@string.Format(@Message.ConfirmClear)', function (action) {
+            $('.validation-summary-errors').remove();
+            if (action) {
+                if ($('#CITY_CD_HIDDEN').val() == 0) {
+                    //var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+                    //if (!result) return;
+                    $("#CITY_CD").val(0);
+                    $("#CITY_ZIP_CD").val("");
+                    $("#CITY_NAME").val("");
+
+                    $("#STATUS").prop('checked', true).change();
+                    $('#STATUS_HIDDEN').val('0');
+                } else {
+
+                    $("#CITY_ZIP_CD").val('@Model.CITY_ZIP_CD');
+                    $("#CITY_NAME").val('@Model.CITY_NAME');
+
+                    $("#STATUS_HIDDEN").val('@Model.STATUS').change();
+                    if ('@Model.STATUS' == '0') {
+                        $("#STATUS").prop("checked", false);
+                    } else {
+                        $("#STATUS").prop("checked", true);
+                    }
+
+                }
+            }
+        })
+    });
+
+    // Button Back
+    $(document).off('#btnBack');
+    $(document).on('click', '#btnBack', function () {
+        ShipOnline.utility.showConfirmModal('@string.Format(@Message.ConfirmBack)', function (action) {
+            if (action) {
+
+                $(window).off('beforeunload');
+                window.location.href = CityListUrl;
+            }
+        })
+    });
+
+</script>
+
+
+
+

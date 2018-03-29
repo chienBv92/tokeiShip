@@ -1,0 +1,15 @@
+﻿@using ShipOnline.Resources;
+@using ShipOnline.Models;
+
+@{
+    //var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    //var authorityList = currentUser.AuthorityList as List<string>;
+}
+
+<ul class="dropdown-menu">
+    <b class="caret"></b>
+
+    <li><a href='@Url.Action("AdvertisementList", "AdminManageAdvertisement")'><i class="fa fa-angle-right pull-left"></i>Danh sách quảng cáo</a></li>
+
+    <li><a href='@Url.Action("AdvertisementEdit", "AdminManageAdvertisement")'><i class="fa fa-angle-right pull-left"></i>Đăng kí quảng cáo mới</a></li>
+</ul>

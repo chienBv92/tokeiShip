@@ -1,0 +1,176 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ShipOnline.UtilityService.StringUtil.GetHtmlTitle(ViewBag.Title)</title>
+    <link href="~/Logo/iconxemay.ico" rel="shortcut icon" type="image/x-icon" />
+
+    <meta name="description" content="Dịch vụ chuyển hàng nhanh - tiết kiệm"/>
+    <meta name="keywords" content="ship hàng nội thành" />
+
+    @Scripts.Render("~/bundles/jquery")
+    @RenderPage("~/Views/Shared/_CommonScript.cshtml")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/common")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @Scripts.Render("~/bundles/input")
+    @Scripts.Render("~/bundles/mainScript")
+    @Scripts.Render("~/bundles/dataTables")
+
+    @Scripts.Render("~/bundles/common")
+
+    @Scripts.Render("~/bundles/jquery/bootstrapPlugins")
+    @Scripts.Render("~/bundles/jquery/plugins/dragOn")
+    @RenderSection("scripts", required: false)
+
+    @*chen Css font*@
+    <link href="~/Content/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    @*chen nivo slider*@
+    <script src="~/NivoSlider/jquery.nivo.slider.pack.js"></script>
+    <script src="~/NivoSlider/jquery.nivo.slider.js"></script>
+    <link href="~/NivoSlider/nivo-slider.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div id="DivTokeiShip">
+        <div id="body" style="min-width: 1335px">
+            @RenderPage("~/Views/Layout/_LayoutHeader.cshtml")
+            
+            <div class="DivTokeiShipBody">
+                <div class="DivTokeiShipBodyLeft">
+                    <div class="BodyLeftAdvTop">
+                        <a href=""> <img class="img-BodyLeftAdvTop" src="~/Logo/banner1.svg" /> </a>
+                    </div>
+                    <div class="BodyLeftAdvBottom">
+                        <div class="NewsTitle">TIN TỨC</div>
+                        <div class="NewsBody">
+                            <div class="NewsDetail">
+                                <a href="" title="Tuyển 10 nhân viên giao hàng lương từ 9 đến 15 triệu, Liên hệ: 01635872295">Tuyển 10 nhân viên giao hàng lương từ 9 đến 15 triệu, Liên hệ: 01635872295</a>
+                            </div>
+                            <div class="NewsDetail">
+                                <a href="">Thông báo Tokeiship.vn đang tiến hành bảo trì hệ thống</a>
+                            </div>
+                            <div class="NewsDetail">
+                                <a href="">Thông báo tuyển dụng khối văn phòng</a>
+                            </div>
+                            <div class="NewsDetail">
+                                <a href="">Chính sách vận chuyển mới từ ngày 23/2/2018</a>
+                            </div>
+                            <div class="NewsDetail" style="border:none">
+                                <a href="">Tuyển cộng tác viên dịch vụ xe máy 200.000 VND/ca</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="DivBodyContent">
+                    @RenderBody()
+                </div>
+                <div id="loadingPopup" class="TB_overlayBG">
+                    <div id="TB_load"><img src="/Images/loading.gif"></div>
+                </div>
+                <div class="modal" id="showPopup" role="dialog" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-popup" role="document" style="width: 1200px" >
+                        <div class="modal-content">
+                            <div class="modal-body main-popup">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="DivTokeiShipBodyRight">
+                    <div class="BodyRightSearch">
+                        <div class="searchTitle">Tra cứu hành trình vận đơn</div>
+                        <div>
+                            <input type="text" value="" id="OrderId" class="input-search" placeholder="Nhập vào mã vận đơn">
+                        </div>
+                        <div>
+                            <button type="button" id="btnSearchOrder" name="btnSearchOrder" class="btn btn-default"><i class="icon-search">Tra cứu</i></button>
+                        </div>
+                    </div>
+                    <div class="BodyRightAdvertise">
+                        <div style="margin-top:15px; text-align:center">
+                            <span class="ho-tro-title">Hỗ trợ: 24/7: 01635872295</span>
+                        </div>
+                        <div class="div-intro">
+                            <img class="img-time" src="/Logo/lamchuthoigian.svg" />
+                            <div class="intro">
+                                <div><span class="intro-title">Chủ động thời gian</span></div>
+                                <div><span class="intro-text">khách nhận trong khung giờ ngắn,</span></div>
+                                <div><span class="intro-text">chủ động thời giờ - nâng tỉ lệ thành công</span></div>
+                            </div>
+                        </div>
+                        <div class="div-intro">
+                            <img class="img-time" src="/Logo/chietkhaucao.svg" />
+                            <div class="intro">
+                                <div><span class="intro-title">Chiết khấu hấp dẫn</span></div>
+                                <div><span class="intro-text">chiết khấu ưu đãi hàng tháng</span></div>
+                                <div><span class="intro-text">theo số lượng đơn hàng (5% - 15%)</span></div>
+                            </div>
+                        </div>
+                        <div class="div-intro">
+                            <img class="img-time" src="/Logo/chatluong.svg" />
+                            <div class="intro">
+                                <div><span class="intro-title">Chuyên nghiệp</span></div>
+                                <div><span class="intro-text">dịch vụ chuyên nghiệp</span></div>
+                                <div><span class="intro-text">quản lí đơn hàng và số dư trực tuyến</span></div>
+                            </div>
+                        </div>
+                        <div class="div-intro">
+                            <img class="img-time" src="/Logo/cuocphire.svg" />
+                            <div class="intro">
+                                <div><span class="intro-title">Cước phí rẻ</span></div>
+                                <div><span class="intro-text">cước phí rẻ nhất thị trường</span></div>
+                                <div><span class="intro-text">giao hàng nhanh - tính tiền thường</span></div>
+                            </div>
+                        </div>
+                        <div class="div-intro">
+                            <img class="img-time" src="/Logo/mienphidichvu.svg" />
+                            <div class="intro">
+                                <div><span class="intro-title">Miễn phí dịch vụ</span></div>
+                                <div><span class="intro-text">miễn phí dịch vụ phụ đi kèm</span></div>
+                                <div><span class="intro-text">miễn phí thu hộ, miễn phí lấy hàng</span></div>
+                            </div>
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="DivAdvBottom">
+                <div class="info-Company">
+                    <div><span class="intro-title">CÔNG TY TNHH OTOKE - DỊCH VỤ CHUYỂN HÀNG TOKEISHIP.VN</span></div>
+                </div>
+                <div class="info-detail">
+                    <div><span class="intro-title">Phone: 01635872295</span></div>
+                    <div><span class="intro-text">email: tokeiship@otoke.vn</span></div>
+                    <div><span class="intro-text">địa chỉ: ngõ 400, đường khương đình, quận thanh xuân, hà nội</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        //$(window).on('load', function () {
+        //    $('#slider').nivoSlider(
+        //        {
+        //            effect: 'random',
+        //            controlNav: false, // 1,2,3... navigation
+        //            directionNav: false // Next & Prev navigation
+
+        //        });
+        //});
+    </script>
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,20 @@
+﻿@using ShipOnline.Resources;
+@using ShipOnline.Models;
+
+@{
+    ViewBag.Title = "Quản trị hệ thống";
+    Layout = "~/Views/Layout/_LayoutAdmin.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var tempDateTime = new DateTime();
+}
+
+<div class="TrangchuAdmin">
+    <h1 style="color:red">Quản trị hệ thống Ship</h1>
+</div>
+
+<style>
+    .TrangchuAdmin{
+        margin:40px 20px;
+    }
+</style>
+

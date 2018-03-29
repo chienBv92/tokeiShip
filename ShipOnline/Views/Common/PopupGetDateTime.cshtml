@@ -1,0 +1,316 @@
+﻿@using ShipOnline.Models.Define;
+
+@model SelectTimeModel
+@{
+    ViewBag.Title = "Chọn ngày giờ nhận";
+}
+<div id="PopupGetDateTime">
+    <div id="title" class="modal-header popupTitle">
+        Chọn ngày giờ nhận
+    </div>
+    <div class="modal-body" style="background: #488419">
+        <div class="lblTakeHour">
+            <span>Thời gian lấy hàng : @Model.TAKE_HOUR_FROM</span><span>h</span> - <span>@Model.TAKE_HOUR_TO</span><span>h</span>
+            <span style="font-weight:bold">Ngày: @Model.TAKE_DATE.ToString("dd/MM/yyyy")</span>
+        </div>
+        @*<div class="form-group">
+                @Html.Label("Chọn giờ", new { @class = "title-row" })
+                @Html.DropDownListFor(m => m.RECEIVE_TIME_DATE_FROM, Model.TIME_SHIP_LIST, new { @class = "margin-left-15 renderCity height-30" })
+            </div>*@
+        <div class="ContentTable">
+            <table id="selectTime" class="display dataTable">
+                <thead>
+                    <tr>
+                        <th class="lblmethod">Phương thức</th>
+                        <th>Thời gian</th>
+                        <th>Ngày</th>
+                        <th>Giá cước</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.LIST_TIME_FASTEST.Count(); i++)
+                    {
+                        int index = i + 1;
+                        string rowClass = index % 2 != 0 ? "odd" : "even";
+                        string rowFist = Model.LIST_TIME_FASTEST[i].SHIP_TYPE == 1 ? "text-green" : "";
+                        <tr class="@rowClass @rowFist">
+                           
+                            @Html.HiddenFor(m => m.LIST_TIME_FASTEST[i].TAKE_HOUR_FROM, new { @class = "takeHourFrom" })
+                            @Html.HiddenFor(m => m.LIST_TIME_FASTEST[i].TAKE_HOUR_TO, new { @class = "takeHourTo" })
+                            @Html.HiddenFor(m => m.LIST_TIME_FASTEST[i].TAKE_DATE, new { @class = "takeDate" })
+                            @Html.HiddenFor(m => m.LIST_TIME_FASTEST[i].SHIP_MONEY, new { @class = "shipMoney" })
+                            <td class="lblmethod">
+                                @Html.HiddenFor(m => m.LIST_TIME_FASTEST[i].SHIP_TYPE, new { @class = "shipType" })
+                                @Model.LIST_TIME_FASTEST[i].SHIP_TYPE
+                                @if (Model.LIST_TIME_FASTEST[i].SHIP_TYPE.Equals(1))
+                                {
+                                    <span>Cấp tốc</span>
+                                }
+                                else if (Model.LIST_TIME_FASTEST[i].SHIP_TYPE == 2)
+                                {
+                                    <span>Chuyển nhanh</span>
+                                }
+
+                            </td>
+                            <td class="center"><span>@Model.LIST_TIME_FASTEST[i].TAKE_HOUR_FROM</span><span>h</span> - <span>@Model.LIST_TIME_FASTEST[i].TAKE_HOUR_TO</span><span>h</span></td>
+                            <td class="center takeDateString">@Model.LIST_TIME_FASTEST[i].TAKE_DATE.ToString("dd/MM/yyyy")</td>
+                            <td class="center">@Model.LIST_TIME_FASTEST[i].SHIP_MONEY.ToString("#,###") VND</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        
+
+        <div style="height:62px">
+            <div class="selectTimeNormal">
+                @Html.Label("Chuyển thường", new { @class = "title-row text-white margin-35" })
+                @Html.DropDownListFor(m => m.TIME_SHIP_SELECT, Model.TIME_SHIP_LIST, "Chọn giờ", new { @class = "w-120" })
+                @Html.DropDownListFor(m => m.RECEIVED_DATE, Model.DATE_NORMAL_LIST, "Chọn ngày", new { @class = "w-120 " })
+                
+                @*<span class="date datepicker-days">
+                    @Html.TextBoxFor(m => m.RECEIVED_DATE, "{0:dd/MM/yyyy}", new { @class = "ime-mode apt-order-send-date", maxlength = 10 ,@disabled = "disabled"})
+                    <button type="button" class="btn btn-default btn-add-on"> <i class="btn-icon btn-calendar"></i></button>
+                </span>*@
+                <button type="button" id="btnCancelDate" name="btnCancelDate" class="btn btn-default"><i class="">Xóa</i></button>
+                @Html.Label("Giá cước:", new { @class = "text-white margin-20" })
+                <span class="money-normal">@Model.SHIP_MONEY_NORMAL.ToString("#,###") VND</span>
+                @Html.HiddenFor(m => m.SHIP_MONEY_NORMAL, new { @class = "shipMoneyNormal" })
+                <div class="time-select-error"></div>
+            </div>
+            @Html.Hidden("hdnLastDateFast", @Model.LIST_TIME_FASTEST.Last().TAKE_DATE.ToString("dd/MM/yyyy"))
+          
+        </div>
+
+        <div class="action-button-bottom">
+            @Html.AntiForgeryToken()
+            <button type="button" class="btn btn-default" id="btnClosePopup"><i class="btn-icon btn-back">Đóng</i></button>
+            <button type="button" class="btn btn-orange pull-right" id="btnConfirmSelectTime"><i class="btn-icon btn-edit">Xác nhận chọn thời gian</i></button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(function () {
+        setTimeout(function () {
+            ShipOnline.utility.ClosePopup();
+        }, 300000); // 5 min
+    })
+
+    var dataTableSelectTimePopupSelect = $('#selectTime').dataTable();
+    $('#selectTime_length').hide();
+    $('#selectTime_filter').hide();
+    $('#selectTime_info').hide();
+    $('#selectTime_paginate').hide();
+    $('#selectTime tr th:not(.sorting_disabled)').removeClass('sorting_asc sorting_desc sorting').removeAttr('aria-sort');
+    $('#selectTime').wrap('<div class="div-scroll-y"></div>');
+    //debugger;
+    //var thisDate = $('#hdnLastDateFast').val();
+    //var nextDay = new Date(thisDate);
+    //nextDay.setDate(nextDay.getDate() + 1);
+    //$('.datepicker-days').datepicker('setStartDate', '2018-03-05');
+
+    $('#showPopup .modal-popup').addClass('register-screen');
+    $('#showPopup .main-popup').addClass('register-popup');
+    $('#showPopup .main-popup').addClass('input-popup');
+    ShipOnline.utility.InitDatepickerDays();
+
+    $("#PopupGetDateTime #btnClosePopup").click(function () {
+        ShipOnline.utility.ClosePopup();
+    });
+
+    $('#selectTime tbody').on('dblclick', 'tr', function () {
+        debugger;
+        var $row = $(this).closest('tr');
+        //var table = $('.dataTable').DataTable();
+        //var data = table.row($row).data();
+        var shipType = $row.find('.shipType').val();
+        var takeHourFrom = $row.find('.takeHourFrom').val();
+        var takeHourTo = $row.find('.takeHourTo').val();
+        var takeDate = $row.find('.takeDate').val();
+        takeDate = takeDate != null ? takeDate.split(' ')[0] : "";
+        var shipMoney = $row.find('.shipMoney').val();
+
+        //var selected_row = dataTableSelectTimePopupSelect.fnGetData(this);
+        var res = new Array();
+        res.push({
+            SHIP_TYPE: shipType,
+            TAKE_HOUR_FROM: takeHourFrom,
+            TAKE_HOUR_TO: takeHourTo,
+            TAKE_DATE: takeDate,
+            SHIP_MONEY: shipMoney
+        });
+        try {
+            showBtnSelectPIC();
+        }
+        catch (e){}
+
+            @if( !string.IsNullOrEmpty(Model.CallBack)){
+                @(Model.CallBack + "(res); ")
+            }
+    });
+
+    $("#selectTime tbody").click(function (event) {
+        dataTableSelectTimePopupSelect.$('tr.row_selected').removeClass('row_selected');
+        $(event.target).parents('tr').addClass('row_selected');
+    });
+
+    $(document).off('#btnCancelDate');
+    $(document).on('click', '#btnCancelDate', function () {
+        $('.validation-summary-errors').remove();
+        $("#TIME_SHIP_SELECT").val("");
+        $("#RECEIVED_DATE").val("");
+
+    });
+
+    function formatDateYearMonth(takeDate) {
+
+        return takeDate.split('/')[1] + '/' + takeDate.split('/')[0] + '/' + takeDate.split('/')[2];
+    }
+
+    $(document).off('#btnConfirmSelectTime');
+    $(document).on('click', '#btnConfirmSelectTime', function (e) {
+        //var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+        //if (!result) return;
+        event.preventDefault();
+        var $row = $('tr.row_selected');
+        var selectTimeTable = $('#selectTime').dataTable();
+        debugger;
+        
+        //var table = $('.dataTable').DataTable();
+        //var data = table.row($row).data();
+        var shipType = $row.find('.shipType').val();
+        var takeHourFrom = $row.find('.takeHourFrom').val();
+        var takeHourTo = $row.find('.takeHourTo').val();
+        var takeDate = $row.find('.takeDate').val();
+        takeDate = takeDate != null ? takeDate.split(' ')[0] : "";
+        var shipMoney = $row.find('.shipMoney').val();
+
+        var timeShipListSelect = $('#TIME_SHIP_SELECT').val();
+        var timeShipListText = $('#TIME_SHIP_SELECT option:selected').text();
+        var dateNormal = $('#RECEIVED_DATE').val();
+        
+        var selectTimeNormal = timeShipListSelect != null && dateNormal != null && timeShipListSelect.trim() != "" && dateNormal.trim() != "";
+        if (selectTimeNormal)
+        {
+            shipType = 3;
+            var timeNormalFrom = timeShipListText != null ? timeShipListText.split(' - ')[0] : "";
+            timeNormalFrom = timeNormalFrom.replace("h", "");
+            var timeNormalTo = timeShipListText != null ? timeShipListText.split(' - ')[1] : "";
+            timeNormalTo = timeNormalTo.replace("h", "");
+            var moneyNormal = $('.shipMoneyNormal').val();
+            dateNormal = formatDateYearMonth(dateNormal);
+            // set value 
+            takeHourFrom = timeNormalFrom;
+            takeHourTo = timeNormalTo;
+            takeDate = dateNormal;
+            shipMoney = moneyNormal;
+        }
+        if ((typeof selectTimeTable.$('tr.row_selected')[0] === 'undefined') && !selectTimeNormal) {
+            //ShipOnline.utility.showMessageModal("Bạn chưa chọn thời gian", true);
+            $('.time-select-error').text('Vui lòng chọn thời gian!');
+            return false;
+        } else {
+            $('.time-select-error').text('');
+            
+            var res = new Array();
+            res.push({
+                SHIP_TYPE: shipType,
+                TAKE_HOUR_FROM: takeHourFrom,
+                TAKE_HOUR_TO: takeHourTo,
+                TAKE_DATE: takeDate,
+                SHIP_MONEY: shipMoney
+            });
+            try {
+                
+            }
+            catch (e){}
+
+            @if( !string.IsNullOrEmpty(Model.CallBack)){
+                @(Model.CallBack + "(res); ")
+            }
+        }
+        
+        
+    });
+</script>
+
+<style>
+    table.dataTable tr.row_selected td {
+        background-color: #FFEBBD;
+    }
+    #showPopup .main-popup{
+        overflow-y:hidden;
+    }
+    
+     #selectTime tr th {
+        pointer-events: none;
+    }
+
+    #PopupGetDateTime .popupTitle {
+        text-align: center;
+        font-weight: bold;
+        font-size: 16px;
+        background: #e4e4e4;
+    }
+
+    #PopupGetDateTime .lblTakeHour {
+        text-align: center;
+        margin-top:-10px;
+        margin-bottom:20px;
+        color:white;
+    }
+
+    #PopupGetDateTime .text-green {
+        color: #70AD47;
+    }
+
+    #PopupGetDateTime .text-blue {
+        color: #40C4F4;
+    }
+
+    #PopupGetDateTime .text-white {
+        color: white;
+    }
+
+    #PopupGetDateTime .lblmethod {
+        width:120px;
+        text-align:center;
+    }
+
+    #PopupGetDateTime .ContentTable {
+        min-height: 300px;
+        background-color:white;
+    }
+
+    #PopupGetDateTime .div-scroll-y {
+        min-height: 300px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    #PopupGetDateTime .selectTimeNormal {
+       padding-top:20px;
+    }
+
+    #PopupGetDateTime .margin-35{
+        margin-left:35px;
+    }
+    #PopupGetDateTime .margin-20 {
+        margin-left: 20px;
+    }
+    #PopupGetDateTime .w-120 {
+        width:120px;
+    }
+
+    #PopupGetDateTime .money-normal {
+        float: right;
+        line-height:2;
+        color:white;
+    }
+    #PopupGetDateTime .time-select-error {
+        color: #a20c05;
+        text-align: center;
+        margin-top:2px;
+    }
+</style>

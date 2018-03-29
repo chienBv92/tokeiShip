@@ -1,0 +1,149 @@
+﻿@using ShipOnline.Resources;
+@using ShipOnline.Models.Entity;
+@using ShipOnline.Models.Define;
+
+@{
+    ViewBag.Title = UserLabel.lblLogin;
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+    bool timeOut = false;
+    try
+    {
+        if (ViewBag.TimeOut != null)
+        {
+            timeOut = ViewBag.TimeOut;
+        }
+    }
+    catch (Exception)
+    {
+    }
+}
+@model UserAccountModel
+
+@if (@ViewBag.PASSWORD_EXPIRED != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            iseiQ.utility.showMessageModal('@ViewBag.PASSWORD_EXPIRED', true, function () {
+                window.location.href = '@Url.Action("ChangePassword", "ChangePassword")';
+            });
+        });
+
+    </script>
+}
+else
+{
+
+}
+
+<div class="background-top"></div>
+<div id="login" class="login-box" style="position:absolute; left: 512px;top:100px">
+    @using (Html.BeginForm("Login", "AdminManageUser", FormMethod.Post, new { @id = "LoginForm", @class = "horizontal" }))
+    {
+        <div class="form-group">
+            <div class="title" id="title">@UserLabel.lblLogin</div>
+            @Html.ValidationSummary(false)
+        </div>
+        if (ViewBag.ErrorLogin != null)
+        {
+            @ViewBag.ErrorLogin
+        }
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.lblEmail <span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.USER_EMAIL, new { @class = "txt-w-250", maxlength = 100, autocomplete = "off" })
+        </div>
+        <div class="form-group">
+            <label class="title-row">@UserLabel.lblPassword <span class="RequiredField">*</span></label>
+            @Html.PasswordFor(m => m.USER_PASSWORD, new { @class = "txt-w-250", @maxlength = "32", autocomplete = "off" })
+        </div>
+
+        <div class="form-group  margin-left-6" style="margin-bottom: 20px">
+            @Html.AntiForgeryToken()
+            <button id="btnLogin" name="btnLogin" class="btn btn-green">@UserLabel.btnLogin</button>
+        </div>
+    }
+    <div class="footer center">
+        <span style="color:red">Copyright &copy; 2018 tokeiShip V0.0001 tokei corporation LTD. All rights reserved.</span>
+    </div>
+
+</div>
+<script>
+    $(function () {
+        ShipOnline.utility.validFullHalfSize($("#USER_EMAIL"));
+        ShipOnline.utility.imeControl($("#USER_EMAIL"), 'disable');
+        ShipOnline.utility.validFullHalfSize($("#USER_PASSWORD"));
+        ShipOnline.utility.imeControl($("#USER_PASSWORD"), 'disable');
+
+    })
+    $(function () {
+        var regX = Constant.REGEX_PASSWORD;
+        $("#USER_PASSWORD").on("change keyup", function (e) {
+            var text = $(this).val();
+            if (regX.test(text)) {
+                text = text.replace(regX, '');
+                $(this).val(text);
+            }
+
+        });
+
+    });
+
+    // Validate data Login
+    function validateData() {
+        var invalidMess = [];
+        var userEmail = $('#USER_EMAIL').val();
+        var password = $('#USER_PASSWORD').val();
+
+        if (userEmail == null || userEmail.trim() == "") { // required content
+            errDisplay = '@UserLabel.lbltUserAccount' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+        else if (userEmail.trim().length > 100) {
+            invalidMess.push("@string.Format(Message.CheckMaxLength, @AdminLabel.lblEmail, Constant.MAX_EMAIL_LENGTH)");
+        }
+            // check numberic
+        else if (!ShipOnline.utility.validEmail(userEmail)) {
+            invalidMess.push("@string.Format(@Message.IncorrectFormat, @AdminLabel.lblEmail)");
+        }
+
+        if (password == null || password.trim() == "") {
+            errDisplay = '@UserLabel.lblPassword' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        } else if (password.trim().length < Constant.MIN_INPUT_PASS) {
+            invalidMess.push("@string.Format(Message.CheckMinLength, UserLabel.lblPassword, Constant.MIN_INPUT_PASS)");
+        } else if (password.trim().length > Constant.MAX_INPUT_PASS) {
+            invalidMess.push("@string.Format(Message.CheckMaxLength, UserLabel.lblPassword, Constant.MAX_INPUT_PASS)");
+        }
+
+        return invalidMess;
+
+    }
+
+    // Click  login
+    $(document).off('#btnLogin');
+    $(document).on('click', '#btnLogin', function () {
+        //var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        //if (!result) return;
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+
+        if (invalidMess.length > 0) {
+            ShipOnline.utility.showClientError(invalidMess);
+            return false;
+        }
+
+    })
+
+</script>
+
+<style>
+    #title {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    #btnLogin {
+        text-align: center;
+        margin-left: 200px;
+    }
+</style>

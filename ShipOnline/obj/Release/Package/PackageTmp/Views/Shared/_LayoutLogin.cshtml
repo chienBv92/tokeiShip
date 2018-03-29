@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="~/Logo/cart.ico" rel="shortcut icon" type="image/x-icon" />
+    @Scripts.Render("~/bundles/jquery")
+    @RenderPage("~/Views/Shared/_CommonScript.cshtml")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/common")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @Scripts.Render("~/bundles/input")
+    @Scripts.Render("~/bundles/dataTables")
+
+    @Scripts.Render("~/bundles/common")
+
+    @Scripts.Render("~/bundles/jquery/bootstrapPlugins")
+    @Scripts.Render("~/bundles/jquery/plugins/dragOn")
+
+</head>
+<body">
+    <div id="login">
+        @RenderBody()
+        <div class="modal" id="showPopupInfor" role="dialog" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog modal-popup" role="document" style="width: 330px; height:500px; top: 38px;">
+                <div class="modal-content" style="width: 330px; height:300px">
+                    <div class="modal-body main-popup">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Raw(ViewBag.BuildInfo)
+</body>
+</html>

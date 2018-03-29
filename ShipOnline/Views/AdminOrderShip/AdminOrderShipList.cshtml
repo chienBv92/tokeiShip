@@ -1,0 +1,905 @@
+﻿@using ShipOnline.Resources;
+@using ShipOnline.Models.Entity;
+@using ShipOnline.Models.Define;
+
+@model AdminOrderList
+@{
+    ViewBag.Title = AdminLabel.OrderShipListTitle;
+    Layout = "~/Views/Layout/_LayoutAdmin.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as ShipOnline.Models.CmnEntityModel;
+
+}
+
+<div id="AdminOrderShipList">
+    <div class="DivTop">
+        <div class="DivTopRight">
+            @using (Html.BeginForm("List", "OrderShip", FormMethod.Post, new { id = "formUserSearch", enctype = "multipart/form-data", @class = "form-horizontal" }))
+            {
+                <div class="DivTopRightTop">
+                    <span>Khu vực người nhận  </span>
+                    @Html.DropDownListFor(m => m.GROUP_CD_SENDER, Model.GROUP_CD_SENDER_LIST, new { @class = "margin-left-15 renderCity height-30" })
+                    <span>Khu vực người nhận  </span>
+                    @Html.DropDownListFor(m => m.GROUP_CD_RECEIVE, Model.GROUP_CD_RECEIVE_LIST, new { @class = "margin-left-15 renderCity height-30" })
+                    @Html.DropDownListFor(m => m.PRODUCT_TYPE, new SelectList(Product_Type.Items, "Key", "Value"), new { @class = "product_type" })
+                    <span style="margin-right:5px; margin-left:35px">Từ:</span><input type="text" id="FROM_DATE" name="FROM_DATE" value="" class=" date ime-mode" maxlength=10 />
+                    <span style="margin-right:5px">Đến:</span>
+                    <input type="text" id="TO_DATE" name="TO_DATE" value="" class="date ime-mode" maxlength=10 />
+
+                    <input type="text" id="TEXT_SEARCH" name="TEXT_SEARCH" value="" placeholder="Nhập mã đơn hàng | Tên người nhận | Số điện thoại" class="" maxlength=50 />
+
+                    <button type="button" id="btnClear" class="btn btn-default"><i class="btn-icon btn-clear">Xóa Tìm kiếm</i></button>
+                    <button type="button" id="btnSearch" class="btn btn-green"><i class="btn-icon btn-search-white">Tìm kiếm</i></button>
+
+                </div>
+                <div class="DivTopRightBottom">
+                    <div class="selectStatus">
+                        <div class="selectStatusText">
+                            <div class="divStatus">
+                                <input id="ORDER_STATUS_0" name="ORDER_STATUS" value="0" type="checkbox" checked="checked">
+                                <label class="textDisp">Mới khởi tạo</label>
+                                (<span class="count-Status-0">0</span>)
+                            </div>
+                            <div class="divStatus" style="width:120px">
+                                <input id="ORDER_STATUS_1" name="ORDER_STATUS" value="1" type="checkbox">
+                                <label class="textDisp">Đã duyệt</label>
+                                (<span class="count-Status-1">0</span>)
+                            </div>
+
+                            <div class="divStatus" style="width:155px">
+                                <input id="ORDER_STATUS_2" name="ORDER_STATUS" value="2" type="checkbox">
+                                <label class="textDisp">Đã lấy hàng</label>
+                                (<span class="count-Status-2">0</span>)
+                            </div>
+
+                            <div class="divStatus">
+                                <input id="ORDER_STATUS_5" name="ORDER_STATUS" value="5" type="checkbox">
+                                <label class="textDisp">Chờ giao lại</label>
+                                (<span class="count-Status-5">0</span>)
+                            </div>
+
+                            <div class="divStatus">
+                                <input id="ORDER_STATUS_6" name="ORDER_STATUS" value="6" type="checkbox">
+                                <label class="textDisp">Hoàn hàng</label>
+                                (<span class="count-Status-6">0</span>)
+                            </div>
+
+                            <div class="divOtherSelect">
+                                <a class="clickOther">Trạng thái khác</a>
+                                <ul class="menu">
+                                    <li>
+                                        <input id="ORDER_STATUS_3" name="ORDER_STATUS" value="3" type="checkbox">
+                                        <label class="textDisp">Đang giao hàng</label>
+                                        (<span class="count-Status-3">0</span>)
+                                    </li>
+                                    <li>
+                                        <input id="ORDER_STATUS_4" name="ORDER_STATUS" value="4" type="checkbox">
+                                        <label class="textDisp">Đã giao</label>
+                                        (<span class="count-Status-4">0</span>)
+                                    </li>
+                                    <li>
+                                        <input id="ORDER_STATUS_7" name="ORDER_STATUS" value="7" type="checkbox">
+                                        <label class="textDisp">Đã hoàn hàng</label>
+                                        (<span class="count-Status-7">0</span>)
+                                    </li>
+                                    <li>
+                                        <input id="ORDER_STATUS_8" name="ORDER_STATUS" value="8" type="checkbox">
+                                        <label class="textDisp">Hoàn tất</label>
+                                        (<span class="count-Status-8">0</span>)
+                                    </li>
+                                    <li>
+                                        <input id="ORDER_STATUS_9" name="ORDER_STATUS" value="9" type="checkbox">
+                                        <label class="textDisp">Chờ COD</label>
+                                        (<span class="count-Status-9">0</span>)
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="divStatusAll">
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="DivTopRightBottom"></div>
+            }
+
+        </div>
+    </div>
+        <div id="divResulRight">
+            <div id="mainContent">
+                <table id="InfoTable" class="dataTable cellspacing= " 0">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>@AdminLabel.lblCreateDateOrder</th>
+                            <th>@AdminLabel.lblOrderShipCode</th>
+                            <th>@AdminLabel.lblReceiveName</th>
+                            <th>@AdminLabel.lblPhone</th>
+                            <th>@AdminLabel.lblProductName</th>
+                            <th>@AdminLabel.lblProductMoney</th>
+                            <th>@AdminLabel.lblShipMoney</th>
+                            <th>@AdminLabel.lblReceiveDate</th>
+                            <th>@AdminLabel.lblStatus</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <form id="frmExportData" method="post" action="@Url.Action("ExportCSVCustom")">
+                <input id="ORDER_ID_STRING2" type="hidden" name="ORDER_ID_STRING2" value="" />
+            </form>
+            <form id="frmPrintPdf" target="_blank" method="post" action="@Url.Action("PrintOrderCustom")">
+                <input id="ORDER_ID_STRING" type="hidden" name="ORDER_ID_STRING" value="" />
+            </form>
+        </div>
+        @Html.HiddenFor(m => m.ORDER_STATUS_LIST, new { @class = "AdminOrderShipList" })
+        @Html.HiddenFor(m => m.FROM_DATE, new { @class = "hdnFromDate" })
+        @Html.HiddenFor(m => m.TO_DATE, new { @class = "" })
+        @Html.HiddenFor(m => m.TEXT_SEARCH, new { @class = "" })
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    var CityListUrl = '@Url.Action("CityList", "AdminManageCity")';
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common")';
+
+    var dataTable = null;
+    var sort_colum = 0;
+    var sort_type = 'asc';
+    var deletelink = "Xóa";
+    var ORDER_ID = 0;
+    var CREATE_DATE = 1;
+    var SHIP_CODE = 2;
+    var RECEIVED_NAME = 3;
+    var RECEIVED_PHONE = 4;
+    var PRODUCT_NAME = 5;
+    var PRICE_PRODUCT = 6;
+    var PRICE_SHIP = 7;
+    var RECEIVE_TIME_DATE = 8;
+    var ORDER_STATUS = 9;
+
+    var rows_checked_list = [];
+    var checkedDataList = [];
+    var UrlLogin = '@Url.Action("Login", "UserAccount")';
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common")';
+    var dataSummary;
+    $(function () {
+        var oSorting = {
+            "bSort": true,
+            "bSortable": true,
+        };
+
+        var oPaginate = {
+            "bPaginate": true,
+            "iDisplayLength": 10, // setup amount record
+            "bStateSave": true
+        };
+
+        var oServerSide = {
+            "bServerSide": true,
+            "sAjaxSource": '@Url.Action("List", "OrderShip")',
+            "fnServerParams": serverParams,
+            "fnInitComplete": displayComplete,
+            "fnDrawCallback": drawCallback,
+            "autoWidth": false,
+            "info": false
+        };
+        // Content in table
+        var aoColumnDefs = [
+             { "sName": "ORDER_ID", "bVisible": false, "aTargets": [ORDER_ID] },
+             { "sName": "ORDER_ID", "bVisible": false, "aTargets": [CREATE_DATE] },
+             { "sName": "ORDER_ID", "bVisible": false, "aTargets": [SHIP_CODE] },
+             { "sName": "ORDER_ID", "bVisible": false, "aTargets": [RECEIVED_NAME] },
+
+             { "bSortable": false, "aTargets": [RECEIVED_PHONE], "sWidth": "10%", "sClass": "cell_center" },
+             {
+                 "bSortable": false, "aTargets": [PRODUCT_NAME], "sWidth": "20%", "sClass": "cell_center text-overflow productName",
+                 "mRender": function (data, type, full) { return ShipOnline.utility.buildColumShortText(data, 'special-wrap'); }
+             },
+             {
+                 "bSortable": false, "aTargets": [PRICE_PRODUCT], "sWidth": "10%", "sClass": "cell_right",
+                 "mRender": function (data, type, full) { return buildTextMoney(data, 'special-wrap'); }
+             },
+             {
+                 "bSortable": false, "aTargets": [PRICE_SHIP], "sWidth": "10%", "sClass": "cell_right",
+                 "mRender": function (data, type, full) { return buildTextMoney(data, 'special-wrap'); }
+             },
+             { "bSortable": false, "aTargets": [RECEIVE_TIME_DATE], "sWidth": "10%", "sClass": "cell_center" },
+             { "bSortable": false, "aTargets": [ORDER_STATUS], "sWidth": "10%", "sClass": "cell_center" },
+
+        ];
+
+        // Tham so search input
+        function serverParams(aoData) {
+            aoData.push(
+                { "name": "ORDER_STATUS_LIST", "value": $("#ORDER_STATUS_LIST").val() },
+                { "name": "FROM_DATE", "value": $("#FROM_DATE").val() },
+                { "name": "TO_DATE", "value": $("#TO_DATE").val() },
+                { "name": "TEXT_SEARCH", "value": $("#TEXT_SEARCH").val() }
+            );
+        }
+
+        function displayComplete(data) {
+            dataList = data.aaData;
+            if (dataList.length == 0) {
+                $('#cbHeader').prop('disabled', true).prop('checked', false)
+            }
+            else {
+                $('#cbHeader').prop('disabled', false)
+            }
+
+            if (sort_colum == 0) {
+                $('#InfoTable tr th:not(.sorting_disabled)').addClass('sorting').removeAttr('aria-sort');
+            }
+
+            var dataSummary = data.objOrderSummaryInfo;
+            $(".count-Status-all").text(dataSummary.TotalStatusAll);
+            $(".count-Status-0").text(dataSummary.TotalStatus_0);
+            $(".count-Status-1").text(dataSummary.TotalStatus_1);
+            $(".count-Status-2").text(dataSummary.TotalStatus_2);
+            $(".count-Status-3").text(dataSummary.TotalStatus_3);
+            $(".count-Status-4").text(dataSummary.TotalStatus_4);
+            $(".count-Status-5").text(dataSummary.TotalStatus_5);
+            $(".count-Status-6").text(dataSummary.TotalStatus_6);
+            $(".count-Status-7").text(dataSummary.TotalStatus_7);
+            $(".count-Status-8").text(dataSummary.TotalStatus_8);
+            $(".count-Status-9").text(dataSummary.TotalStatus_9);
+            $(".this-month").text(dataSummary.thisMonth);
+            $(".total-order-month").text(dataSummary.TotalOrderthisMonth);
+
+            $(".total-price-ship").text(ShipOnline.utility.convertIntToMoney(dataSummary.TotalPriceShip));
+            $(".total-price-product").text(ShipOnline.utility.convertIntToMoney(dataSummary.TotalPriceProduct));
+            if (dataSummary.TotalMoney < 0) {
+                $(".total-Money").addClass("color-red");
+            } else {
+                $(".total-Money").removeClass("color-red");
+            }
+            if (dataSummary.TotalWaitCOD < 0) {
+                $(".total-WaitCOD").addClass("color-red");
+            } else {
+                $(".total-WaitCOD").removeClass("color-red");
+            }
+            $(".total-Money").text(ShipOnline.utility.convertIntToMoney(dataSummary.TotalMoney));
+            $(".total-WaitCOD").text(ShipOnline.utility.convertIntToMoney(dataSummary.TotalWaitCOD));
+
+        }
+
+        function drawCallback() {
+            if ($('#tbLeft').length > 0) {
+                $('#InfoTable').unwrap();
+                $('.col-left, .rBarOn, .bBarOn').remove();
+            }
+
+            var disabled = dataList !== null && dataList.length > 0 ? '' : 'disabled';
+
+            var htmlTbLeft = '<table id="tbLeft" class="dataTable" cellspacing="0">'
+                + ' <thead>'
+                + ' <tr>'
+                + ' <th> '
+                + ' <input type="checkbox" name="action" id="cbHeader" ' + disabled + ' class=" editor-active lblTable">'
+                + ' </th>'
+                + ' <th class="lblTable">@AdminLabel.lblCreateDateOrder</th>'
+                + ' <th class="lblTable">@AdminLabel.lblOrderShipCode</th>'
+                + ' <th class="lblTable">@AdminLabel.lblReceiveName</th>'
+                + ' </tr>'
+                + ' </thead>'
+                + ' <tbody>';
+
+            if (dataList !== null && dataList.length > 0) {
+                for (var i = 0; i < dataList.length; i++) {
+                    var classRow = i % 2 == 0 ? 'odd' : 'even';
+                    var checked = $.inArray(dataList[i][ORDER_ID], checkedDataList) !== -1 ? 'checked' : '';
+
+                    //var height = $($('#InfoTable tbody tr')[i]).outerHeight();
+
+                    htmlTbLeft += ' <tr class="' + classRow + '">'
+                        + ' <td class="cell_center"> <input type="checkbox" name="action" class="cbItem" data-order-id="' + dataList[i][ORDER_ID] + '" ' + checked + ' /></td>'
+                        + ' <td class="cell_center lblTable createDate">' + ShipOnline.utility.buildColumShortText(dataList[i][CREATE_DATE], 'createDate') + '</td>'
+                        + ' <td class="cell_center lblTable">' + buildActionLink(dataList[i][ORDER_ID], dataList[i][SHIP_CODE]) + '</td>';
+                    htmlTbLeft += ' <td class="lblTable receive-name text-overflow"> <div>' + ShipOnline.utility.buildColumShortText(dataList[i][RECEIVED_NAME], 'special-wrap') + '</div></td></tr>';
+                }
+            }
+
+            htmlTbLeft += '</tbody></table>';
+
+            $("#InfoTable").wrap('<div class="col-right dragOn"></div>').removeClass('no-footer');
+            $('div.col-right').wrap('<div class="mainTable"></div>')
+            $('div.col-right').before('<div class="col-left"> ' + htmlTbLeft + '</div>');
+            $('div.col-right').dragOn();
+
+            $('#InfoTable_paginate a.first').before('<button type="button" id="btnPrintPDF" name="btnPrintPDF" class="btn btn-default">' +
+               '<i class="btn-icon btn-download">In hóa đơn</i>' + '</button>');
+            $('#InfoTable_paginate a.first').before('<button type="button" id="btnExportCsv" name="btnExportCsv" class="btn btn-orange">' +
+             '<i class="btn-icon btn-download">Xuất file CSV</i>' + '</button>');
+
+            $('#InfoTable_paginate a.first').before('<button type="button" id="btnCreatNew" name="btnCreatNew" class="btn btn-green">' +
+           '<i class="btn-icon  btn-regist">Tạo đơn mới</i>' + '</button>');
+            $('select[name="InfoTable_length"]').addClass('select_record');
+            //$('.mainTable').wrap('<div class="div-scroll-y"></div>');
+            //$('.col-left').before('<div class="mainTable"></div>');
+            //$('.col-right').wrap('<div class="#mainTable"></div>')
+        }
+
+        function buildActionLink(id, content) {
+            var html = '';
+            {
+                html += '<a class="viewOrderDetail link" data-order-id="' + id + '">' + content + '</a>';
+            }
+            return html;
+        }
+
+        function buildTextMoney(data, className) {
+            data = data != null ? data : '';
+            className = className != null ? className : '';
+
+            var html = '<div class="short-text ' + className + '">' + ShipOnline.utility.convertIntToMoney(data) + " VND" + '</div>';
+            return html;
+        }
+
+        function bindDeleteElement(id, className, label) {
+            return '<a class="' + className + '" data-citycd="' + id + '">' + label + '</a>';
+        }
+
+        dataTable = CreateDataTable('#InfoTable', oSorting, oPaginate, oServerSide, aoColumnDefs);
+
+    });
+
+    $(function () {
+        var UrlOrderRegister = '@Url.Action("Index", "Home")';
+
+        var list = getStatusList();
+        $("#ORDER_STATUS_LIST").val(list.toString());
+        searchOrder();
+    });
+
+    $(document).off('.clickOther');
+    $(document).on('click', '.clickOther', function () {
+        $('.selectStatus .menu').toggle();
+    });
+
+    // Button Search
+    $(document).off('#btnSearch');
+    $(document).on('click', '#btnSearch', function () {
+        var result = ValidateData();
+        if (!result) return;
+        var list = getStatusList();
+        $("#ORDER_STATUS_LIST").val(list.toString());
+
+        searchOrder();
+    });
+
+    function ValidateData() {
+        var startDate = $('#FROM_DATE').val();
+        var endDate = $('#TO_DATE').val();
+        var errInvalid;
+        if (startDate != null && startDate.length > 0 && endDate != null && endDate.length > 0 && !ShipOnline.utility.compareDateCustom(startDate, endDate, Constant.DATE_FORMAT)) {
+            ShipOnline.utility.showMessageModal("Ngày bắt đầu không được lớn hơn ngày kết thúc!", true);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function searchOrder() {
+        var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (result != "Success") {
+
+            window.location.href = UrlLogin; // Redirect to other Url
+            return false;
+        }
+
+        checkedDataList = [];
+        $('#cbHeader').prop('checked', false);
+        $('#cbHeader').prop('disabled', false);
+        dataTable.fnPageChange('first');
+
+    }
+
+    function getStatusList() {
+        var res = [];
+        if ($('#ORDER_STATUS_0').is(":checked")) {
+            res.push(0);
+        }
+        if ($('#ORDER_STATUS_1').is(":checked")) {
+            res.push(1);
+        }
+        if ($('#ORDER_STATUS_2').is(":checked")) {
+            res.push(2);
+        }
+        if ($('#ORDER_STATUS_3').is(":checked")) {
+            res.push(3);
+        }
+        if ($('#ORDER_STATUS_4').is(":checked")) {
+            res.push(4);
+        }
+        if ($('#ORDER_STATUS_5').is(":checked")) {
+            res.push(5);
+        }
+        if ($('#ORDER_STATUS_6').is(":checked")) {
+            res.push(6);
+        }
+        if ($('#ORDER_STATUS_7').is(":checked")) {
+            res.push(7);
+        }
+        if ($('#ORDER_STATUS_8').is(":checked")) {
+            res.push(8);
+        }
+        if ($('#ORDER_STATUS_9').is(":checked")) {
+            res.push(9);
+        }
+        return res;
+        console.log(res);
+    }
+    $('input[name="ORDER_STATUS"]').on('change', function () {
+
+        var list = getStatusList();
+
+        $("#ORDER_STATUS_LIST").val(list.toString());
+        searchOrder();
+    });
+
+    $(document).off('.viewOrderDetail');
+    $(document).on('click', '.viewOrderDetail', function () {
+        var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (result != "Success") {
+
+            window.location.href = UrlLogin; // Redirect to other Url
+            return false;
+        }
+
+        var orderId = $(this).data('order-id');
+        if (orderId > 0) {
+            var urlGetInfor = '@Url.Action("ViewOrderDetail", "OrderShip")';
+            var param = {
+                OrderId: orderId
+            };
+
+            ShipOnline.utility.ShowPopup(urlGetInfor, param);
+        }
+    });
+
+    $(document).off('.paginate_button');
+    $(document).on('click', '.paginate_button', function () {
+        var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (result != "Success") {
+
+            window.location.href = UrlLogin; // Redirect to other Url
+            return false;
+        }
+    });
+
+    $(document).off('.paginate_button, .select_record');
+    $(document).on('change', '.paginate_button, .select_record', function () {
+        var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (result != "Success") {
+
+            window.location.href = UrlLogin; // Redirect to other Url
+            return false;
+        }
+    });
+
+    // Click Button Clear
+    $(document).off('#btnClear');
+    $(document).on('click', '#btnClear', function () {
+
+        var Now = new Date();
+        var nowDate = $.datepicker.formatDate("dd/mm/yy", new Date());
+        var fromDate = new Date(Now.getFullYear(), Now.getMonth(), Now.getDate() - 15);
+        var fromDateText = $.datepicker.formatDate("dd/mm/yy", new Date(Now.getFullYear(), Now.getMonth(), Now.getDate() - 15));
+        $('#FROM_DATE').attr('value', fromDateText).val(fromDateText);
+        $('#TO_DATE').attr('value', nowDate).val(nowDate);
+        $("#TEXT_SEARCH").val('');
+        $('input[name="ORDER_STATUS"]').prop("checked", false);
+
+        $('#ORDER_STATUS_0').prop("checked", true);
+        var list = getStatusList();
+        $("#ORDER_STATUS_LIST").val(list.toString());
+        searchOrder();
+    })
+
+    // Click redirect to Register
+    $(document).off('#btnCreatNew');
+    $(document).on('click', '#btnCreatNew', function () {
+        window.location.href = "/Home/Index/"; // Redirect to other Url
+
+    })
+
+    $(document).off('.UserView');
+    $(document).on('click', '.UserView', function () {
+        var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (result != "Success") {
+
+            window.location.href = UrlLogin; // Redirect to other Url
+            return false;
+        }
+
+        $('#hdnUserId').val($(this).data('userid'));
+
+        $('#frViewUser').submit();
+    });
+
+    $(document).off('#btnExportCsv');
+    $(document).on('click', '#btnExportCsv', function () {
+        var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (result != "Success") {
+
+            window.location.href = UrlLogin; // Redirect to other Url
+            return false;
+        }
+
+        $('#ORDER_ID_STRING2').val(checkedDataList.toString());
+
+        $('#frmExportData').submit();
+    });
+
+    $(document).off('#btnPrintPDF');
+    $(document).on('click', '#btnPrintPDF', function () {
+        var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (result != "Success") {
+
+            window.location.href = UrlLogin; // Redirect to other Url
+            return false;
+        }
+
+        if (checkedDataList.length == 0) {
+            ShipOnline.utility.showMessageModal("Không có bản ghi nào được chọn!", true);
+            return;
+        }
+        $('#ORDER_ID_STRING').val(checkedDataList.toString());
+
+        $('#frmPrintPdf').submit();
+    });
+
+    // check or uncheck all checkbox
+    $(document).off('#cbHeader');
+    $(document).on('change', '#cbHeader', function () {
+        var isCheckedAll = $(this).is(":checked");
+        $('.cbItem').prop("checked", isCheckedAll);
+
+        if (dataList != null) {
+            for (var i = 0; i < dataList.length; i++) {
+                var index = getIndexCheckedData(dataList[i][ORDER_ID]);
+
+                if (isCheckedAll && index === -1) {
+                    checkedDataList.push(dataList[i][ORDER_ID]);
+                }
+
+                if (!isCheckedAll && index != -1) {
+                    checkedDataList.splice(index, 1);
+                }
+            }
+        }
+        console.log(checkedDataList);
+
+    });
+
+    $(document).off(".cbItem");
+    $(document).on("change", ".cbItem", function () {
+        if (!ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        var OrderId = parseInt($(this).data("order-id"));
+        var index = getIndexCheckedData(OrderId);
+
+        if (this.checked && index === -1) {
+            checkedDataList.push(OrderId);
+        }
+        else {
+            checkedDataList.splice(index, 1);
+        }
+        console.log(checkedDataList);
+
+    });
+
+    function getIndexCheckedData(OrderId) {
+        return $.inArray(OrderId, checkedDataList);
+    }
+
+</script>
+
+
+
+<style>
+    #AdminOrderShipList {
+        margin: 0px;
+    }
+
+    .ui-datepicker-today {
+        background: #fcc !important;
+    }
+
+    #AdminOrderShipList .DivTop {
+        height: 85px;
+        width: 100%;
+    }
+        #AdminOrderShipList .DivTop .DivTopRight {
+            height: 85px;
+            float: right;
+            display: inline-block;
+            background: #0B5147;
+        }
+
+            #AdminOrderShipList .DivTop .DivTopRight .DivTopRightTop {
+                height: 34px;
+                /*float: right;*/
+                display: inline-block;
+                margin-top: 10px;
+                color: white;
+            }
+
+            #AdminOrderShipList .DivTop .DivTopRight .date {
+                width: 110px;
+            }
+
+            #AdminOrderShipList .DivTop .DivTopRight #btnCreatNew {
+                margin-right: 30px;
+            }
+
+            #AdminOrderShipList .DivTop .DivTopRight #TEXT_SEARCH {
+                width: 325px !important;
+                max-width: 325px !important;
+                margin-left: 20px;
+            }
+
+            #AdminOrderShipList .DivTop .DivTopRight #btnSearch {
+                margin-right: 10px;
+                margin-left: 10px;
+                margin-bottom: 0px;
+                float: right;
+            }
+
+            #AdminOrderShipList .DivTop .DivTopRight #btnClear {
+                margin-bottom: 0px;
+                float: right;
+            }
+
+            #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom {
+                height: 35px;
+                width: 1044px;
+                float: right;
+                display: inline-block;
+                background: #0B5147;
+            }
+
+                #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus {
+                    margin-left: 10px;
+                }
+
+                    #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .selectStatusText {
+                        margin-top: 7px;
+                        color: white;
+                    }
+
+                    #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .divStatus {
+                        width: 140px;
+                        display: inline-block;
+                    }
+
+                    #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .selectStatusText .textDisp {
+                        font-weight: normal;
+                    }
+
+                    #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu {
+                        text-decoration: none;
+                        display: none;
+                        margin-top: 10px;
+                    }
+
+                        #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu ul {
+                            font-weight: normal;
+                            position: absolute;
+                            top: 42px;
+                            left: 0px;
+                        }
+
+                        #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu li {
+                            float: left;
+                            width: 165px;
+                            line-height: 1.5;
+                            position: relative;
+                            background: #8537A5;
+                            padding-top: 5px;
+                            padding-left: 10px;
+                            z-index: 100;
+                        }
+
+                            #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu li:hover {
+                                background: #00ff21;
+                                cursor: pointer;
+                            }
+
+                        #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu ul ul {
+                            left: 150px;
+                            top: 0px;
+                        }
+
+                    #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .divOtherSelect {
+                        width: 110px;
+                        display: inline-block;
+                    }
+
+                    #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .divStatusAll {
+                        width: 200px;
+                        display: inline-block;
+                    }
+
+                    #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .divOtherSelect .clickOther {
+                        text-decoration: none;
+                        cursor: pointer;
+                        color: white;
+                    }
+
+    .clickOther a:hover {
+        color: #4cff00;
+    }
+
+    #AdminOrderShipList #divResultLeft {
+        float: left;
+        width: 300px;
+        min-height: 565px;
+        background: #0B5147;
+        color: white;
+    }
+
+    #AdminOrderShipList #divResulRight {
+        float: right;
+        width: 100%;
+        margin:20px;
+        min-height: 500px;
+    }
+
+        #AdminOrderShipList #divResulRight #mainContent {
+            /*margin: 20px;*/
+        }
+
+            #AdminOrderShipList #divResulRight #mainContent #InfoTable {
+                width: 100%;
+            }
+
+    #AdminOrderShipList .col-left {
+        float: left;
+        width: 45%;
+    }
+
+        #AdminOrderShipList .col-left tr {
+            height: 43px;
+        }
+
+    #AdminOrderShipList .col-right {
+        float: left;
+        margin-left: -1px;
+        max-width: 55%;
+    }
+
+        #AdminOrderShipList .col-right tr {
+            height: 43px;
+        }
+
+    #mainContent .dragOn {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .lblTable {
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+    }
+
+    #tbLeft .receive-name {
+        max-width: 150px;
+        text-overflow: ellipsis;
+    }
+
+    #tbLeft .createDate {
+        width: 80px !important;
+    }
+
+    .col-right #InfoTable .productName {
+        max-width: 160px;
+        text-overflow: ellipsis;
+    }
+
+    #divResultLeft .divLeftTop {
+        width: 300px;
+        height: 125px;
+    }
+
+        #divResultLeft .divLeftTop .divLeftImage {
+            background: #c79f9f;
+            width: 120px;
+            height: 125px;
+            float: left;
+        }
+
+        #divResultLeft .divLeftTop .divLeftInfo {
+            width: 260px;
+            height: 125px;
+            float: left;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+            #divResultLeft .divLeftTop .divLeftInfo a {
+                color: wheat;
+            }
+
+                #divResultLeft .divLeftTop .divLeftInfo a:hover {
+                    color: #65aeeb;
+                }
+
+            #divResultLeft .divLeftTop .divLeftInfo .textInfo {
+                margin-top: 5px;
+                margin-bottom: 5px;
+                font-size: 14px;
+            }
+
+            #divResultLeft .divLeftTop .divLeftInfo .logout {
+                float: right;
+                margin-right: 20px;
+            }
+
+            #divResultLeft .divLeftTop .divLeftInfo .UserView {
+                margin-left: 20px;
+            }
+
+    #divResultLeft .divLeftMain {
+        margin: 20px;
+    }
+
+        #divResultLeft .divLeftMain .titleSummary {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        #divResultLeft .divLeftMain .summary-money {
+            margin-bottom: 10px;
+            margin-left: 30px;
+        }
+
+            #divResultLeft .divLeftMain .summary-money .color-red {
+                color: red;
+            }
+
+    #mainContent .div-scroll-y {
+        height: 217px;
+        min-height: 300px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #mainContent .mainTable {
+        width: 100%;
+        max-height: 485px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #AdminOrderShipList #btnExportCsv {
+        float: left;
+        margin-left: 20px;
+    }
+
+    #AdminOrderShipList #btnCreatNew {
+        float: left;
+        margin-left: 20px;
+    }
+
+    #AdminOrderShipList #btnPrintPDF {
+        float: left;
+        margin-left: 20px;
+    }
+
+    #AdminOrderShipList .dataTables_info {
+        margin-left: 20px;
+    }
+</style>

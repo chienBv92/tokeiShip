@@ -1,0 +1,466 @@
+﻿@using ShipOnline.Resources;
+@using ShipOnline.Models.Entity;
+@using ShipOnline.Models.Define;
+
+@model UserAccountModel
+@{
+    ViewBag.Title = AdminLabel.UserRegisterTitle;
+    if (@Model.USER_ID != null && @Model.USER_ID > 0)
+    {
+        ViewBag.Title = AdminLabel.UserUpdateTitle;
+    }
+    Layout = "~/Views/Layout/_LayoutAdmin.cshtml";
+}
+
+<div id="CityRegister" class="edit-screen">
+    @using (Html.BeginForm("Edit", "AdminManageUser", FormMethod.Post, new { id = "formUserRegis", enctype = "multipart/form-data", @class = "form-horizontal" }))
+    {
+        <div id="title">@ViewBag.Title</div>
+        <input id="USER_ID_HIDDEN" name="USER_ID_HIDDEN" type="hidden" value="@Model.USER_ID">
+
+        @Html.HiddenFor(m => m.DEL_FLG, new { @class = "sp-id" })
+
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.lblEmail <span class="RequiredField">*</span></label>
+            @if (String.IsNullOrEmpty(Model.USER_EMAIL))
+            {
+                @Html.TextBoxFor(m => m.USER_EMAIL, new { @class = "txt-w-250", style = "ime-mode: auto; ", maxlength = 100 })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.USER_EMAIL, new { @class = "ime-mode border-none txt-w-250", @readonly = "readonly" })
+            }
+        </div>
+
+        if (String.IsNullOrEmpty(Model.USER_EMAIL))
+        {
+            <div class="form-group">
+                <label class="title-row">@AdminLabel.lblPassword <span class="RequiredField">*</span></label>
+                @Html.PasswordFor(m => m.USER_PASSWORD, new { @class = "txt-w-250", @maxlength = "32", autocomplete = "off" })
+            </div>
+        }
+
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.lblUserName <span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.USER_NAME, new { @class = "txt-w-250", maxlength = 50 })
+        </div>
+
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.lblShopName</label>
+            @Html.TextBoxFor(m => m.SHOP_NAME, new { @class = "txt-w-250", maxlength = 100 })
+        </div>
+
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.lblArea<span class="RequiredField">*</span></label>
+            @Html.DropDownListFor(m => m.AREA, new SelectList(Area.Items, "Key", "Value"), new { @class = "margin-0 user-area" })
+        </div>
+
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.lblAddress <span class="RequiredField">*</span></label>
+            @Html.DropDownListFor(m => m.USER_CITY, Model.CITY_LIST, new { @class = "margin-0 renderCity" })
+            @Html.DropDownListFor(m => m.DISTRICT_CD_KEY, Model.DISTRICT_LIST, "", new { @class = "renderDistrict" })
+            @Html.DropDownListFor(m => m.TOWN_CD_KEY, Model.TOWN_LIST, "", new { @class = "renderTown" })
+            @Html.HiddenFor(m => m.USER_DISTRICT)
+            @Html.HiddenFor(m => m.USER_TOWN)
+            @Html.HiddenFor(m => m.USER_CITY)
+            @Html.HiddenFor(m => m.DISTRICT_CD_KEY)
+            @Html.HiddenFor(m => m.TOWN_CD_KEY)
+
+            @Html.TextAreaFor(m => m.USER_ADDRESS, new { @class = "note-textarea", maxlength = 100 })
+
+        </div>
+
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.lblPhone <span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.USER_PHONE, new { @class = "txt-w-250", maxlength = 13 })
+        </div>
+
+        if (!String.IsNullOrEmpty(Model.USER_EMAIL))
+        {
+            <div class="form-group">
+                @Html.Label(@AdminLabel.lblLock, new { @for = "LOGIN_LOCK_FLG", @class = "title-row" })
+                @if (String.IsNullOrEmpty(Model.STATUS) || Model.STATUS.Equals("0"))
+                {
+                    <input id="LOGIN_LOCK_FLG"  type="checkbox">
+                    <input id="LOGIN_LOCK_FLG_HIDDEN" name="LOGIN_LOCK_FLG" type="hidden" value="0">
+                }
+                else
+                {
+                    <input id="LOGIN_LOCK_FLG" type="checkbox" checked="checked">
+                    <input id="LOGIN_LOCK_FLG_HIDDEN" name="LOGIN_LOCK_FLG" type="hidden" value="1">
+                }
+            </div>
+        }
+
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.lblAuthority </label>
+            @foreach (var item in (SelectList)ViewBag.UserAuthority)
+            {
+                <label class="lbRadioBtn">
+                    @Html.RadioButtonFor(m => m.USER_AUTHORITY, item.Value)
+                    @item.Text
+                </label>
+            }
+        </div>
+
+        <div class="form-group">
+            @Html.Label(@AdminLabel.CityDispaly, new { @for = "STATUS", @class = "title-row" })
+            @if (String.IsNullOrEmpty(Model.STATUS) || Model.STATUS.Equals("0"))
+            {
+                <input id="STATUS" type="checkbox">
+                <input id="STATUS_HIDDEN" name="STATUS" type="hidden" value="0">
+            }
+            else
+            {
+                <input id="STATUS" type="checkbox" checked="checked">
+                <input id="STATUS_HIDDEN" name="STATUS" type="hidden" value="1">
+            }
+        </div>
+
+        <div class="form-group action-button-bottom">
+            <button type="button" id="btnBack" name="btnBack" class="btn btn-default"><i class="btn-icon btn-back">@AdminLabel.btnBack</i></button>
+            <div class="pull-right">
+                <button type="button" id="btnClear" name="btnClear" class="btn btn-default"><i class="btn-icon btn-clear">@AdminLabel.btnClear</i></button>
+                <button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-orange"><i class="btn-icon btn-edit">@AdminLabel.btnRegister</i></button>
+            </div>
+        </div>
+    }
+
+</div>
+
+<script>
+
+    @*var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new { area = "Common" })';*@
+    var UrlUserList = '@Url.Action("UserList", "AdminManageUser")';
+
+
+    $(function () {
+        $("#STATUS").prop('checked', true).change();
+        //$('#STATUS_HIDDEN').val('1');
+        $("#LOGIN_LOCK_FLG").prop('checked', true).change();
+        //$('#LOGIN_LOCK_FLG_HIDDEN').val('0');
+        @*$('[name="LOGIN_LOCK_FLG"][value="@Model.LOGIN_LOCK_FLG"]').prop('checked', true);
+        $('#LOGIN_LOCK_FLG_HIDDEN').val('@Model.LOGIN_LOCK_FLG');*@
+
+        $('[name="USER_AUTHORITY"][value="@Model.USER_AUTHORITY"]').prop('checked', true);
+
+        $("#STATUS_HIDDEN").val('@Model.STATUS').change();
+        if ('@Model.STATUS' == '0') {
+            $("#STATUS").prop("checked", false);
+        } else {
+            $("#STATUS").prop("checked", true);
+        }
+
+        $("#LOGIN_LOCK_FLG_HIDDEN").val('@Model.LOGIN_LOCK_FLG').change();
+        if ('@Model.LOGIN_LOCK_FLG' == '0') {
+            $("#LOGIN_LOCK_FLG").prop("checked", false);
+        } else {
+            $("#LOGIN_LOCK_FLG").prop("checked", true);
+        }
+
+        ShipOnline.utility.validFullHalfSize($("#USER_EMAIL"));
+        ShipOnline.utility.imeControl($("#USER_EMAIL"), 'disable');
+        ShipOnline.utility.validFullHalfSize($("#USER_PASSWORD"));
+        ShipOnline.utility.imeControl($("#USER_PASSWORD"), 'disable');
+        var userOld = $('#USER_ID_HIDDEN').val();
+        if (userOld == 0) {
+            $('.renderCity').val('');
+            $('.renderDistrict').val('');
+            $('.renderTown').val('');
+            $('#AREA').val(0);
+            $('#USER_CITY').val(0);
+            $('#DISTRICT_CD_KEY').val(0);
+        } else {
+            $('#DISTRICT_CD_KEY').val('@Model.DISTRICT_CD_KEY');
+        }
+
+        ShipOnline.utility.bindDistrictExtend2($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+        ShipOnline.utility.bindTown($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+    });
+
+    function validateData() {
+        var invalidMess = [];
+        var userEmail = $('#USER_EMAIL').val();
+        var userName = $('#USER_NAME').val();
+        var shopName = $('#SHOP_NAME').val();
+        var password = $('#USER_PASSWORD').val();
+        var cityCD = $('#USER_CITY').val();
+
+        var districtCodeKey = $('#DISTRICT_CD_KEY').val();
+        var districtCode = districtCodeKey != null ? districtCodeKey.split('_')[1] : 0;
+        var townCdKey = $('#TOWN_CD_KEY').val();
+        var townCd = townCdKey != null ? townCdKey.split('_')[2] : 0;
+        var address = $('#USER_ADDRESS').val();
+        var phone = $('#USER_PHONE').val();
+        var email = $('#USER_EMAIL').val();
+        var userOld = $('#USER_ID_HIDDEN').val();
+        var area = $('#AREA').val();
+
+        var displayFlg = $('#STATUS').val();
+        var errContent = [];
+        var errDisplay = [];
+        var invalidMess = [];
+
+        // validate user Email
+        if (userEmail == null || userEmail.trim() == "") { // required content
+            errDisplay = '@AdminLabel.lblEmail' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+        else if (userEmail.trim().length > 100) {
+            invalidMess.push("@string.Format(Message.CheckMaxLength, @AdminLabel.lblEmail, Constant.MAX_EMAIL_LENGTH)");
+        }
+        else if (!ShipOnline.utility.validEmail(userEmail)) {
+            invalidMess.push("@string.Format(@Message.IncorrectFormat, @AdminLabel.lblEmail)");
+        }
+        // validate user name
+        if (userName == null || userName.trim() == "") { // required content
+            errDisplay = '@UserLabel.lblUserName' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+        else if (userName.trim().length > Constant.MAX_USER_NAME_LENGTH) {
+            invalidMess.push("@string.Format(Message.CheckMaxLength, UserLabel.lblUserName, Constant.MAX_USER_NAME_LENGTH)");
+        }
+        // Validate password
+        if (userOld == 0) {
+            if (password == null || password.trim() == "") {
+                errDisplay = '@UserLabel.lblPassword' + Constant.ERR_REQUIRED;
+                invalidMess.push(errDisplay);
+            } else if (password.trim().length < Constant.MIN_INPUT_PASS) {
+                invalidMess.push("@string.Format(Message.CheckMinLength, UserLabel.lblPassword, Constant.MIN_INPUT_PASS)");
+            } else if (password.trim().length > Constant.MAX_INPUT_PASS) {
+                invalidMess.push("@string.Format(Message.CheckMaxLength, UserLabel.lblPassword, Constant.MAX_INPUT_PASS)");
+            }
+        }
+        if (shopName != null && shopName.trim().length > 100) {
+            invalidMess.push("@string.Format(Message.CheckMaxLength, AdminLabel.lblShopName, Constant.MAX_EMAIL_LENGTH)");
+        }
+        if ((cityCD == null || cityCD.trim() == "" || cityCD == 0) ||
+            (districtCodeKey == null || districtCodeKey.trim() == "" || districtCode == 0) ||
+            (townCdKey == null || townCdKey.trim() == "" || townCd == 0) ||
+            (address == null || address.trim() == "")) {
+            errDisplay = '@AdminLabel.lblAddress' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (area == null || area.trim() == "" || area == 0) { // required content
+            errDisplay = '@AdminLabel.lblArea' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (phone == null || phone.trim() == "" || phone == 0) {
+            errDisplay = '@AdminLabel.lblPhone' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+        else if (phone.trim().length > 13) {
+            invalidMess.push("@string.Format(Message.CheckMaxLength, @AdminLabel.lblPhone, Constant.MAX_PHONE_LENGTH)");
+        }
+            // check numberic
+        else if (!ShipOnline.utility.validPhone(phone)) {
+            invalidMess.push("@string.Format(@Message.IncorrectFormat, @AdminLabel.lblPhone)");
+        }
+
+        return invalidMess;
+    }
+
+    $(document).off('#STATUS');
+    $(document).on('change', '#STATUS', function () {
+        if ($('#STATUS').is(":checked")) {
+            $('#STATUS_HIDDEN').val('1');
+        } else {
+            $('#STATUS_HIDDEN').val('0');
+        }
+    });
+
+    $(document).off('#LOGIN_LOCK_FLG');
+    $(document).on('change', '#LOGIN_LOCK_FLG', function () {
+        if ($('#LOGIN_LOCK_FLG').is(":checked")) {
+            $('#LOGIN_LOCK_FLG_HIDDEN').val('1');
+        } else {
+            $('#LOGIN_LOCK_FLG_HIDDEN').val('0');
+        }
+    });
+
+    $(document).off('#USER_CITY');
+    $(document).on('change', '#USER_CITY', function () {
+        //if (!iseiQ.utility.getDataByAjax(checkTimeoutUrl, null)) return;
+
+        $('.renderDistrict').val('');
+        $('.renderTown').val('');
+
+        ShipOnline.utility.bindDistrictExtend2($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+    });
+
+    $(document).off('#DISTRICT_CD_KEY');
+    $(document).on('change', '#DISTRICT_CD_KEY', function () {
+        //if (!iseiQ.utility.getDataByAjax(checkTimeoutUrl, null)) return;
+
+        $('.renderTown').val('');
+
+        ShipOnline.utility.bindTown($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+    });
+
+    $(document).off('#btnSubmit');
+    $(document).on('click', '#btnSubmit', function () {
+        //var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+        //if (!result) return;
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+        if (invalidMess.length > 0) {
+            ShipOnline.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        var existUser = false;
+        var townCdKey = $('#TOWN_CD_KEY').val();
+        var districtCd = townCdKey.split('_')[1];
+        var townCd = townCdKey.split('_')[2];
+        var userOld = $('#USER_ID_HIDDEN').val();
+
+        // Chi truong hop dang ki moi thi moi check trung code
+        if (userOld == 0) {
+            var userEmail = $('#USER_EMAIL').val();
+
+            var paramCheckExist = {
+                userEmail: userEmail
+            };
+
+            var data = ShipOnline.utility.getDataByAjax('@Url.Action("CheckExistUserAccount", "AdminManageUser")', paramCheckExist);
+            if (typeof (data) != 'undefined' || data != null) {
+                existUser = data.exist;
+            }
+        }
+
+        var confirmMess = existUser ? '@string.Format(Message.msgConfirmExistAccount)' : '@string.Format(Message.ConfirmSubmitData, (Model.USER_ID > 0 ? Message.Update : Message.Register))';
+        if (existUser) {
+            ShipOnline.utility.showMessageModal(confirmMess, true);
+        } else {
+            ShipOnline.utility.showConfirmModal(confirmMess, function (action) {
+                if (action) {
+                    $('#USER_DISTRICT').val(districtCd);
+                    $('#USER_TOWN').val(townCd);
+
+                    $("#formUserRegis").submit();
+                }
+            })
+        }
+
+    });
+
+    $('#formUserRegis').submit(function (event) {
+        var formData = new FormData($(this)[0]);
+        $.ajax(
+            {
+                url: '@Url.Action("Edit", "AdminManageUser")',
+                data: formData,
+                mimeType: "multipart/form-data",
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    var result = jQuery.parseJSON(res);
+                    var message = "";
+                    if (result.ErrorMessages) {
+                        for (var i = 0; i < result.ErrorMessages.length; i++) {
+                            message += result.ErrorMessages[i] + "\n";
+                        }
+                        ShipOnline.utility.showMessageModal(message, true);
+                    } else {
+                        message = result.isNew == true ? "@Message.RegisterSuccess" : "@Message.UpdateSuccess";
+                        ShipOnline.utility.showMessageModal(message, false, function () {
+                            window.location.href = UrlUserList;
+                        });
+                    }
+                },
+                error: function (xhr) {
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    window.location.href = '/Common/Common/CloseIframe/';
+                }
+            });
+        event.preventDefault();
+    });
+
+    $(document).off('#btnClear');
+    $(document).on('click', '#btnClear', function () {
+        ShipOnline.utility.showConfirmModal('@string.Format(@Message.ConfirmClear)', function (action) {
+            $('.validation-summary-errors').remove();
+
+            if (action) {
+                if ($('#USER_ID_HIDDEN').val() == 0) {
+                    //var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+                    //if (!result) return;
+                    $('#USER_NAME').val('');
+                    $('#SHOP_NAME').val('');
+                    $('#AREA').val('0');
+                    $('#USER_PASSWORD').val('');
+                    $('#USER_CITY').val('');
+                    $('.renderCity').val('');
+                    $('.renderDistrict').val('');
+                    $('#USER_ADDRESS').val('');
+                    $('#USER_PHONE').val('');
+                    $('#USER_EMAIL').val('');
+                    $('[name="USER_AUTHORITY"][value="@User_Authority.Person"]').prop('checked', true);
+
+                    ShipOnline.utility.bindDistrictExtend2($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+                    ShipOnline.utility.bindTown($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+
+                    $("#STATUS").prop('checked', true).change();
+                    $('#STATUS_HIDDEN').val('1');
+                    $("#LOGIN_LOCK_FLG").prop('checked', false).change();
+                    $('#LOGIN_LOCK_FLG_HIDDEN').val('0');
+                } else {
+                    $('#USER_NAME').val('@Model.USER_NAME');
+                    $('#AREA').val('@Model.AREA');
+                    $('#SHOP_NAME').val('@Model.SHOP_NAME');
+                    $('#USER_CITY').val('@Model.USER_CITY');
+                    $('#DISTRICT_CD_KEY').val('@Model.DISTRICT_CD_KEY');
+                    ShipOnline.utility.bindDistrictExtend2($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+                    ShipOnline.utility.bindTown($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+
+                    $('#TOWN_CD_KEY').val('@Model.TOWN_CD_KEY');
+
+
+                    $('#USER_ADDRESS').val('@Model.USER_ADDRESS');
+                    $('#USER_PHONE').val('@Model.USER_PHONE');
+                    $('#USER_EMAIL').val('@Model.USER_EMAIL');
+
+                    $('[name="USER_AUTHORITY"][value="@Model.USER_AUTHORITY"]').prop('checked', true);
+
+                    $("#STATUS_HIDDEN").val('@Model.STATUS').change();
+                    if ('@Model.STATUS' == '0') {
+                        $("#STATUS").prop("checked", false);
+                    } else {
+                        $("#STATUS").prop("checked", true);
+                    }
+
+                    $("#LOGIN_LOCK_FLG_HIDDEN").val('@Model.LOGIN_LOCK_FLG').change();
+                    if ('@Model.LOGIN_LOCK_FLG' == '0') {
+                        $("#LOGIN_LOCK_FLG").prop("checked", false);
+                    } else {
+                        $("#LOGIN_LOCK_FLG").prop("checked", true);
+                    }
+
+                    //ShipOnline.utility.bindDistrictExtend2($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+                    //ShipOnline.utility.bindTown($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+                }
+            }
+        })
+    });
+
+    // Button Back
+    $(document).off('#btnBack');
+    $(document).on('click', '#btnBack', function () {
+        ShipOnline.utility.showConfirmModal('@string.Format(@Message.ConfirmBack)', function (action) {
+            if (action) {
+
+                $(window).off('beforeunload');
+                window.location.href = UrlUserList;
+            }
+        })
+    });
+
+</script>
+
+
+
+

@@ -1,0 +1,103 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ShipOnline.UtilityService.StringUtil.GetScreenTitle(ViewBag.Title)</title>
+
+    @Scripts.Render("~/bundles/jquery")
+    @RenderPage("~/Views/Shared/_CommonScript.cshtml")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/common")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @Scripts.Render("~/bundles/input")
+    @Scripts.Render("~/bundles/dataTables")
+
+    @Scripts.Render("~/bundles/common")
+
+    @Scripts.Render("~/bundles/jquery/bootstrapPlugins")
+    @Scripts.Render("~/bundles/jquery/plugins/dragOn")
+    <link href="~/Content/Admin.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div id="DivTokeiShip">
+        <div id="body" style="min-width: 1335px">
+            <div style="clear:both"></div>
+
+            <div class="wrapper">
+
+                <aside class="main-sidebar-small">
+                    @RenderPage("~/Views/Shared/_SideMenuSmall.cshtml")
+                </aside>
+                @*<aside class="main-sidebar">
+                    @RenderPage("~/Views/Shared/_SideMenu.cshtml")
+                </aside>*@
+                <div id="sb-site" class="top-padding content-wrapper">
+                    <div id="NoiDung">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        </div>
+        @RenderSection("scripts", required: false)
+
+    </div>
+</body>
+</html>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //Display body
+        $('#home').removeAttr('style');
+        $('#body').removeAttr('style');
+        //Display side bar menu
+        if ($('#sideBarSectionSmall').length) {
+            $('#sideBarSectionSmall').removeAttr('style');
+        }
+        if ($('#sideBarSectionLarge').length) {
+            $('#sideBarSectionLarge').removeAttr('style');
+        }
+
+        //Check style of sideBar
+        if ($('body').hasClass('sidebar-collapse')) {
+            $('.main-sidebar a').attr("tabindex", "-1");
+        } else {
+            $('.main-sidebar-small a').attr("tabindex", "-1");
+        }
+    });
+
+    $(document).off('a.sidebar-toggle i');
+    $(document).on('click', 'a.sidebar-toggle i', function () {
+        var param = '';
+        if ($(this).attr('id') === 'active-sidebar-menu') {
+            param = { dataType: 'sidebar-collapse' };
+
+            //Set all anchor tabindex of large sidebar to -1
+            $('.main-sidebar a').attr("tabindex", "-1");
+            $('.main-sidebar-small a').removeAttr("tabindex");
+            $('body').removeClass('sidebar-collapse').addClass('sidebar-collapse');
+
+        } else {
+            param = { dataType: '' };
+
+            //Set all anchor tabindex of small sidebar to -1
+            $('.main-sidebar-small a').attr("tabindex", "-1");
+            $('.main-sidebar a').removeAttr("tabindex");
+            $('body').removeClass('sidebar-collapse').addClass('');
+        }
+    });
+
+</script>
+
+
+
+
+
+
+

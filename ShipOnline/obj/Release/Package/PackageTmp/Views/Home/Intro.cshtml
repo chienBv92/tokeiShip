@@ -1,0 +1,31 @@
+﻿@using ShipOnline.Models.Define;
+@using ShipOnline.Resources;
+
+@{
+    ViewBag.Title = "Giới thiệu";
+    Layout = "~/Views/Layout/_LayoutMain.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as ShipOnline.Models.CmnEntityModel;
+}
+
+<div id="Intro" class="IntroView">
+    <div>
+        Mục tiêu
+        •	Được thành lập để phục vụ vận chuyển giao hàng từ shop online, cửa hàng, các trang  TMĐT đến người tiêu dùng với sự chuyên nghiệp – uy tín – chất lượng
+        •	Tokeiship  cam kết sẽ là nơi mang đến cho bạn niềm tin và sự tín nhiệm của bạn để được tham gia vào 1 khâu trong việc bán sản phẩm của bạn.
+
+        Dịch vụ nổi bật tokeiship.vn cung cấp tới quý khách hàng :
+        •	Giao hàng hẹn giờ
+        •	Thanh toán chuyển khoản COD 2/4/6 hàng tuần
+        •	Không thu phí nếu giao hàng không thành công
+        •	Giao hàng liên tục không nghỉ cả tuần cả năm trừ những ngày lễ
+        •	Giao hàng cả về đêm, thời gian làm việc từ 8h – 22h hàng ngày
+        •	Cung cấp các dịch vụ lấy hàng tận nơi, thu hộ và các dịch vụ phụ phí khác
+        •	Thanh toán cước phí rõ ràng, hệ thống tự động, dễ tìm kiếm quản lý hàng hóa
+        •	Cước phí rẻ và nhiều ưu đãi khác
+        Chất lượng nguồn nhân lực và các ứng dụng công nghệ đặt lên hàng đầu
+        •	Xây dựng đội ngũ nhân viên năng động, thân thiện và chuyên nghiệp
+        •	Không ngừng đổi mới, hiện đại hóa hệ thống quản lý, xử lý đơn hàng nhanh hơn, chính xác hơn và đạt tỉ lệ thành công cao hơn.
+        •	Tối đa hóa lợi ích công ty dựa trên sự hài lòng của các doanh nghiệp kinh doanh thương mại điện tử.
+
+    </div>
+</div>

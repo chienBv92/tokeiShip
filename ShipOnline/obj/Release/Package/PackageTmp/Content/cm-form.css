@@ -1,0 +1,152 @@
+﻿
+.green, .green:focus, .green:active {
+    border: 1px solid rgb(41, 147, 13);
+    color: #fff;
+    background: -webkit-linear-gradient(rgb(71, 180, 63), rgb(49, 165, 12)); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(rgb(71, 180, 63), rgb(49, 165, 12)); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(rgb(71, 180, 63), rgb(49, 165, 12)); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(rgb(71, 180, 63), rgb(49, 165, 12)); /* Standard syntax */
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    outline: none;
+}
+
+    .green:hover {
+        background: rgb(71, 180, 63);
+        color: #fff;
+        border: 1px solid rgb(41, 147, 13);
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        outline: none;
+    }
+
+button {
+    padding-left:5px;
+}
+
+/*サイドメニュー*/
+.btn-estimates {
+    background: url('../Images/btn_icon_slice/icon_menu01_off.png') no-repeat left center;
+    margin-left: 1px;
+}
+
+.btn-agreement {
+    background: url('../Images/btn_icon_slice/icon_menu02_off.png') no-repeat left center;
+    margin-left: 1px;
+}
+
+.btn-claim {
+    background: url('../Images/btn_icon_slice/icon_menu03_off.png') no-repeat left center;
+    margin-left: 1px;
+}
+
+.btn-deposit {
+    background: url('../Images/btn_icon_slice/icon_menu04_off.png') no-repeat left center;
+    margin-left: 1px;
+}
+
+.btn-alert-deposit {
+    background: url('images/alert_deposit.png') no-repeat left center;
+    margin-left: 1px;
+}
+
+.btn-payment  {
+    background: url('../Images/btn_icon_slice/icon_menu05_off.png') no-repeat left center;
+    margin-left: 1px;
+}
+.btn-exlink{
+    background: url('../Images/btn_icon_slice/exlink.png') no-repeat left center;
+    margin-left: 1px;
+}
+
+.btn-alert-payment {
+    background: url('images/alert_payment.png') no-repeat left center;
+    margin-left: 1px;
+}
+
+.btn-form-output {
+    background: url('../Images/btn_icon_slice/icon_menu06_off.png') no-repeat left center;
+    margin-left: 1px;
+}
+
+.btn-maintenance {
+    background: url('../Images/btn_icon_slice/icon_menu07_off.png') no-repeat left center;
+    margin-left: 1px;
+}
+
+.btn-engineer {
+    background: url('../Images/btn_icon_slice/icon_menu_engieer_off.png') no-repeat left center;
+    margin-left: 1px;
+}
+
+.btn-cash-flow {
+    background: url('../Images/btn_icon_slice/icon_menu09_off.png') no-repeat left center;
+    margin-left: 1px;
+}
+
+.btn-logout {
+    background: url('../Images/btn_icon_slice/icon_menu08_off.png') no-repeat left center;
+    margin-left: 1px;
+}
+
+.btn-user {
+    background: url('../Images/btn_icon_slice/icon_user.png') no-repeat left center;
+}
+
+.btn-menu-open {
+    background: url('../Images/btn_icon_slice/ico_menu_open.png') no-repeat left center;
+    margin-left: 2px;
+}
+
+.btn-menu-close {
+    background: url('../Images/btn_icon_slice/ico_menu_close.png') no-repeat left center;
+}
+
+.btn-header-close {
+    background: url('../Images/btn_icon_slice/ico_header_close.png') no-repeat left center;
+    margin-left: 10px;
+    margin-right: 0px;
+}
+
+.btn-header-open {
+    background: url('../Images/btn_icon_slice/ico_header_open.png') no-repeat left center;
+    margin-left: 10px;
+    margin-right: 0px;
+}
+
+.btn-back {
+    background: url('../Images/btn_icon_slice/icon_back.png') no-repeat left center;
+}
+
+.btn-key {
+    background: url('../Images/btn_icon_slice/icon_key.png') no-repeat left center;
+}
+
+
+.btn-table-open,
+.btn-table-open:focus,
+.btn-table-open.focus,
+.btn-table-open:active,
+.btn-table-open.active,
+.btn-table-open:hover {
+    background: url('../Images/btn_icon_slice/ico_table_open.png') no-repeat left center !important;
+    color: transparent !important;
+    background-color: transparent !important;
+    text-decoration:none;
+    padding: 3px;
+}
+
+.btn-table-close,
+.btn-table-close:focus,
+.btn-table-close.focus,
+.btn-table-close:active,
+.btn-table-close.active,
+.btn-table-close:hover{
+    background: url('../Images/btn_icon_slice/ico_table_close.png') no-repeat left center !important;
+    color: transparent !important;
+    background-color: transparent !important;
+    text-decoration:none;
+    padding: 3px;
+}

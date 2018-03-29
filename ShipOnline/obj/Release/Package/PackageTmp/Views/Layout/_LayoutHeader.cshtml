@@ -1,0 +1,94 @@
+﻿@{
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as ShipOnline.Models.CmnEntityModel;
+    var authorityList = currentUser != null? currentUser.USER_AUTHORITY : 0;
+}
+
+<div class="DivTokeiShipTop">
+    <div class="DivTokeiShipTopLogo">
+        <a href="/trang-chu"><img class="img-logo-tokeiship" src="~/Logo/logo_tokeiship.svg" /></a>
+    </div>
+    <div class="DivTokeiShipTopRight">
+        <div class="DivTopRightTop">
+            @*<div class="iconTop" style="margin-left:10px"><img class="img-iconTop" src="~/Logo/mienphithuho.svg" /></div>
+            <div class="iconTop"><img class="img-iconTop" src="~/Logo/lamchugionhan.svg" /></div>
+            <div class="iconTop"><img class="img-iconTop" src="~/Logo/mienphigiaolai.svg" /></div>
+            <div class="iconTop"><img class="img-iconTop" src="~/Logo/doisoatnhanh.svg" /></div>
+            <div class="iconRight"><img class="img-iconTop" src="~/Logo/logonhosvg.svg" /></div>*@
+        </div>
+        <div class="DivTopRightBottom" id="Menu">
+            <ul class="navMenuLeft">
+                <li>
+                    <a href="/trang-chu">Trang chủ</a>
+                </li>
+                <li>
+                    <a href="/gioi-thieu">giới thiệu</a>
+                </li>
+                <li>
+                    <a href="/dich-vu" target="_blank">dịch vụ</a>
+                </li>
+                <li>
+                    <a href="/ho-tro-khach-hang">thông tin hỗ trợ</a>
+                </li>
+                @if (authorityList == 2)
+                {
+                    <li>
+                        <a href="@Url.Action("Index","AdminSystem")" target="_blank">Quản trị hệ thống</a>
+                    </li>
+                }
+
+            </ul>
+
+            <ul class="navMenuRight">
+                @if (currentUser == null )
+                {
+                    <li class="register-ac">
+                        <a href="/tai-khoan/dang-ky">Đăng kí</a>
+                    </li>
+                    <li class="login-ac">
+                        <a href="@Url.Action("Login","UserAccount") ">Đăng nhập</a>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="#" style="width:100px">Tài khoản</a>
+                        <ul class="sub-menu">
+                            <li class="">
+                                <a class="UserView" data-userid="@currentUser.USER_ID" style="cursor:pointer">Thông tin tài khoản</a>
+                            </li>
+                            <li class="">
+                                <a class="OrderShip" data-userid="@currentUser.USER_ID" style="cursor:pointer">Đơn hàng</a>
+                            </li>
+                            <li class="register-ac">
+                                <a href="@Url.Action("Logout","UserAccount")">Thoát</a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+
+                <li>
+                    <a href="#">Tuyển dụng</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<form id="frViewUser" method="POST" action="@Url.Action("ViewAccount", "UserAccount")">
+    <input type="hidden" id="hdnUserId" name="UserId" value="0" />
+</form>
+<script>
+    var OrderShipListUrl = '@Url.Action("OrderShipList", "OrderShip")';
+
+    $(document).off('.UserView');
+    $(document).on('click', '.UserView', function () {
+        $('#hdnUserId').val($(this).data('userid'));
+
+        $('#frViewUser').submit();
+    });
+
+    $(document).off('.OrderShip');
+    $(document).on('click', '.OrderShip', function () {
+
+        window.location.href = OrderShipListUrl;
+    });
+</script>

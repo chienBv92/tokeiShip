@@ -1,0 +1,11 @@
+﻿
+<section class="sidebar" id="sideBarSectionSmall" style="display: none;">
+    <ul class="sidebar-small-menu">
+        <li>
+            <a href="#" role="button" class="sidebar-toggle">
+                <i class="btn-icon btn-menu-open" data-toggle="offcanvas" id="active-sidebar-small-menu"></i>
+            </a>
+        </li>
+        @RenderPage("Partial/_SideMenuCommon.cshtml", new { IsSmallMenu = true })
+    </ul>
+</section>

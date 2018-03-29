@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TOKEI_SHIPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="MstCity">
+    <Key>
+      <PropertyRef Name="CITY_CD" />
+    </Key>
+    <Property Name="CITY_CD" Type="int" Nullable="false" />
+    <Property Name="CITY_ZIP_CD" Type="varchar" MaxLength="6" Nullable="false" />
+    <Property Name="CITY_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DSP_ORDER" Type="int" Nullable="false" />
+    <Property Name="DEL_FLG" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="STATUS" Type="char" MaxLength="1" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MstDistrict">
+    <Key>
+      <PropertyRef Name="DISTRICT_CD" />
+      <PropertyRef Name="CITY_CD" />
+    </Key>
+    <Property Name="DISTRICT_CD" Type="int" Nullable="false" />
+    <Property Name="CITY_CD" Type="int" Nullable="false" />
+    <Property Name="DISTRICT_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DSP_ORDER" Type="int" Nullable="false" />
+    <Property Name="DEL_FLG" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="STATUS" Type="char" MaxLength="1" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MstTown">
+    <Key>
+      <PropertyRef Name="TOWN_CD" />
+      <PropertyRef Name="DISTRICT_CD" />
+      <PropertyRef Name="CITY_CD" />
+    </Key>
+    <Property Name="TOWN_CD" Type="int" Nullable="false" />
+    <Property Name="DISTRICT_CD" Type="int" Nullable="false" />
+    <Property Name="CITY_CD" Type="int" Nullable="false" />
+    <Property Name="TOWN_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DSP_ORDER" Type="int" Nullable="false" />
+    <Property Name="DEL_FLG" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="STATUS" Type="char" MaxLength="1" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TblAdvertisement">
+    <Key>
+      <PropertyRef Name="ADVERTISEMENT_ID" />
+    </Key>
+    <Property Name="ADVERTISEMENT_ID" Type="int" Nullable="false" />
+    <Property Name="ADVERTISEMENT_TYPE" Type="int" Nullable="false" />
+    <Property Name="COMPANY_NAME" Type="nvarchar" MaxLength="100" />
+    <Property Name="ADVERTISEMENT_NAME" Type="nvarchar" MaxLength="255" />
+    <Property Name="ADVERTISEMENT_LINK" Type="nvarchar" MaxLength="255" />
+    <Property Name="ADVERTISEMENT_IMAGE" Type="nvarchar" MaxLength="255" />
+    <Property Name="DEL_FLG" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="STATUS" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="INS_DATE" Type="datetime" />
+    <Property Name="INS_USER_ID" Type="int" Nullable="false" />
+    <Property Name="UPD_DATE" Type="datetime" />
+    <Property Name="UPD_USER_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TblOrder">
+    <Key>
+      <PropertyRef Name="ORDER_ID" />
+    </Key>
+    <Property Name="ORDER_ID" Type="bigint" Nullable="false" />
+    <Property Name="USER_ID" Type="bigint" Nullable="false" />
+    <Property Name="SHIP_CODE" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="PRODUCT_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="PRODUCT_TYPE" Type="int" Nullable="false" />
+    <Property Name="CREATE_DATE" Type="datetime" Nullable="false" />
+    <Property Name="PRODUCT_WEIGHT" Type="int" />
+    <Property Name="PRODUCT_POSITION" Type="nvarchar" MaxLength="100" />
+    <Property Name="ACCEPTANCE_ID" Type="bigint" />
+    <Property Name="ACCEPTANCE_DATE" Type="datetime" />
+    <Property Name="RECEIVED_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="RECEIVED_PHONE" Type="varchar" MaxLength="13" Nullable="false" />
+    <Property Name="RECEIVED_CITY" Type="int" Nullable="false" />
+    <Property Name="RECEIVED_DISTRICT" Type="int" Nullable="false" />
+    <Property Name="RECEIVED_TOWN" Type="int" Nullable="false" />
+    <Property Name="RECEIVED_ADDRESS" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="RECEIVE_TIME_DATE_FROM" Type="datetime" Nullable="false" />
+    <Property Name="RECEIVE_TIME_DATE_TO" Type="datetime" Nullable="false" />
+    <Property Name="SHIP_TYPE" Type="int" Nullable="false" />
+    <Property Name="PRICE_PRODUCT" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="PRICE_SHIP" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="DISCOUNT" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="USER_PAYMENT" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="ORDER_STATUS" Type="int" Nullable="false" />
+    <Property Name="DELIVERY_DATE" Type="datetime" />
+    <Property Name="RECEIVED_DATE" Type="datetime" />
+    <Property Name="DEL_FLG" Type="char" MaxLength="1" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TblUserAccount">
+    <Key>
+      <PropertyRef Name="USER_ID" />
+    </Key>
+    <Property Name="USER_ID" Type="bigint" Nullable="false" />
+    <Property Name="USER_ACCOUNT" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="USER_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="USER_PASSWORD" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="PASSWORD_LAST_UPDATE_DATE" Type="datetime" Nullable="false" />
+    <Property Name="USER_AUTHORITY" Type="int" Nullable="false" />
+    <Property Name="USER_CITY" Type="int" Nullable="false" />
+    <Property Name="USER_DISTRICT" Type="int" Nullable="false" />
+    <Property Name="USER_TOWN" Type="int" Nullable="false" />
+    <Property Name="USER_ADDRESS" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="USER_PHONE" Type="varchar" MaxLength="13" Nullable="false" />
+    <Property Name="USER_EMAIL" Type="nchar" MaxLength="10" />
+    <Property Name="GENDER" Type="bit" />
+    <Property Name="LOGIN_LOCK_FLG" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="DEL_FLG" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="STATUS" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="INS_DATE" Type="datetime" Nullable="false" />
+    <Property Name="UPD_DATE" Type="datetime" Nullable="false" />
+    <Property Name="USER_FAMILY" Type="int" />
+  </EntityType>
+  <EntityContainer Name="TOKEI_SHIPModelStoreContainer">
+    <EntitySet Name="MstCity" EntityType="Self.MstCity" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MstDistrict" EntityType="Self.MstDistrict" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MstTown" EntityType="Self.MstTown" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TblAdvertisement" EntityType="Self.TblAdvertisement" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TblOrder" EntityType="Self.TblOrder" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TblUserAccount" EntityType="Self.TblUserAccount" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

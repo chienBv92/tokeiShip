@@ -1,0 +1,461 @@
+﻿@using ShipOnline.Models.Define;
+@using ShipOnline.Resources;
+
+@model OrderShipModel
+
+@{
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Layout/_LayoutMain.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as ShipOnline.Models.CmnEntityModel;
+}
+
+<div id="FormOrderShip" class="FormOrderShip">
+    @using (Html.BeginForm("RegisterOrder", "OrderShip", FormMethod.Post, new { id = "formOrderShip", enctype = "multipart/form-data", @class = "form-horizontal" }))
+    {
+        @Html.HiddenFor(m => m.ORDER_ID)
+        <div class="FormOrderShipTop">
+            <div class="FormOrderShipTopLeft">
+                <div class="title">Thông tin người gửi</div>
+                <div class="info-login">
+                    @if (currentUser != null)
+                    {
+                        <div class="infor-user">
+                            <div class="userInfor-text"><span>Người gửi: @currentUser.USER_NAME</span><br /></div>
+                            <div class="userInfor-text" style="padding-top:5px">
+                                <input type="hidden" value="@currentUser.USER_ID" />
+                                <div class=""><span>From Shop: @currentUser.SHOP_NAME</span><br /></div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <button type="button" id="btnLogin" class="btn btn-Login">Đăng nhập</button>
+                    }
+                </div>
+                <div class="title">Thông tin hàng hóa</div>
+                <div class="form-input">
+                    @Html.TextBoxFor(m => m.PRODUCT_NAME, new { @class = "name-input", @style = "ime-mode: auto;", maxlength = 45, @placeholder = "tên hàng hóa" })
+                    <div class="product_name-error"></div>
+                </div>
+                <div class="form-input">
+                    @Html.DropDownListFor(m => m.PRODUCT_WEIGHT, new SelectList(Product_Weight.Items, "Key", "Value"), new { @class = "weight-input" })
+                    @Html.DropDownListFor(m => m.PRODUCT_TYPE, new SelectList(Product_Type.Items, "Key", "Value"), new { @class = "product_type" })
+                    <div class="weight-error"></div>
+                </div>
+                <div class="form-input input-size" hidden>
+                    @Html.TextBoxFor(m => m.PRODUCT_LENGTH, new { @class = "lenght-input", maxlength = 2, @placeholder = "chiều dài" })
+                    <span style="margin-left:-34px; font-size:14px">cm</span>
+
+                    @Html.TextBoxFor(m => m.PRODUCT_WIDTH, new { @class = "width-input", maxlength = 2, @placeholder = "chiều rộng" })
+                    <span style="margin-left:-34px; font-size:14px">cm</span>
+
+                    @Html.TextBoxFor(m => m.PRODUCT_HEIGHT, new { @class = "height-input", maxlength = 2, @placeholder = "chiều cao" })
+                    <span style="margin-left:-34px; font-size:14px">cm</span>
+                    <div class="product-size-error"></div>
+                </div>
+
+                <div class="form-input">
+                    @Html.DropDownListFor(m => m.USER_PAYMENT, new SelectList(User_Pay.Items, "Key", "Value"), new { @class = "user-payment" })
+                    @Html.DropDownListFor(m => m.OTHER_REQUIREMENT, new SelectList(Other_Requirement.Items, "Key", "Value"), new { @class = "other-require" })
+                </div>
+                <div class="form-input input-money">
+                    <span class="text-money">Tiền thu hộ:</span>
+                    @Html.TextBoxFor(m => m.PRICE_PRODUCT, new { @class = "money-input money", @style = "ime-mode: auto;", maxlength = 8, @placeholder = "trị giá (không bắt buộc)" })
+                    <span class="text-money">VND</span>
+                    <div class="price-error"></div>
+                </div>
+            </div>
+            <div class="FormOrderShipTopRight">
+                <div class="title">Thông tin người nhận</div>
+                <div class="divThanhdoc"><img class="thanhdoc" src="~/Logo/thanhdocgiua.svg" /></div>
+                <div class="form-input">
+                    @Html.TextBoxFor(m => m.RECEIVED_NAME, new { @class = "name-input-received", @style = "ime-mode: auto;", maxlength = 45, @placeholder = "tên người nhận" })
+                    <div class="received_name-error"></div>
+                </div>
+                <div class="form-input">
+                    @Html.TextBoxFor(m => m.RECEIVED_PHONE, new { @class = "name-input-received", @style = "ime-mode: auto;", maxlength = 11, @placeholder = "Nhập số điện thoại" })
+                    <div class="received_phone-error"></div>
+                </div>
+
+                <div class="form-input">
+                    <label class="title-row receive-address">@AdminLabel.lblReceiveAddress <span class="RequiredField">*</span></label> <br />
+                    @Html.DropDownListFor(m => m.RECEIVED_CITY, Model.CITY_LIST, new { @class = "margin-left-15 renderCity height-30" })
+                    @Html.DropDownListFor(m => m.DISTRICT_CD_KEY, Model.DISTRICT_LIST, "", new { @class = "renderDistrict height-30" })
+                    @Html.DropDownListFor(m => m.TOWN_CD_KEY, Model.TOWN_LIST, "", new { @class = "renderTown height-30" })
+                    @Html.HiddenFor(m => m.RECEIVED_DISTRICT)
+                    @Html.HiddenFor(m => m.RECEIVED_TOWN)
+                    @Html.HiddenFor(m => m.DISTRICT_CD_KEY)
+                    @Html.HiddenFor(m => m.TOWN_CD_KEY)
+
+                    @Html.TextAreaFor(m => m.RECEIVED_ADDRESS, new { @class = "full-address note-textarea", maxlength = 90, @placeholder = "Chi tiết số nhà, đường phố" })
+                    <div class="address-error"></div>
+                </div>
+            </div>
+        </div>
+        <div class="divThanhNgang" style="margin-top:-10px"><img class="thanhngang" src="~/Logo/thanhngangduoi.svg" /></div>
+        <input type="hidden" id="hdnSession" data-value="@Request.RequestContext.HttpContext.Session["CmnEntityModel"]" />
+        
+        <div class="FormOrderShipBottom">
+            <div class="form-input">
+                <button type="button" id="btnSelectTime" name="btnSelectTime" class="btn btn-green"><i class="btn-icon icon-SelectTime">@AdminLabel.btnSelectTime</i></button>
+            </div>
+            <div class="form-input getDateTime">
+                @Html.HiddenFor(m => m.SHIP_TYPE, new { @class = "shipType" })
+                @Html.HiddenFor(m => m.RECEIVE_HOUR_FROM, new { @class = "takeHourFrom" })
+                @Html.HiddenFor(m => m.RECEIVE_HOUR_TO, new { @class = "takeHourTo" })
+                @Html.HiddenFor(m => m.RECEIVE_TIME_DATE, new { @class = "takeDate" })
+                @Html.HiddenFor(m => m.PRICE_SHIP, new { @class = "shipMoney" })
+                <span>Giờ nhận: </span><span class="selectTimeFrom">h</span> - <span class="selectTimeTo">h</span> <span> Ngày: </span><span class="selectDate"></span>
+            </div>
+            <div class="getMoney">
+                <span style="font-weight:bold">Cước phí:</span> <span class="selectMoney"></span> VND
+            </div>
+            <div class="selectDateTime-error"></div>
+            <div class="form-input">
+                <button type="button" id="btnCancelOrder" name="btnCancelOrder" class="btn btn-default"><i class="">@AdminLabel.btnCancelOrder</i></button>
+                <button type="button" id="btnConfirmOrder" name="btnConfirmOrder" class="btn btn-orange"><i class="btn-icon icon-ConfirmOrder">@AdminLabel.btnConfirmOrder</i></button>
+            </div>
+        </div>
+    }
+    <form id="frViewOrder" method="POST" action="@Url.Action("ViewOrderDetail", "OrderShip")">
+        <input type="hidden" id="hdnOrderId" name="OrderId" value="0" />
+    </form>
+</div>
+
+
+<script>
+    var UrlLogin = '@Url.Action("Login", "UserAccount")';
+    var UrlEditUser = '@Url.Action("Register", "UserAccount")';
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common")';
+
+    $(function () {
+        ShipOnline.utility.formatMoney();
+        ShipOnline.utility.formatMoneyLabel();
+        ShipOnline.utility.focusTextbox();
+
+        ShipOnline.utility.validFullHalfSize($("#RECEIVED_PHONE"));
+        ShipOnline.utility.imeControl($("#RECEIVED_PHONE"), 'disable');
+        ShipOnline.utility.checkInputNumber($("#RECEIVED_PHONE"));
+
+        ShipOnline.utility.validFullHalfSize($("#PRODUCT_LENGTH"));
+        ShipOnline.utility.imeControl($("#PRODUCT_LENGTH"), 'disable');
+        ShipOnline.utility.checkInputNumber($("#PRODUCT_LENGTH"));
+
+        ShipOnline.utility.validFullHalfSize($("#PRODUCT_WIDTH"));
+        ShipOnline.utility.imeControl($("#PRODUCT_WIDTH"), 'disable');
+        ShipOnline.utility.checkInputNumber($("#PRODUCT_WIDTH"));
+
+        ShipOnline.utility.validFullHalfSize($("#PRODUCT_HEIGHT"));
+        ShipOnline.utility.imeControl($("#PRODUCT_HEIGHT"), 'disable');
+        ShipOnline.utility.checkInputNumber($("#PRODUCT_HEIGHT"));
+
+        $('.input-size').hide();
+        var productType = $('#PRODUCT_TYPE').val();
+        if (productType == 2) {
+            $('.input-size').show();
+        } else {
+            $('.input-size').hide();
+        }
+        $('.renderCity').val(1);
+        //$('.renderDistrict').val('');
+        //$('.renderTown').val('');
+
+        ShipOnline.utility.bindDistrictExtend2($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+        ShipOnline.utility.bindTown($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+    });
+
+    $(document).off('#btnLogin');
+    $(document).on('click', '#btnLogin', function () {
+        window.location.href = UrlLogin; // Redirect to other Url
+
+    })
+    $('.weight-input').change(function () {
+        resetTime();
+    });
+    $('.lenght-input').change(function () {
+        resetTime();
+    });
+    $('.width-input').change(function () {
+        resetTime();
+    });
+    $('.other-require').change(function () {
+        resetTime();
+    });
+    $('.renderDistrict').change(function () {
+        resetTime();
+    });
+    $('.product_type').change(function () {
+        var productType = $('#PRODUCT_TYPE').val();
+        resetTime();
+        if (productType == 2) {
+            $('.input-size').show();
+        } else {
+            $('.input-size').hide();
+        }
+    });
+
+    $(document).off('#RECEIVED_CITY');
+    $(document).on('change', '#RECEIVED_CITY', function () {
+        //var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+        //if (!result) return;
+
+        $('.renderDistrict').val('');
+        $('.renderTown').val('');
+
+        ShipOnline.utility.bindDistrictExtend2($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+    });
+
+    $(document).off('#DISTRICT_CD_KEY');
+    $(document).on('change', '#DISTRICT_CD_KEY', function () {
+        //var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+        //if (!result) return;
+
+        $('.renderTown').val('');
+
+        ShipOnline.utility.bindTown($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+    });
+
+    $('#PRODUCT_NAME').focus(function () {
+        TokeiShip.Utility.validateProductName();
+    });
+
+    $(document).off('#btnSelectTime');
+    $(document).on('click', '#btnSelectTime', function () {
+
+        var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (result != "Success") {
+            var currentUser = $("#hdnSession").data('value');
+            if (currentUser == null || currentUser == "") {
+                SaveSession();
+
+            }
+            window.location.href = UrlLogin; // Redirect to other Url
+            return false;
+        }
+        var invalidMess = TokeiShip.Utility.validateDataSelectTime();
+        if (!invalidMess) {
+            return false;
+        }
+        var currentUser = $("#hdnSession").data('value');
+        if (currentUser == null || currentUser == "") {
+            SaveSession();
+
+        } else {
+            $(this).blur();
+            var districtKey = $('#DISTRICT_CD_KEY').val();
+            if (districtKey != null && districtKey != "") {
+                var districtCd = districtKey.split('_')[1];
+            }
+
+            var urlGetTime = '@Url.Action("GetDateTime", "Common")';
+            var param = {
+                callback: 'ApplyDateTime',
+                district: districtCd,
+                city: $("#RECEIVED_CITY").val(),
+                product_weight: $('#PRODUCT_WEIGHT').val(),
+                product_type: $('#PRODUCT_TYPE').val(),
+                product_lenght: $('#PRODUCT_LENGTH').val(),
+                product_width: $('#PRODUCT_WIDTH').val(),
+                product_height: $('#PRODUCT_HEIGHT').val(),
+                other: $('#OTHER_REQUIREMENT').val()
+
+            };
+
+            ShipOnline.utility.ShowPopup(urlGetTime, param);
+        }
+        event.preventDefault();
+        event.stopPropagation();
+    });
+
+    function StartTimeout () {
+        setTimeout(function () {
+            resetTime();
+        }, 300000); // 5 min
+    }
+
+    function ApplyDateTime(res) {
+        ShipOnline.utility.ClosePopup();
+
+        if (!res) {
+            /// Debug only
+            console.log("Could not get data");
+        } else {
+
+            resetTime();
+            // Display selected customer takeHourFrom
+            $('.shipType').val(res[0].SHIP_TYPE);
+            $('.selectTimeFrom').text((res[0].TAKE_HOUR_FROM) + 'h');
+            $('.takeHourFrom').val(res[0].TAKE_HOUR_FROM);
+
+            $('.selectTimeTo').text((res[0].TAKE_HOUR_TO) + 'h');
+            $('.takeHourTo').val(res[0].TAKE_HOUR_TO);
+            var textDate = formatDateYearMonth(res[0].TAKE_DATE);
+            $('.selectDate').text(formatDateYearMonth(res[0].TAKE_DATE));
+            $('.takeDate').val(res[0].TAKE_DATE);
+
+            $('.selectMoney').text((res[0].SHIP_MONEY));
+            $('.shipMoney').val(res[0].SHIP_MONEY);
+            StartTimeout();
+        }
+        event.preventDefault();
+    }
+
+    function formatDateYearMonth(takeDate) {
+
+        return takeDate.split('/')[1] + '/' + takeDate.split('/')[0] + '/' + takeDate.split('/')[2];
+    }
+
+    function resetTime() {
+        $('.shipType').val('');
+        $('.selectTimeFrom').text('');
+        $('.takeHourFrom').val('');
+
+        $('.selectTimeTo').text('');
+        $('.takeHourTo').val('');
+
+        $('.selectDate').text('');
+        $('.takeDate').val('');
+
+        $('.selectMoney').text('');
+        $('.shipMoney').val('');
+
+    }
+
+    function resetAlldata() {
+        $('#PRODUCT_NAME').val('');
+        $('#PRODUCT_WEIGHT').val(0);
+        $('#PRODUCT_TYPE').val(0);
+        $('#USER_PAYMENT').val(0);
+        $('#OTHER_REQUIREMENT').val(0);
+        $('#PRICE_PRODUCT').val(0);
+        $('#RECEIVED_NAME').val('');
+
+        $('#PRODUCT_LENGTH').val('');
+        $('#PRODUCT_WIDTH').val('');
+        $('#PRODUCT_HEIGHT').val('');
+        $('#RECEIVED_PHONE').val('');
+        $('#RECEIVED_ADDRESS').val('');
+
+        $('#RECEIVED_CITY').val(1);
+        $('#RECEIVED_DISTRICT').val('');
+        $('#RECEIVED_TOWN').val('');
+        $('#DISTRICT_CD_KEY').val('');
+        $('#TOWN_CD_KEY').val('');
+
+        ShipOnline.utility.bindDistrictExtend2($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+        ShipOnline.utility.bindTown($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+
+    }
+
+    
+
+    function SaveSession() {
+        var form = $('#formOrderShip').serialize();
+
+        var data = ShipOnline.utility.getDataByAjax('@Url.Action("SaveSessionOrder", "Home")', form);
+        window.location.href = UrlLogin; // Redirect to other Url
+    };
+
+
+    $(document).off('#btnCancelOrder');
+    $(document).on('click', '#btnCancelOrder', function () {
+        var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!result) return;
+        resetAlldata();
+        resetTime();
+    });
+
+    $(document).off('#btnConfirmOrder');
+    $(document).on('click', '#btnConfirmOrder', function () {
+        var result = ShipOnline.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (result != "Success") {
+            var currentUser = $("#hdnSession").data('value');
+            if (currentUser == null || currentUser == "") {
+                SaveSession();
+
+            }
+            window.location.href = UrlLogin; // Redirect to other Url
+            return false;
+        }
+        var invalidMess = TokeiShip.Utility.validateDataSelectTime();
+        var invalidMess2 = TokeiShip.Utility.validateTimeFromTo();
+        var invalidMess3 = TokeiShip.Utility.validateProductPrice();
+        if (!invalidMess || !invalidMess2 || !invalidMess3) {
+            return false;
+        }
+        var currentUser = $("#hdnSession").data('value');
+        if (currentUser == null || currentUser == "") {
+            SaveSession();
+
+        } else {
+            $(this).blur();
+            var value = $('#PRICE_PRODUCT').val();
+            if (value.length > 0) {
+                var price = ShipOnline.utility.convertMoneyToInt(value, true);
+            }
+            var townCdKey = $('#TOWN_CD_KEY').val();
+            var districtCd = parseInt(townCdKey.split('_')[1]);
+            var townCd = parseInt(townCdKey.split('_')[2]);
+            $('#RECEIVED_DISTRICT').val(districtCd);
+            $('#RECEIVED_TOWN').val(townCd);
+            $('#PRICE_PRODUCT').val(price);
+
+            $("#formOrderShip").submit();
+        }
+    });
+
+    $('#formOrderShip').submit(function (event) {
+        var formData = new FormData($(this)[0]);
+        $.ajax(
+            {
+                url: '@Url.Action("RegisterOrder", "OrderShip")',
+                data: formData,
+                mimeType: "multipart/form-data",
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    var result = jQuery.parseJSON(res);
+                    var message = "";
+                    if (result.ErrorMessages) {
+                        for (var i = 0; i < result.ErrorMessages.length; i++) {
+                            message += result.ErrorMessages[i] + "\n";
+                        }
+                        ShipOnline.utility.showMessageModal(message, true);
+                    } else {
+                        var orderIdOld = $('#ORDER_ID').val();
+                        $('#hdnOrderId').val(result.ShipID);
+                        // Reset data after register success
+                        //$('#formOrderShip').each(function () {
+                        //    this.reset();
+                        //});
+                        resetAlldata();
+                        resetTime();
+
+                        var urlGetInfor = '@Url.Action("ViewOrderDetail", "OrderShip")';
+                        var param = {
+                            OrderId: result.ShipID,
+                        };
+
+                        ShipOnline.utility.ShowPopup(urlGetInfor, param);
+
+                    }
+                },
+                error: function (xhr) {
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    window.location.href = '/Common/Common/CloseIframe/';
+                }
+            });
+        event.preventDefault();
+    });
+</script>
+
+<style>
+    #FormOrderShip .selectDateTime-error {
+        color: red;
+        text-align: center;
+        margin-top: 2px;
+        margin-bottom:5px;
+    }
+</style>

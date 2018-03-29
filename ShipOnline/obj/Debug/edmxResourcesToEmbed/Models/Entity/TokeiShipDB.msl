@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TOKEI_SHIPModelStoreContainer" CdmEntityContainer="TokeiShipDB">
+    <EntitySetMapping Name="MstCities">
+      <EntityTypeMapping TypeName="TOKEI_SHIPModel.MstCity">
+        <MappingFragment StoreEntitySet="MstCity">
+          <ScalarProperty Name="CITY_CD" ColumnName="CITY_CD" />
+          <ScalarProperty Name="CITY_ZIP_CD" ColumnName="CITY_ZIP_CD" />
+          <ScalarProperty Name="CITY_NAME" ColumnName="CITY_NAME" />
+          <ScalarProperty Name="DSP_ORDER" ColumnName="DSP_ORDER" />
+          <ScalarProperty Name="DEL_FLG" ColumnName="DEL_FLG" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MstDistricts">
+      <EntityTypeMapping TypeName="TOKEI_SHIPModel.MstDistrict">
+        <MappingFragment StoreEntitySet="MstDistrict">
+          <ScalarProperty Name="DISTRICT_CD" ColumnName="DISTRICT_CD" />
+          <ScalarProperty Name="CITY_CD" ColumnName="CITY_CD" />
+          <ScalarProperty Name="DISTRICT_NAME" ColumnName="DISTRICT_NAME" />
+          <ScalarProperty Name="DSP_ORDER" ColumnName="DSP_ORDER" />
+          <ScalarProperty Name="DEL_FLG" ColumnName="DEL_FLG" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MstTowns">
+      <EntityTypeMapping TypeName="TOKEI_SHIPModel.MstTown">
+        <MappingFragment StoreEntitySet="MstTown">
+          <ScalarProperty Name="TOWN_CD" ColumnName="TOWN_CD" />
+          <ScalarProperty Name="DISTRICT_CD" ColumnName="DISTRICT_CD" />
+          <ScalarProperty Name="CITY_CD" ColumnName="CITY_CD" />
+          <ScalarProperty Name="TOWN_NAME" ColumnName="TOWN_NAME" />
+          <ScalarProperty Name="DSP_ORDER" ColumnName="DSP_ORDER" />
+          <ScalarProperty Name="DEL_FLG" ColumnName="DEL_FLG" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TblAdvertisements">
+      <EntityTypeMapping TypeName="TOKEI_SHIPModel.TblAdvertisement">
+        <MappingFragment StoreEntitySet="TblAdvertisement">
+          <ScalarProperty Name="ADVERTISEMENT_ID" ColumnName="ADVERTISEMENT_ID" />
+          <ScalarProperty Name="ADVERTISEMENT_TYPE" ColumnName="ADVERTISEMENT_TYPE" />
+          <ScalarProperty Name="COMPANY_NAME" ColumnName="COMPANY_NAME" />
+          <ScalarProperty Name="ADVERTISEMENT_NAME" ColumnName="ADVERTISEMENT_NAME" />
+          <ScalarProperty Name="ADVERTISEMENT_LINK" ColumnName="ADVERTISEMENT_LINK" />
+          <ScalarProperty Name="ADVERTISEMENT_IMAGE" ColumnName="ADVERTISEMENT_IMAGE" />
+          <ScalarProperty Name="DEL_FLG" ColumnName="DEL_FLG" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="INS_DATE" ColumnName="INS_DATE" />
+          <ScalarProperty Name="INS_USER_ID" ColumnName="INS_USER_ID" />
+          <ScalarProperty Name="UPD_DATE" ColumnName="UPD_DATE" />
+          <ScalarProperty Name="UPD_USER_ID" ColumnName="UPD_USER_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TblOrders">
+      <EntityTypeMapping TypeName="TOKEI_SHIPModel.TblOrder">
+        <MappingFragment StoreEntitySet="TblOrder">
+          <ScalarProperty Name="ORDER_ID" ColumnName="ORDER_ID" />
+          <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+          <ScalarProperty Name="SHIP_CODE" ColumnName="SHIP_CODE" />
+          <ScalarProperty Name="PRODUCT_NAME" ColumnName="PRODUCT_NAME" />
+          <ScalarProperty Name="PRODUCT_TYPE" ColumnName="PRODUCT_TYPE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="PRODUCT_WEIGHT" ColumnName="PRODUCT_WEIGHT" />
+          <ScalarProperty Name="PRODUCT_POSITION" ColumnName="PRODUCT_POSITION" />
+          <ScalarProperty Name="ACCEPTANCE_ID" ColumnName="ACCEPTANCE_ID" />
+          <ScalarProperty Name="ACCEPTANCE_DATE" ColumnName="ACCEPTANCE_DATE" />
+          <ScalarProperty Name="RECEIVED_NAME" ColumnName="RECEIVED_NAME" />
+          <ScalarProperty Name="RECEIVED_PHONE" ColumnName="RECEIVED_PHONE" />
+          <ScalarProperty Name="RECEIVED_CITY" ColumnName="RECEIVED_CITY" />
+          <ScalarProperty Name="RECEIVED_DISTRICT" ColumnName="RECEIVED_DISTRICT" />
+          <ScalarProperty Name="RECEIVED_TOWN" ColumnName="RECEIVED_TOWN" />
+          <ScalarProperty Name="RECEIVED_ADDRESS" ColumnName="RECEIVED_ADDRESS" />
+          <ScalarProperty Name="RECEIVE_TIME_DATE_FROM" ColumnName="RECEIVE_TIME_DATE_FROM" />
+          <ScalarProperty Name="RECEIVE_TIME_DATE_TO" ColumnName="RECEIVE_TIME_DATE_TO" />
+          <ScalarProperty Name="SHIP_TYPE" ColumnName="SHIP_TYPE" />
+          <ScalarProperty Name="PRICE_PRODUCT" ColumnName="PRICE_PRODUCT" />
+          <ScalarProperty Name="PRICE_SHIP" ColumnName="PRICE_SHIP" />
+          <ScalarProperty Name="DISCOUNT" ColumnName="DISCOUNT" />
+          <ScalarProperty Name="USER_PAYMENT" ColumnName="USER_PAYMENT" />
+          <ScalarProperty Name="ORDER_STATUS" ColumnName="ORDER_STATUS" />
+          <ScalarProperty Name="DELIVERY_DATE" ColumnName="DELIVERY_DATE" />
+          <ScalarProperty Name="RECEIVED_DATE" ColumnName="RECEIVED_DATE" />
+          <ScalarProperty Name="DEL_FLG" ColumnName="DEL_FLG" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TblUserAccounts">
+      <EntityTypeMapping TypeName="TOKEI_SHIPModel.TblUserAccount">
+        <MappingFragment StoreEntitySet="TblUserAccount">
+          <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+          <ScalarProperty Name="USER_ACCOUNT" ColumnName="USER_ACCOUNT" />
+          <ScalarProperty Name="USER_NAME" ColumnName="USER_NAME" />
+          <ScalarProperty Name="USER_PASSWORD" ColumnName="USER_PASSWORD" />
+          <ScalarProperty Name="PASSWORD_LAST_UPDATE_DATE" ColumnName="PASSWORD_LAST_UPDATE_DATE" />
+          <ScalarProperty Name="USER_AUTHORITY" ColumnName="USER_AUTHORITY" />
+          <ScalarProperty Name="USER_CITY" ColumnName="USER_CITY" />
+          <ScalarProperty Name="USER_DISTRICT" ColumnName="USER_DISTRICT" />
+          <ScalarProperty Name="USER_TOWN" ColumnName="USER_TOWN" />
+          <ScalarProperty Name="USER_ADDRESS" ColumnName="USER_ADDRESS" />
+          <ScalarProperty Name="USER_PHONE" ColumnName="USER_PHONE" />
+          <ScalarProperty Name="USER_EMAIL" ColumnName="USER_EMAIL" />
+          <ScalarProperty Name="GENDER" ColumnName="GENDER" />
+          <ScalarProperty Name="LOGIN_LOCK_FLG" ColumnName="LOGIN_LOCK_FLG" />
+          <ScalarProperty Name="DEL_FLG" ColumnName="DEL_FLG" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="INS_DATE" ColumnName="INS_DATE" />
+          <ScalarProperty Name="UPD_DATE" ColumnName="UPD_DATE" />
+          <ScalarProperty Name="USER_FAMILY" ColumnName="USER_FAMILY" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

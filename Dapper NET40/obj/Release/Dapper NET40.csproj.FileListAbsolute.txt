@@ -1,0 +1,6 @@
+D:\I-seiq\Dapper NET40\bin\Release\Dapper.xml
+D:\I-seiq\Dapper NET40\bin\Release\Dapper.dll
+D:\I-seiq\Dapper NET40\bin\Release\Dapper.pdb
+D:\I-seiq\Dapper NET40\obj\Release\Dapper.dll
+D:\I-seiq\Dapper NET40\obj\Release\Dapper.pdb
+D:\I-seiq\Dapper NET40\obj\Release\Dapper NET40.csprojResolveAssemblyReference.cache

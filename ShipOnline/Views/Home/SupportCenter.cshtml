@@ -1,0 +1,21 @@
+﻿@using ShipOnline.Models.Define;
+@using ShipOnline.Resources;
+
+@{
+    ViewBag.Title = "Hỗ trợ khách hàng";
+    Layout = "~/Views/Layout/_LayoutMain.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as ShipOnline.Models.CmnEntityModel;
+}
+
+<div id="Intro" class="IntroView">
+    <div>
+        <h3>CÔNG TY TNHH OTOKE - DỊCH VỤ CHUYỂN HÀNG TOKEISHIP.VN</h3>
+        <div>
+            Mọi chi tiết xin liên hệ:<br />
+            Phone: 01635872295 <br />
+            email: tokeiship@otoke.vn <br />
+            địa chỉ: ngõ 400, đường khương đình, quận thanh xuân, hà nội
+        </div>
+
+    </div>
+</div>

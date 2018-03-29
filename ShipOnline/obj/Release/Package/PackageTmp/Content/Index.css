@@ -1,0 +1,296 @@
+﻿body {
+}
+
+#FormOrderShip{
+    margin-left:10px;
+    margin-right:10px;
+}
+input[disabled]{
+    cursor:not-allowed!important;
+}
+  
+#FormOrderShip .FormOrderShipTop{
+    width:680px;
+    min-height:365px;
+    display:inline-flex;
+}
+
+.FormOrderShipTop .FormOrderShipTopLeft{
+    width:340px;
+    min-height:365px;
+}
+.FormOrderShipTop .FormOrderShipTopRight{
+    width:340px;
+    min-height:365px;
+}
+
+#FormOrderShip .FormOrderShipBottom{
+    width:680px;
+    height:140px;
+}
+.line-text{
+    color:black;
+    margin:10px auto;
+}
+ .FormOrderShipTop .title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    text-align: center;
+    color:#39870F;
+}
+
+.FormOrderShipTop .btn-Login{
+    background-color:#EF1111;
+    width:321px;
+    height:55px;
+    border-radius:50px;
+    color:white;
+    opacity:60;
+}
+ .FormOrderShipTop .info-login {
+    margin-left:4px;
+}
+  .FormOrderShipTop .infor-user {
+    width:321px;
+    height:55px;
+    border-radius:50px;
+    text-align:center;
+}
+  .userInfor-text{
+      padding-left:20px;
+      padding-top:10px;
+  }
+  .userInfor-text a{
+      color:wheat;
+  }
+  .form-input{
+      margin-left:10px;
+      margin-bottom:10px;
+
+  }
+
+  input.name-input{
+      height:34px!important;
+      width:321px;
+      max-width:321px;
+      border-radius:12px;
+      padding-left:10px;
+      padding-right:10px;
+      font-size:13px;
+  }
+    input.name-input-received{
+      height:36px!important;
+      width:313px;
+      max-width:313px;
+      border-radius:12px;
+      padding-left:10px;
+      padding-right:10px;
+      font-size:13px;
+      margin-left:10px;
+  }
+   select.weight-input{
+      height:34px!important;
+      width:155px;
+      max-width:155px;
+      border-radius:12px;
+      padding-left:4px;
+      font-size:13px;
+  }
+   select.user-payment{
+      height:34px!important;
+      width:155px;
+      max-width:155px;
+      border-radius:12px;
+      padding-left:4px;
+      font-size:13px;
+  }
+   select.other-require{
+      height:34px!important;
+      width:160px;
+      max-width:160px;
+      border-radius:12px;
+      padding-left:4px;
+      font-size:13px;
+  }
+   input.money-input{
+      height:34px!important;
+      width:160px;
+      max-width:160px;
+      border-radius:12px;
+      padding-left:10px;
+      padding-right:10px;
+      font-size:13px;
+  }
+   .text-money{
+       font-size:13px;
+       font-weight:bold;
+       margin-left:10px;
+   }
+
+   select.product_type{
+      height:34px!important;
+      width:160px;
+      max-width:160px;
+      border-radius:12px;
+      padding-left:10px;
+      padding-right:10px;
+      font-size:13px;
+  }
+   input.lenght-input{
+      height:34px!important;
+      width:104px;
+      max-width:104px;
+      padding-left:5px;
+      padding-right:20px;
+      font-size:13px;
+  }
+    input.width-input{
+      height:34px!important;
+      width:104px;
+      max-width:104px;
+      padding-left:5px;
+      padding-right:20px;
+      font-size:13px;
+  }
+    input.height-input{
+      height:34px!important;
+      width:104px;
+      max-width:104px;
+      padding-left:5px;
+      padding-right:20px;
+      font-size:13px;
+  }
+ .center{
+        text-align:center;
+    }
+#Userlogin{
+    margin:20px;
+}
+#Userlogin .Content{
+    margin-left:55px;
+    margin-top:30px;
+}
+    #Userlogin .title {
+        font-size:20px;
+    }
+#Userlogin .validation-summary-errors {
+     margin-left:30px;
+     margin-top:10px;
+}
+
+#RegisterUser{
+    margin:20px;
+}
+#RegisterUser .title {
+        font-size:20px;
+        text-align:center;
+        font-weight:bold;
+    }
+#RegisterUser .Content{
+    margin-left:30px;
+    margin-top:30px;
+}
+.renderCity, .renderDistrict, .renderTown{
+    width:100px;
+}
+.RequiredField{
+    color:red;
+}
+#RegisterUser #btnSubmit{
+    margin-left: 210px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: #4a4a4a;
+    background: #fdd835;
+    border-color: #fdd835;
+}
+#RegisterUser .UserEdit {
+    cursor:pointer;
+}
+
+.thanhdoc{
+    width: 3px;
+    height: 270px;
+}
+
+.divThanhdoc{
+    width: 3px;
+    height: 315px;
+    float:left;
+}
+.margin-left-15{
+    margin-left:15px;
+}
+#FormOrderShip .receive-address{
+    padding-top:15px;
+    margin-left:15px;
+    font-size:16px;
+    font-weight: normal;
+    color: #39870F;
+}
+#FormOrderShip .full-address{
+    margin-top: 10px;
+    height: 92px;
+    width: 306px;
+    margin-left: 15px;
+    max-width:306px;
+}
+.height-30{
+    height:30px!important;
+}
+
+.divThanhNgang .thanhngang{
+    width:350px;
+    margin-left:165px;
+}
+
+#FormOrderShip #btnSelectTime{
+    margin-left: 220px;
+    width: 230px;
+    height: 34px
+}
+#btnCancelOrder{
+    margin-left:150px;
+}
+
+#FormOrderShip .getDateTime{
+    text-align:center;
+}
+#FormOrderShip .getMoney{
+    text-align:center;
+}
+
+.icon-ConfirmOrder{
+   background: url("/Logo/xemay.svg") no-repeat left center;
+   padding-left:45px!important;
+}
+
+.icon-SelectTime{
+   background: url("/Logo/dongho.svg") no-repeat left center;
+   padding-left:45px!important;
+}
+#btnCancelOrder{
+    background:#a18c8c;
+    color:white;
+}
+
+#FormOrderShip .received_name-error,
+#FormOrderShip .received_phone-error,
+#FormOrderShip .address-error
+{
+    color: red;
+    margin-left: 15px;
+    font-size: 11px;
+}
+#FormOrderShip .product_name-error,
+#FormOrderShip .weight-error,
+#FormOrderShip .product-size-error,
+#FormOrderShip .price-error
+{
+    color: red;
+    margin-left: 15px;
+    font-size: 11px;
+}
+

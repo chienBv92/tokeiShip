@@ -1,0 +1,456 @@
+﻿@using ShipOnline.Resources;
+@using ShipOnline.Models.Entity;
+@using ShipOnline.Models.Define;
+
+@model UserAccountModel
+@{
+    ViewBag.Title = AdminLabel.UserListTitle;
+    Layout = "~/Views/Layout/_LayoutAdmin.cshtml";
+}
+
+<div id="UserList">
+    <div id="topContent">
+        <div id="title">@AdminLabel.UserListTitle</div>
+        @using (Html.BeginForm("Search", "AdminManageUser", FormMethod.Post, new { id = "formUserSearch", enctype = "multipart/form-data", @class = "form-horizontal" }))
+        {
+            <div id="searchArea" class="clearfix">
+                <div class="form-group">
+                    <label class="title-row">@AdminLabel.lblEmail</label>
+                    @Html.TextBoxFor(m => m.USER_EMAIL, new { @class = "txt-w-250", style = "ime-mode: auto; ", maxlength = 100 })
+                    <label class="label-list">@AdminLabel.lblUserName</label>
+                    @Html.TextBoxFor(m => m.USER_NAME, new { @class = "txt-w-250", maxlength = 50 })
+                </div>
+
+                <div class="form-group">
+                    <label class="title-row">@AdminLabel.lblPhone</label>
+                    @Html.TextBoxFor(m => m.USER_PHONE, new { @class = "txt-w-250", maxlength = 13 })
+
+                    <label class="label-list">@AdminLabel.lblShopName </label>
+                    @Html.TextBoxFor(m => m.SHOP_NAME, new { @class = "txt-w-250", maxlength = 50 })
+                </div>
+
+                <div class="form-group">
+                    <label class="title-row">@AdminLabel.lblArea</label>
+                    @Html.DropDownListFor(m => m.AREA, new SelectList(Area.Items, "Key", "Value"), new { @class = "margin-0 user-area" })
+                </div>
+
+                <div class="form-group">
+                    <label class="title-row">@AdminLabel.lblAddress</label>
+                    @Html.DropDownListFor(m => m.USER_CITY, Model.CITY_LIST, new { @class = "margin-0 renderCity" })
+                    @Html.DropDownListFor(m => m.DISTRICT_CD_KEY, Model.DISTRICT_LIST, "", new { @class = "renderDistrict" })
+                    @Html.DropDownListFor(m => m.TOWN_CD_KEY, Model.TOWN_LIST, "", new { @class = "renderTown" })
+                    
+                    @Html.TextAreaFor(m => m.USER_ADDRESS, new { @class = "note-textarea", maxlength = 100 })
+                </div>
+
+                <div class="form-group">
+                    @Html.Label(@AdminLabel.lblLock, new { @for = "LOGIN_LOCK_FLG", @class = "title-row" })
+                    @if (String.IsNullOrEmpty(Model.LOGIN_LOCK_FLG) || Model.LOGIN_LOCK_FLG.Equals("0"))
+                    {
+                        <input id="LOGIN_LOCK_FLG" name="LOGIN_LOCK_FLG" type="checkbox">
+                        <input id="LOGIN_LOCK_FLG_HIDDEN" name="LOGIN_LOCK_FLG" type="hidden" value="0">
+                    }
+                    else
+                    {
+                        <input id="LOGIN_LOCK_FLG" name="LOGIN_LOCK_FLG" type="checkbox" checked="checked">
+                        <input id="LOGIN_LOCK_FLG_HIDDEN" name="LOGIN_LOCK_FLG" type="hidden" value="1">
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label class="title-row">@AdminLabel.lblAuthority </label>
+                    @foreach (var item in (SelectList)ViewBag.UserAuthority)
+                    {
+                        <label class="lbRadioBtn">
+                            @Html.RadioButtonFor(m => m.USER_AUTHORITY, item.Value)
+                            @item.Text
+                        </label>
+                    }
+                </div>
+
+                <div class="form-group">
+                    @Html.Label(@AdminLabel.DeleteFlg, new { @for = "DEL_FLG", @class = "title-row" })
+                    @if (String.IsNullOrEmpty(Model.DEL_FLG) || Model.DEL_FLG.Equals("0"))
+                    {
+                        <input id="DEL_FLG" name="DEL_FLG" type="checkbox">
+                        <input id="DEL_FLG_HIDDEN" name="DEL_FLG" type="hidden" value="0">
+                    }
+                    else
+                    {
+                        <input id="DEL_FLG" name="DEL_FLG" type="checkbox" checked="checked">
+                        <input id="DEL_FLG_HIDDEN" name="DEL_FLG" type="hidden" value="1">
+                    }
+                </div>
+            </div>
+
+            <hr />
+            <div id="searchAction">
+                <div class="pull-right">
+                    <button type="button" id="btnSearch" class="btn btn-green"><i class="btn-icon btn-search-white">@AdminLabel.btnSearch</i></button>
+                    <button type="button" id="btnClear" class="btn btn-default"><i class="btn-icon btn-clear">@AdminLabel.btnClear</i></button>
+                </div>
+                @Html.Hidden("hdnAuthority", @Model.USER_AUTHORITY)
+                @Html.HiddenFor(m => m.CITY_CD_SEARCH)
+                @Html.HiddenFor(m => m.DISTRICT_CD_SEARCH)
+                @Html.HiddenFor(m => m.TOWN_CD_SEARCH)
+            </div>
+        }
+    </div>
+
+    <div id="registButton">
+        <form id="frUpdateUser" method="POST" action="@Url.Action("UserEdit", "AdminManageUser")">
+            <input type="hidden" id="hdnUserIdEdit" name="UserId" value="0" />
+        </form>
+
+        <button type="button" id="btnRegister" name="btnRegister" class="btn btn-orange"><i class="btn-icon btn-regist"></i>@AdminLabel.btnRegister</button>
+    </div>
+
+    <hr />
+
+    <div id="mainContent">
+        <table id="InfoTable" class="dataTable cellspacing= " 0">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>STT</th>
+                    <th>@AdminLabel.lblEmail</th>
+                    <th>@AdminLabel.lblUserName</th>
+                    <th>@AdminLabel.lblShopName</th>
+                    <th>@AdminLabel.lblArea</th>
+                    <th>@AdminLabel.CityName</th>
+                    <th>@AdminLabel.DistricName</th>
+                    <th>@AdminLabel.TownName</th>
+                    <th>@AdminLabel.lblAddress</th>
+                    <th>@AdminLabel.lblPhone</th>
+                    <th>@AdminLabel.lblStartDate</th>
+                    <th>@AdminLabel.CityDispaly</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<script>
+    var UrlUserRegister = '@Url.Action("UserEdit", "AdminManageUser")';
+    var UrlUserList = '@Url.Action("UserList", "AdminManageUser")';
+
+    var dataTable = null;
+    var sort_colum = 0;
+    var sort_type = 'asc';
+    var deletelink = "Xóa";
+    var USER_ID = 0;
+    var ORDER = 1;
+    var USER_EMAIL = 2;
+    var USER_NAME = 3;
+    var SHOP_NAME = 4;
+    var AREA_STRING = 5;
+    var CITY_NAME = 6;
+    var DISTRICT_NAME = 7;
+    var TOWN_NAME = 8;
+    var USER_ADDRESS = 9;
+    var USER_PHONE = 10;
+    var INS_DATE = 11;
+    var STATUS = 12;
+    var DELETE = 13;
+
+    var rows_checked_list = [];
+
+    $(function () {
+        var oSorting = {
+            "bSort": false
+        };
+
+        var oPaginate = {
+            "bPaginate": true,
+            "iDisplayLength": 5, // setup amount record
+            "bStateSave": false
+        };
+
+        var oServerSide = {
+            "bServerSide": true,
+            "sAjaxSource": '@Url.Action("UserList", "AdminManageUser")',
+            "fnServerParams": serverParams,
+            "fnInitComplete": displayComplete,
+            "fnDrawCallback": drawCallback,
+            "autoWidth": false,
+            "info": false
+        };
+        // Content in table
+        var aoColumnDefs = [
+             { "sName": "USER_ID", "bVisible": false, "aTargets": [USER_ID] },
+             { "sName": "ORDER", "bVisible": false, "aTargets": [ORDER] },
+             { "sName": "USER_EMAIL", "bVisible": false, "aTargets": [USER_EMAIL] },
+             { "sName": "USER_NAME", "bVisible": false, "aTargets": [USER_NAME] },
+             { "bSortable": false, "aTargets": [SHOP_NAME], "sWidth": "10%", "sClass": "cell_center" },
+             { "bSortable": false, "aTargets": [AREA_STRING], "sWidth": "10%", "sClass": "cell_center" },
+             { "bSortable": false, "aTargets": [CITY_NAME], "sWidth": "10%", "sClass": "cell_center" },
+             { "bSortable": false, "aTargets": [DISTRICT_NAME], "sWidth": "10%", "sClass": "cell_center" },
+             { "bSortable": false, "aTargets": [TOWN_NAME], "sWidth": "10%", "sClass": "cell_center" },
+             { "bSortable": false, "aTargets": [USER_ADDRESS], "sWidth": "20%", "sClass": "cell_center" },
+             { "bSortable": false, "aTargets": [USER_PHONE], "sWidth": "10%", "sClass": "cell_center" },
+             { "bSortable": false, "aTargets": [INS_DATE], "sWidth": "10%", "sClass": "cell_center" },
+             { "bSortable": false, "aTargets": [STATUS], "sWidth": "5%", "sClass": "cell_center" },
+
+             { "bSortable": false, "aTargets": [DELETE], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return bindDeleteElement(full[USER_ID], 'delete-user-link btn btn-red', deletelink); } }
+
+        ];
+
+        // Tham so search input
+        function serverParams(aoData) {
+            aoData.push(
+                { "name": "USER_CITY", "value": $("#USER_CITY").val() },
+                { "name": "CITY_CD_SEARCH", "value": $("#CITY_CD_SEARCH").val() },
+                { "name": "DISTRICT_CD_SEARCH", "value": $("#DISTRICT_CD_SEARCH").val() },
+                { "name": "TOWN_CD_SEARCH", "value": $("#TOWN_CD_SEARCH").val() },
+                { "name": "DISTRICT_CD_KEY", "value": $("#DISTRICT_CD_KEY").val() },
+                { "name": "TOWN_CD_KEY", "value": $("#TOWN_CD_KEY").val() },
+                { "name": "USER_ADDRESS", "value": $("#USER_ADDRESS").val() },
+                { "name": "USER_NAME", "value": $("#USER_NAME").val() },
+                { "name": "USER_PHONE", "value": $("#USER_PHONE").val() },
+                { "name": "USER_EMAIL", "value": $("#USER_EMAIL").val() },
+                { "name": "SHOP_NAME", "value": $("#SHOP_NAME").val() },
+                { "name": "AREA", "value": $("#AREA").val() },
+                { "name": "USER_AUTHORITY", "value": $("#hdnAuthority").val() },
+                { "name": "DEL_FLG", "value": $("#DEL_FLG_HIDDEN").val() },
+                { "name": "LOGIN_LOCK_FLG", "value": $("#LOGIN_LOCK_FLG_HIDDEN").val() }
+            );
+        }
+
+        function displayComplete(data) {
+            dataList = data.aaData;
+
+            if (sort_colum == 0) {
+                $('#InfoTable tr th:not(.sorting_disabled)').removeClass('sorting_asc sorting_desc').addClass('sorting').removeAttr('aria-sort');
+            }
+        }
+
+        function drawCallback() {
+            if ($('#tbLeft').length > 0) {
+                $('#InfoTable').unwrap();
+                $('.col-left, .rBarOn, .bBarOn').remove();
+            }
+
+            var htmlTbLeft = '<table id="tbLeft" class="dataTable" cellspacing="0">'
+                + ' <thead>'
+                + ' <tr>'
+                + ' <th>No</th>'
+                + ' <th>@AdminLabel.lblEmail</th>'
+                + ' <th>@AdminLabel.lblUserName</th>'
+                + ' </tr>'
+                + ' </thead>'
+                + ' <tbody>';
+
+            if (dataList !== null && dataList.length > 0) {
+                for (var i = 0; i < dataList.length; i++) {
+                    var classRow = i % 2 == 0 ? 'odd' : 'even';
+                    //var height = $($('#InfoTable tbody tr')[i]).outerHeight();
+
+                    htmlTbLeft += ' <tr class="' + classRow + '">'
+                        + ' <td class="cell_center">' + ShipOnline.utility.buildColumShortText(dataList[i][ORDER]) + '</td>'
+                        + ' <td class="cell_center">' + buildActionLink(dataList[i][USER_ID], dataList[i][USER_EMAIL]) + '</td>';
+                    htmlTbLeft += ' <td class="cell_center"> <div>' + ShipOnline.utility.buildColumShortText(dataList[i][USER_NAME], 'special-wrap') + '</div></td></tr>';
+                }
+            }
+
+            htmlTbLeft += '</tbody></table>';
+
+            $("#InfoTable").wrap('<div class="col-right dragOn"></div>').removeClass('no-footer');
+            $('div.col-right').before('<div class="col-left"> ' + htmlTbLeft + '</div>');
+            $('div.col-right').dragOn();
+            $('div.col-right').barOn();
+
+        }
+
+        function buildActionLink(id, content) {
+            var html = '';
+            {
+                html += '<a class="UserEdit UserId link" data-userid="' + id + '">' + content + '</a>';
+            }
+            return html;
+        }
+
+        function bindDeleteElement(id, className, label) {
+            return '<a class="' + className + '" data-userid="' + id + '">' + label + '</a>';
+        }
+
+        dataTable = CreateDataTable('#InfoTable', oSorting, oPaginate, oServerSide, aoColumnDefs);
+
+    });
+
+    $(function () {
+        $('[name="USER_AUTHORITY"][value="@Model.USER_AUTHORITY"]').prop('checked', true);
+        $('[name="DEL_FLG"][value="@Model.DEL_FLG"]').prop('checked', true);
+        $('#DEL_FLG_HIDDEN').val('@Model.DEL_FLG');
+        $('[name="LOGIN_LOCK_FLG"][value="@Model.LOGIN_LOCK_FLG"]').prop('checked', true);
+        $('#LOGIN_LOCK_FLG_HIDDEN').val('@Model.LOGIN_LOCK_FLG');
+        $('#AREA').val(@Model.AREA);
+
+        $('.renderCity').val('');
+        $('.renderDistrict').val('');
+        $('.renderTown').val('');
+        $("#USER_CITY").val('@Model.USER_CITY');
+        $("#DISTRICT_CD_KEY").val('@Model.DISTRICT_CD_KEY');
+        $("#TOWN_CD_KEY").val('@Model.TOWN_CD_KEY');
+        ShipOnline.utility.bindDistrictExtend2($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+        ShipOnline.utility.bindTown($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+        $("#CITY_CD_SEARCH").val('@Model.CITY_CD_SEARCH');
+        $("#DISTRICT_CD_SEARCH").val('@Model.DISTRICT_CD_SEARCH');
+        $("#TOWN_CD_SEARCH").val(@Model.TOWN_CD_SEARCH);
+    });
+
+    $(document).off('#DEL_FLG');
+    $(document).on('change', '#DEL_FLG', function () {
+        if ($('#DEL_FLG').is(":checked")) {
+            $('#DEL_FLG_HIDDEN').val('1');
+        } else {
+            $('#DEL_FLG_HIDDEN').val('0');
+        }
+    });
+
+    $(document).off('#LOGIN_LOCK_FLG');
+    $(document).on('change', '#LOGIN_LOCK_FLG', function () {
+        if ($('#LOGIN_LOCK_FLG').is(":checked")) {
+            $('#LOGIN_LOCK_FLG_HIDDEN').val('1');
+        } else {
+            $('#LOGIN_LOCK_FLG_HIDDEN').val('0');
+        }
+    });
+
+    // Button Search
+    $(document).off('#btnSearch');
+    $(document).on('click', '#btnSearch', function () {
+        $("#CITY_CD_SEARCH").val($("#USER_CITY").val());
+
+        var districtCodeKey = $('#DISTRICT_CD_KEY').val();
+        $("#DISTRICT_CD_SEARCH").val($("#DISTRICT_CD_SEARCH").val());
+        if (districtCodeKey != null && districtCodeKey != "") {
+            var districtCd = parseInt(districtCodeKey.split('_')[1]);
+            $("#DISTRICT_CD_SEARCH").val(districtCd);
+        } else {
+            $("#DISTRICT_CD_SEARCH").val(0);
+        }
+
+        var townCodeKey = $('#TOWN_CD_KEY').val();
+        $("#TOWN_CD_SEARCH").val($("#TOWN_CD_SEARCH").val());
+        if (townCodeKey != null && townCodeKey != "") {
+            var townCd = parseInt(townCodeKey.split('_')[2]);
+            $("#TOWN_CD_SEARCH").val(townCd);
+        } else {
+            $("#TOWN_CD_SEARCH").val(0);
+        }
+        $("#hdnAuthority").val($('[name="USER_AUTHORITY"]:checked').val());
+
+        searchUser();
+    });
+
+    function searchUser() {
+
+        dataTable.fnPageChange('first');
+    }
+
+    $(document).off('#USER_CITY');
+    $(document).on('change', '#USER_CITY', function () {
+        //if (!iseiQ.utility.getDataByAjax(checkTimeoutUrl, null)) return;
+
+        $('.renderDistrict').val('');
+        $('.renderTown').val('');
+
+        ShipOnline.utility.bindDistrictExtend2($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+    });
+
+    $(document).off('#DISTRICT_CD_KEY');
+    $(document).on('change', '#DISTRICT_CD_KEY', function () {
+        //if (!iseiQ.utility.getDataByAjax(checkTimeoutUrl, null)) return;
+
+        $('.renderTown').val('');
+
+        ShipOnline.utility.bindTown($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+    });
+
+    // Click Button Clear
+    $(document).off('#btnClear');
+    $(document).on('click', '#btnClear', function () {
+        $("#DEL_FLG").prop('checked', false).change();
+        $('#DEL_FLG_HIDDEN').val('0');
+        $("#LOGIN_LOCK_FLG").prop('checked', false).change();
+        $('#LOGIN_LOCK_FLG_HIDDEN').val('0');
+
+        $("#AREA").val(0);
+        $("#CITY_CD_SEARCH").val(0);
+        $("#DISTRICT_CD_SEARCH").val(0);
+        $("#DISTRICT_CD_KEY").val('');
+        $('#TOWN_CD_KEY').val('');
+        $("#TOWN_CD_SEARCH").val(0);
+        $("#USER_AUTHORITY").val(0);
+        $('[name="USER_AUTHORITY"][value="@User_Authority.Person"]').prop('checked', true);
+        $("#hdnAuthority").val(0)
+
+        $('#USER_ADDRESS').val('');
+        $('#USER_NAME').val('');
+        $('#USER_PHONE').val('');
+        $('#USER_EMAIL').val('');
+        $('#SHOP_NAME').val('');
+
+        $('.renderCity').val('');
+        $('.renderDistrict').val('');
+        $('.renderTown').val('');
+        ShipOnline.utility.bindDistrictExtend2($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+        ShipOnline.utility.bindTown($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+
+        searchUser();
+    })
+
+    // Click redirect to Employee Register
+    $(document).off('#btnRegister');
+    $(document).on('click', '#btnRegister', function () {
+        window.location.href = UrlUserRegister; // Redirect to other Url
+
+    })
+    // click link edit
+    $(document).off('.UserEdit');
+    $(document).on('click', '.UserEdit', function () {
+        $('#hdnUserIdEdit').val($(this).data('userid'));
+
+        $('#frUpdateUser').submit();
+    });
+
+    // Click link delete   delete-Account-link
+    $(document).off('.delete-user-link');
+    $(document).on('click', '.delete-user-link', function () {
+        //if (!ShipOnline.utility.getDataByAjax(checkTimeoutUrl, null)) return;
+        var userId = $(this).data('userid');
+
+        if (userId == '') return;
+
+        ShipOnline.utility.showConfirmModal('@string.Format(@Message.ConfirmDelete, "tài khoản")', function (action) {
+            if (action) {
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: '@Url.Action("DeleteUser")',
+                    data: { USER_ID: userId },
+                    success: function (data) {
+                        ShipOnline.utility.showMessageModal("@string.Format(Message.DeleteSuccess)", true);
+                        dataTable.fnStandingRedraw();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        ShipOnline.utility.showMessageModal("@string.Format(Message.ConfirmDeleteError)", true);
+                    }
+                });
+            }
+        });
+    });
+
+</script>
+
+
+
+<style>
+    #UserList {
+        margin: 25px;
+    }
+</style>

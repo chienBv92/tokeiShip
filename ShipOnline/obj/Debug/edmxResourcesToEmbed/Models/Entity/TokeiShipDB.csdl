@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TOKEI_SHIPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="MstCity">
+    <Key>
+      <PropertyRef Name="CITY_CD" />
+    </Key>
+    <Property Name="CITY_CD" Type="Int32" Nullable="false" />
+    <Property Name="CITY_ZIP_CD" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CITY_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DSP_ORDER" Type="Int32" Nullable="false" />
+    <Property Name="DEL_FLG" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="STATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MstDistrict">
+    <Key>
+      <PropertyRef Name="DISTRICT_CD" />
+      <PropertyRef Name="CITY_CD" />
+    </Key>
+    <Property Name="DISTRICT_CD" Type="Int32" Nullable="false" />
+    <Property Name="CITY_CD" Type="Int32" Nullable="false" />
+    <Property Name="DISTRICT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DSP_ORDER" Type="Int32" Nullable="false" />
+    <Property Name="DEL_FLG" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="STATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MstTown">
+    <Key>
+      <PropertyRef Name="TOWN_CD" />
+      <PropertyRef Name="DISTRICT_CD" />
+      <PropertyRef Name="CITY_CD" />
+    </Key>
+    <Property Name="TOWN_CD" Type="Int32" Nullable="false" />
+    <Property Name="DISTRICT_CD" Type="Int32" Nullable="false" />
+    <Property Name="CITY_CD" Type="Int32" Nullable="false" />
+    <Property Name="TOWN_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DSP_ORDER" Type="Int32" Nullable="false" />
+    <Property Name="DEL_FLG" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="STATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TblAdvertisement">
+    <Key>
+      <PropertyRef Name="ADVERTISEMENT_ID" />
+    </Key>
+    <Property Name="ADVERTISEMENT_ID" Type="Int32" Nullable="false" />
+    <Property Name="ADVERTISEMENT_TYPE" Type="Int32" Nullable="false" />
+    <Property Name="COMPANY_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ADVERTISEMENT_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ADVERTISEMENT_LINK" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ADVERTISEMENT_IMAGE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="DEL_FLG" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="STATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="INS_DATE" Type="DateTime" Precision="3" />
+    <Property Name="INS_USER_ID" Type="Int32" Nullable="false" />
+    <Property Name="UPD_DATE" Type="DateTime" Precision="3" />
+    <Property Name="UPD_USER_ID" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TblOrder">
+    <Key>
+      <PropertyRef Name="ORDER_ID" />
+    </Key>
+    <Property Name="ORDER_ID" Type="Int64" Nullable="false" />
+    <Property Name="USER_ID" Type="Int64" Nullable="false" />
+    <Property Name="SHIP_CODE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PRODUCT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PRODUCT_TYPE" Type="Int32" Nullable="false" />
+    <Property Name="CREATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="PRODUCT_WEIGHT" Type="Int32" />
+    <Property Name="PRODUCT_POSITION" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ACCEPTANCE_ID" Type="Int64" />
+    <Property Name="ACCEPTANCE_DATE" Type="DateTime" Precision="3" />
+    <Property Name="RECEIVED_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="RECEIVED_PHONE" Type="String" MaxLength="13" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="RECEIVED_CITY" Type="Int32" Nullable="false" />
+    <Property Name="RECEIVED_DISTRICT" Type="Int32" Nullable="false" />
+    <Property Name="RECEIVED_TOWN" Type="Int32" Nullable="false" />
+    <Property Name="RECEIVED_ADDRESS" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="RECEIVE_TIME_DATE_FROM" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="RECEIVE_TIME_DATE_TO" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="SHIP_TYPE" Type="Int32" Nullable="false" />
+    <Property Name="PRICE_PRODUCT" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="PRICE_SHIP" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="DISCOUNT" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="USER_PAYMENT" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="ORDER_STATUS" Type="Int32" Nullable="false" />
+    <Property Name="DELIVERY_DATE" Type="DateTime" Precision="3" />
+    <Property Name="RECEIVED_DATE" Type="DateTime" Precision="3" />
+    <Property Name="DEL_FLG" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TblUserAccount">
+    <Key>
+      <PropertyRef Name="USER_ID" />
+    </Key>
+    <Property Name="USER_ID" Type="Int64" Nullable="false" />
+    <Property Name="USER_ACCOUNT" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="USER_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="USER_PASSWORD" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PASSWORD_LAST_UPDATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="USER_AUTHORITY" Type="Int32" Nullable="false" />
+    <Property Name="USER_CITY" Type="Int32" Nullable="false" />
+    <Property Name="USER_DISTRICT" Type="Int32" Nullable="false" />
+    <Property Name="USER_TOWN" Type="Int32" Nullable="false" />
+    <Property Name="USER_ADDRESS" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="USER_PHONE" Type="String" MaxLength="13" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="USER_EMAIL" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="GENDER" Type="Boolean" />
+    <Property Name="LOGIN_LOCK_FLG" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="DEL_FLG" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="STATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="INS_DATE" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="UPD_DATE" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="USER_FAMILY" Type="Int32" />
+  </EntityType>
+  <EntityContainer Name="TokeiShipDB" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="MstCities" EntityType="Self.MstCity" />
+    <EntitySet Name="MstDistricts" EntityType="Self.MstDistrict" />
+    <EntitySet Name="MstTowns" EntityType="Self.MstTown" />
+    <EntitySet Name="TblAdvertisements" EntityType="Self.TblAdvertisement" />
+    <EntitySet Name="TblOrders" EntityType="Self.TblOrder" />
+    <EntitySet Name="TblUserAccounts" EntityType="Self.TblUserAccount" />
+  </EntityContainer>
+</Schema>

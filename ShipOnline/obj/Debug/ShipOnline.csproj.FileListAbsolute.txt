@@ -1,0 +1,140 @@
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\ShipOnline.dll.config
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\ShipOnline.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\ShipOnline.pdb
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Antlr3.Runtime.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Dapper.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\EntityFramework.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\EntityFramework.SqlServer.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.AspNet.Identity.Core.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.AspNet.Identity.Owin.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Owin.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Owin.Security.Cookies.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Owin.Security.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Owin.Security.Facebook.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Owin.Security.Google.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Owin.Security.OAuth.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Owin.Security.Twitter.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Web.Infrastructure.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Newtonsoft.Json.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Owin.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\System.Web.Helpers.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\System.Web.Mvc.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\System.Web.Optimization.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\System.Web.Razor.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\System.Web.WebPages.Deployment.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\System.Web.WebPages.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\System.Web.WebPages.Razor.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\WebGrease.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Dapper.pdb
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Dapper.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\System.Web.Helpers.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\System.Web.Mvc.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\System.Web.Optimization.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\System.Web.Razor.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\System.Web.WebPages.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\System.Web.WebPages.Deployment.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\System.Web.WebPages.Razor.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Newtonsoft.Json.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Antlr3.Runtime.pdb
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\EntityFramework.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\EntityFramework.SqlServer.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.AspNet.Identity.Core.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.AspNet.Identity.Owin.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Owin.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Owin.Security.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Owin.Security.Facebook.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Owin.Security.Cookies.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Owin.Security.OAuth.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Owin.Security.Google.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Owin.Security.Twitter.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\obj\Debug\ShipOnline.csprojResolveAssemblyReference.cache
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\obj\Debug\ShipOnline.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\obj\Debug\ShipOnline.pdb
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\obj\Debug\ShipOnline.Resources.AdminLabel.resources
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\obj\Debug\ShipOnline.Resources.Message.resources
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\obj\Debug\ShipOnline.Resources.SideMenu.resources
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\obj\Debug\ShipOnline.csproj.GenerateResource.Cache
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\obj\Debug\ShipOnline.Resources.UserLabel.resources
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\BotDetect.dll
+D:\OneDrive\Code tham khao\ShipOnline\ShipOnline\bin\BotDetect.Web.Mvc.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\ShipOnline.dll.config
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\ShipOnline.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\ShipOnline.pdb
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Antlr3.Runtime.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\BotDetect.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\BotDetect.Web.Mvc.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Dapper.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\EntityFramework.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\EntityFramework.SqlServer.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.AspNet.Identity.Core.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.AspNet.Identity.Owin.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Owin.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Owin.Security.Cookies.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Owin.Security.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Owin.Security.Facebook.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Owin.Security.Google.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Owin.Security.OAuth.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Owin.Security.Twitter.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Web.Infrastructure.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Newtonsoft.Json.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Owin.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\System.Web.Helpers.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\System.Web.Mvc.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\System.Web.Optimization.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\System.Web.Razor.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\System.Web.WebPages.Deployment.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\System.Web.WebPages.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\System.Web.WebPages.Razor.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\WebGrease.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Dapper.pdb
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Dapper.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\System.Web.Helpers.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\System.Web.Mvc.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\System.Web.Optimization.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\System.Web.Razor.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\System.Web.WebPages.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\System.Web.WebPages.Deployment.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\System.Web.WebPages.Razor.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Newtonsoft.Json.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Antlr3.Runtime.pdb
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\EntityFramework.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\EntityFramework.SqlServer.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.AspNet.Identity.Core.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.AspNet.Identity.Owin.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Owin.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Owin.Security.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Owin.Security.Facebook.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Owin.Security.Cookies.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Owin.Security.OAuth.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Owin.Security.Google.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Owin.Security.Twitter.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\obj\Debug\ShipOnline.Resources.AdminLabel.resources
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\obj\Debug\ShipOnline.Resources.Message.resources
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\obj\Debug\ShipOnline.Resources.SideMenu.resources
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\obj\Debug\ShipOnline.Resources.UserLabel.resources
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\obj\Debug\ShipOnline.csproj.GenerateResource.Cache
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\obj\Debug\ShipOnline.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\obj\Debug\ShipOnline.pdb
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\itextsharp.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\RazorPDF.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\itextsharp.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\itextsharp.5.5.13.0.Fakes.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\itextsharp.5.5.13.0.Fakes.xml
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Rotativa.Core.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Rotativa.MVC.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\obj\Debug\ShipOnline.csprojResolveAssemblyReference.cache
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\itextsharp.5.5.13.0.Fakes.fakesconfig
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\bin\Microsoft.QualityTools.Testing.Fakes.dll
+D:\OneDrive\Code tham khao\ShipOnline - Copy\ShipOnline\obj\Debug\ShipOnline.csprojFakesResolveAssemblyReference.cache

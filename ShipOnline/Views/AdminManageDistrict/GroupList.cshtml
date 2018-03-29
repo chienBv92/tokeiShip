@@ -1,0 +1,324 @@
+﻿@using ShipOnline.Resources;
+@using ShipOnline.Models.Entity;
+@using ShipOnline.Models.Define;
+
+@model GroupAreaModel
+@{
+    ViewBag.Title = AdminLabel.GroupAreaListTitle;
+    Layout = "~/Views/Layout/_LayoutAdmin.cshtml";
+}
+
+<div id="GroupAreaList">
+    <div id="topContent">
+        <div id="title">@ViewBag.Title</div>
+        @using (Html.BeginForm("GroupList", "AdminManageDistrict", FormMethod.Post, new { id = "formSearchGroupArea", enctype = "multipart/form-data", @class = "form-horizontal" }))
+        {
+            <div id="searchArea" class="clearfix">
+                <div class="form-group">
+                    <label class="title-row">@AdminLabel.lblGroupName</label>
+                    @Html.TextBoxFor(m => m.GROUP_NAME, new { @class = "txt-w-250", maxlength = 100 })
+                </div>
+
+                <div class="form-group">
+                    <label class="title-row">@AdminLabel.lblAreaForUser </label>
+                    @*@foreach (var item in (SelectList)ViewBag.GetGroupForUser)
+                    {
+                        <label class="lbRadioBtn">
+                            @Html.RadioButtonFor(m => m.FOR_USER, item.Value)
+                            @item.Text
+                        </label>
+  
+                    }*@
+                    <input type="radio" id="Receive" name="FOR_USER" value="0" checked="checked"><label>Khu vực người nhận</label>
+                    <input type="radio" id="Sender" name="FOR_USER" value="1"> <label>Khu vực người gửi</label>
+                    @Html.Hidden("hdnForUser", @Model.FOR_USER)
+                </div>
+
+                <div class="form-group">
+                    <label class="title-row">@AdminLabel.lblAddress</label>
+                    @Html.DropDownListFor(m => m.CITY_CD, Model.CITY_LIST, new { @class = "margin-0 renderCity" })
+                    @Html.DropDownListFor(m => m.DISTRICT_CD_KEY, Model.DISTRICT_LIST, "", new { @class = "renderDistrict" })
+                    @Html.DropDownListFor(m => m.TOWN_CD_KEY, Model.TOWN_LIST, "", new { @class = "renderTown" })
+
+                    @Html.HiddenFor(m => m.DISTRICT_CD_KEY)
+                    @Html.HiddenFor(m => m.TOWN_CD_KEY)
+                    @Html.HiddenFor(m => m.DISTRICT_CD)
+                    @Html.HiddenFor(m => m.TOWN_CD)
+                </div>
+
+            </div>
+
+            <hr />
+            <div id="searchAction">
+                <div class="pull-right">
+                    <button type="button" id="btnSearch" class="btn btn-green"><i class="btn-icon btn-search-white">@AdminLabel.btnSearch</i></button>
+                    <button type="button" id="btnClear" class="btn btn-default"><i class="btn-icon btn-clear">@AdminLabel.btnClear</i></button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div id="registButton">
+        <form id="frGroupAreaEdit" method="POST" action="@Url.Action("GroupDistrictEdit", "AdminManageDistrict")">
+            <input type="hidden" id="hdnGroupCd" name="GroupCd" value="0" />
+        </form>
+
+        <button type="button" id="btnRegister" name="btnRegister" class="btn btn-orange"><i class="btn-icon btn-regist"></i>@AdminLabel.btnRegister</button>
+    </div>
+
+    <hr />
+
+    <div id="mainContent">
+        <table id="InfoTable" class="dataTable cellspacing= " 0">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>STT</th>
+                    <th>@AdminLabel.lblGroupName</th>
+                    <th>@AdminLabel.lblAreaForUser</th>
+                    <th>@AdminLabel.lblInsertDate</th>
+                    <th>@AdminLabel.lblUpdateDate</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<script>
+    var UrlGroupAreaRegister = '@Url.Action("GroupDistrictEdit", "AdminManageDistrict")';
+    var UrlGroupAreaList = '@Url.Action("GroupList", "AdminManageDistrict")';
+
+    var dataTable = null;
+    var sort_colum = 0;
+    var sort_type = 'asc';
+    var deletelink = "Xóa";
+    var GROUP_CD = 0;
+    var ORDER = 1;
+    var GROUP_NAME = 2;
+    var FOR_USER_TEXT = 3;
+    var INS_DATE = 4;
+    var UPD_DATE = 5;
+    var DELETE = 6;
+    var FOR_USER = 7;
+
+    var rows_checked_list = [];
+
+    $(function () {
+        ShipOnline.utility.bindDistrictExtend2($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+        ShipOnline.utility.bindTown($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+
+        var oSorting = {
+            "bSort": false
+        };
+
+        var oPaginate = {
+            "bPaginate": true,
+            "iDisplayLength": 10, // setup amount record
+            "bStateSave": false
+        };
+
+        var oServerSide = {
+            "bServerSide": true,
+            "sAjaxSource": '@Url.Action("GroupList", "AdminManageDistrict")',
+            "fnServerParams": serverParams,
+            "fnInitComplete": displayComplete,
+            "fnDrawCallback": drawCallback,
+            "autoWidth": false,
+            "info": false
+        };
+        // Content in table
+        var aoColumnDefs = [
+             { "sName": "GROUP_CD", "bVisible": false, "aTargets": [GROUP_CD] },
+             { "bSortable": false, "aTargets": [ORDER], "sWidth": "10%", "sClass": "cell_center order text-overflow", "sName": "ORDER" },
+             {
+                 "bSortable": false, "aTargets": [GROUP_NAME], "sWidth": "10%", "sClass": "cell_center",
+                 "mRender": function (data, type, full) { return buildActionLink(full[GROUP_CD], full[GROUP_NAME]); }
+             },
+             { "bSortable": false, "aTargets": [FOR_USER_TEXT], "sWidth": "20%", "sClass": "cell_center" },
+
+             { "bSortable": false, "aTargets": [INS_DATE], "sWidth": "10%", "sClass": "cell_center" },
+             { "bSortable": false, "aTargets": [UPD_DATE], "sWidth": "10%", "sClass": "cell_center" },
+
+             { "bSortable": false, "aTargets": [DELETE], "sWidth": "10%", "sClass": "cell_center", "mRender": function (data, type, full) { return bindDeleteElement(full[GROUP_CD], full[FOR_USER], 'delete-group-link btn btn-red', deletelink); } }
+
+        ];
+
+        // Tham so search input
+        function serverParams(aoData) {
+            aoData.push(
+                { "name": "GROUP_NAME", "value": $("#GROUP_NAME").val() },
+                { "name": "FOR_USER", "value": $("#hdnForUser").val() },
+
+                { "name": "CITY_CD", "value": $("#CITY_CD").val() },
+                { "name": "DISTRICT_CD", "value": $("#DISTRICT_CD").val() },
+                { "name": "TOWN_CD", "value": $("#TOWN_CD").val() },
+                { "name": "DISTRICT_CD_KEY", "value": $("#DISTRICT_CD_KEY").val() },
+                { "name": "TOWN_CD_KEY", "value": $("#TOWN_CD_KEY").val() }
+
+            );
+        }
+
+        function displayComplete(data) {
+            dataList = data.aaData;
+
+            if (sort_colum == 0) {
+                $('#InfoTable tr th:not(.sorting_disabled)').removeClass('sorting_asc sorting_desc').addClass('sorting').removeAttr('aria-sort');
+            }
+        }
+
+        function drawCallback() { }
+
+        function buildActionLink(id, content) {
+            var html = '';
+            {
+                html += '<a class="groupAreaEdit link" data-groupCd="' + id + '">' + content + '</a>';
+            }
+            return html;
+        }
+
+        function bindDeleteElement(id1, id2, className, label) {
+            return '<a class="' + className + '" data-groupCd="' + id1 + '" data-foruser="' + id2 + '">' + label + '</a>';
+        }
+
+        dataTable = CreateDataTable('#InfoTable', oSorting, oPaginate, oServerSide, aoColumnDefs);
+
+    });
+
+    $(document).off('#CITY_CD');
+    $(document).on('change', '#CITY_CD', function () {
+        //if (!iseiQ.utility.getDataByAjax(checkTimeoutUrl, null)) return;
+
+        $('.renderDistrict').val('');
+        $('.renderTown').val('');
+
+        ShipOnline.utility.bindDistrictExtend2($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+    });
+
+    $(document).off('#DISTRICT_CD_KEY');
+    $(document).on('change', '#DISTRICT_CD_KEY', function () {
+        //if (!iseiQ.utility.getDataByAjax(checkTimeoutUrl, null)) return;
+
+        $('.renderTown').val('');
+
+        ShipOnline.utility.bindTown($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+    });
+
+    $('input[name="FOR_USER"]').change(function () {
+        var check = $('input[name="FOR_USER"]:checked').val();
+        $("#FOR_USER").val(check);
+    });
+
+    $(function () {
+        $('[name="FOR_USER"][value="@Model.FOR_USER"]').prop('checked', true);
+    })
+
+    // Button Search
+    $(document).off('#btnSearch');
+    $(document).on('click', '#btnSearch', function () {
+        searchGroupArea();
+    });
+
+    function searchGroupArea() {
+        $("#CITY_CD").val($("#CITY_CD").val());
+
+        var districtCodeKey = $('#DISTRICT_CD_KEY').val();
+
+        if (districtCodeKey != null && districtCodeKey != "") {
+            var districtCd = parseInt(districtCodeKey.split('_')[1]);
+            $("#DISTRICT_CD").val(districtCd);
+        } else {
+            $("#DISTRICT_CD").val(0);
+        }
+
+        var townCodeKey = $('#TOWN_CD_KEY').val();
+
+        if (townCodeKey != null && townCodeKey != "") {
+            var townCd = parseInt(townCodeKey.split('_')[2]);
+            $("#TOWN_CD").val(townCd);
+        } else {
+            $("#TOWN_CD").val(0);
+        }
+
+        $("#hdnForUser").val($('[name="FOR_USER"]:checked').val());
+
+        dataTable.fnPageChange('first');
+    }
+
+    // Click Button Clear
+    $(document).off('#btnClear');
+    $(document).on('click', '#btnClear', function () {
+        $("#GROUP_NAME").val("");
+        $("#FOR_USER").val(0);
+        $('[name="FOR_USER"][value="@GroupForUser.ReceiveUser"]').prop('checked', true);
+
+        $("#CITY_CD").val(0);
+        $("#DISTRICT_CD").val(0);
+        $("#DISTRICT_CD_KEY").val('');
+        $('#TOWN_CD_KEY').val('');
+        $("#TOWN_CD").val(0);
+
+        $('.renderCity').val('');
+        $('.renderDistrict').val('');
+        $('.renderTown').val('');
+        ShipOnline.utility.bindDistrictExtend2($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+        ShipOnline.utility.bindTown($('.renderCity'), $('.renderDistrict'), $('.renderTown'));
+
+        searchGroupArea();
+    })
+
+    // Click redirect to Employee Register
+    $(document).off('#btnRegister');
+    $(document).on('click', '#btnRegister', function () {
+        window.location.href = UrlGroupAreaRegister; // Redirect to other Url
+
+    })
+    // click link edit
+    $(document).off('.groupAreaEdit');
+    $(document).on('click', '.groupAreaEdit', function () {
+        $('#hdnGroupCd').val($(this).data('groupcd'));
+
+        $('#frGroupAreaEdit').submit();
+    });
+
+    // Click link delete   delete-Account-link
+    $(document).off('.delete-group-link');
+    $(document).on('click', '.delete-group-link', function () {
+        //if (!ShipOnline.utility.getDataByAjax(checkTimeoutUrl, null)) return;
+
+        var groupCd = ($(this).data('groupcd'));
+        var forUser = $(this).data('foruser');
+
+        if (groupCd == '') return;
+
+        ShipOnline.utility.showConfirmModal('@string.Format(@Message.ConfirmDelete, "nhóm khu vực")', function (action) {
+            if (action) {
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: '@Url.Action("DeleteGroupArea")',
+                    data: { groupCd: groupCd, forUser: forUser },
+                    success: function (data) {
+                        ShipOnline.utility.showMessageModal("@string.Format(Message.DeleteSuccess)", true);
+                        dataTable.fnStandingRedraw();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        ShipOnline.utility.showMessageModal("@string.Format(Message.ConfirmDeleteError)", true);
+                    }
+                });
+            }
+        });
+    });
+
+</script>
+
+
+
+<style>
+    #GroupAreaList {
+        margin: 25px;
+    }
+</style>

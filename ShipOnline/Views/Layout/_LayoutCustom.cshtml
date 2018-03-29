@@ -1,0 +1,354 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ShipOnline.UtilityService.StringUtil.GetHtmlTitle(ViewBag.Title)</title>
+    <link href="~/Logo/iconxemay.ico" rel="shortcut icon" type="image/x-icon" />
+
+    <meta name="description" content="Dịch vụ chuyển hàng nhanh - tiết kiệm" />
+    <meta name="keywords" content="ship hàng nội thành" />
+
+    @Scripts.Render("~/bundles/jquery")
+    @RenderPage("~/Views/Shared/_CommonScript.cshtml")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/common")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @Scripts.Render("~/bundles/input")
+    @Scripts.Render("~/bundles/mainScript")
+    @Scripts.Render("~/bundles/dataTables")
+
+    @Scripts.Render("~/bundles/common")
+
+    @Scripts.Render("~/bundles/jquery/bootstrapPlugins")
+    @Scripts.Render("~/bundles/jquery/plugins/dragOn")
+    @RenderSection("scripts", required: false)
+    <link href="~/Content/Admin.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="DivTokeiShipCustom">
+        <div id="body" style="min-width: 1335px">
+            <div class="DivTop">
+                <div class="DivTopLogo">
+                    <a href="/trang-chu"><img class="img-logo-tokeiship" src="~/Logo/logo_hoa_don.svg" /></a>
+                </div>
+                <div class="DivTopRight">
+                    @using (Html.BeginForm("List", "OrderShip", FormMethod.Post, new { id = "formUserSearch", enctype = "multipart/form-data", @class = "form-horizontal" }))
+                    {
+                        <div class="DivTopRightTop">
+                            <span style="margin-right:5px; margin-left:35px">Từ:</span><input type="text" id="FROM_DATE" name="FROM_DATE" value="" class=" date ime-mode" maxlength=10 />
+                            <span style="margin-right:5px">Đến:</span>
+                            <input type="text" id="TO_DATE" name="TO_DATE" value="" class="date ime-mode" maxlength=10 />
+
+                            <input type="text" id="TEXT_SEARCH" name="TEXT_SEARCH" value="" placeholder="Nhập mã đơn hàng | Tên người nhận | Số điện thoại" class=""  maxlength=50 />
+
+                            <button type="button" id="btnClear" class="btn btn-default"><i class="btn-icon btn-clear">Xóa Tìm kiếm</i></button>
+                            <button type="button" id="btnSearch" class="btn btn-green"><i class="btn-icon btn-search-white">Tìm kiếm</i></button>
+
+                        </div>
+                        <div class="DivTopRightBottom">
+                            <div class="selectStatus">
+                                <div class="selectStatusText">
+                                    <div class="divStatus">
+                                        <input id="ORDER_STATUS_0" name="ORDER_STATUS" value="0" type="checkbox" checked="checked">
+                                        <label class="textDisp">Mới khởi tạo</label>
+                                        (<span class="count-Status-0">0</span>)
+                                    </div>
+                                    <div class="divStatus" style="width:120px">
+                                        <input id="ORDER_STATUS_1" name="ORDER_STATUS" value="1" type="checkbox">
+                                        <label class="textDisp">Đã duyệt</label>
+                                        (<span class="count-Status-1">0</span>)
+                                    </div>
+
+                                    <div class="divStatus" style="width:155px">
+                                        <input id="ORDER_STATUS_2" name="ORDER_STATUS" value="2" type="checkbox">
+                                        <label class="textDisp">Đã lấy hàng</label>
+                                        (<span class="count-Status-2">0</span>)
+                                    </div>
+
+                                    <div class="divStatus">
+                                        <input id="ORDER_STATUS_5" name="ORDER_STATUS" value="5" type="checkbox">
+                                        <label class="textDisp">Chờ giao lại</label>
+                                        (<span class="count-Status-5">0</span>)
+                                    </div>
+
+                                    <div class="divStatus">
+                                        <input id="ORDER_STATUS_4" name="ORDER_STATUS" value="4" type="checkbox">
+                                        <label class="textDisp">Đã giao</label>
+                                        (<span class="count-Status-4">0</span>)
+                                    </div>
+
+                                    <div class="divOtherSelect">
+                                        <a class="clickOther">Trạng thái khác</a>
+                                        <ul class="menu">
+                                            <li>
+                                                <input id="ORDER_STATUS_3" name="ORDER_STATUS" value="3" type="checkbox">
+                                                <label class="textDisp">Đang giao hàng</label>
+                                                (<span class="count-Status-3">0</span>)
+                                            </li>
+                                            <li>
+                                                <input id="ORDER_STATUS_6" name="ORDER_STATUS" value="6" type="checkbox">
+                                                <label class="textDisp">Hoàn hàng</label>
+                                                (<span class="count-Status-6">0</span>)
+                                            </li>
+                                            <li>
+                                                <input id="ORDER_STATUS_7" name="ORDER_STATUS" value="7" type="checkbox">
+                                                <label class="textDisp">Đã hoàn hàng</label>
+                                                (<span class="count-Status-7">0</span>)
+                                            </li>
+                                            <li>
+                                                <input id="ORDER_STATUS_8" name="ORDER_STATUS" value="8" type="checkbox">
+                                                <label class="textDisp">Hoàn tất</label>
+                                                (<span class="count-Status-8">0</span>)
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="divStatusAll">
+                                        <input id="ORDER_STATUS_9" name="ORDER_STATUS" value="9" type="checkbox">
+                                        <label class="textDisp">Chờ COD</label>
+                                        (<span class="count-Status-9">0</span>)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+            <div class="DivTokeiShipBody">
+                @RenderBody()
+
+                <div id="loadingPopup" class="TB_overlayBG">
+                    <div id="TB_load"><img src="/Images/loading.gif"></div>
+                </div>
+                <div class="modal" id="showPopup" role="dialog" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-popup" role="document" style="width: 1200px">
+                        <div class="modal-content">
+                            <div class="modal-body main-popup">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        //$(window).on('load', function () {
+        //    $('#slider').nivoSlider(
+        //        {
+        //            effect: 'random',
+        //            controlNav: false, // 1,2,3... navigation
+        //            directionNav: false // Next & Prev navigation
+
+        //        });
+        //});
+    </script>
+</body>
+</html>
+<script>
+    $(document).off('#ORDER_STATUS_');
+    $(document).on('change', '#ORDER_STATUS_', function () {
+        if ($('#ORDER_STATUS_').is(":checked")) {
+            $('#ORDER_STATUS_HIDDEN').val('1');
+        } else {
+            $('#ORDER_STATUS_HIDDEN').val('0');
+        }
+    });
+    //$(document).ready(function(){
+    //    $('.menu li').hover(function(){
+    //        $(this).find('ul:first').slideDown(500);
+    //    }, function(){
+    //        $(this).find('ul:first').hide(200);
+    //    });
+    //});
+    $(document).off('.clickOther');
+    $(document).on('click', '.clickOther', function () {
+        $('.selectStatus .menu').toggle();
+    });
+    var Now = new Date();
+    var nowDate = $.datepicker.formatDate("dd/mm/yy", new Date());
+    var fromDate = new Date(Now.getFullYear(), Now.getMonth(), Now.getDate() - 15);
+    var fromDateText = $.datepicker.formatDate("dd/mm/yy", new Date(Now.getFullYear(), Now.getMonth(), Now.getDate() - 15));
+    $('#FROM_DATE').attr('value', fromDateText).val(fromDateText);
+    $('#TO_DATE').attr('value', nowDate).val(nowDate);
+
+    $(function () {
+        $('input[name="FROM_DATE"]').datepicker({
+            singleDatePicker: true,
+            autoclose: true,
+            dateFormat: 'dd/MM/yyyy',
+            setDate: fromDate
+        });
+        
+
+        $('input[name="TO_DATE"]').datepicker({
+            singleDatePicker: true,
+            autoclose: true,
+            dateFormat: 'dd/MM/yyyy',
+        });
+        
+    });
+
+</script>
+
+<style>
+    #DivTokeiShipCustom {
+        margin: 0px;
+    }
+
+    .ui-datepicker-today {
+        background: #fcc !important;
+    }
+
+        #DivTokeiShipCustom .DivTop {
+            height: 75px;
+            width: 100%;
+        }
+
+            #DivTokeiShipCustom .DivTop .DivTopLogo {
+                height: 75px;
+                width: 300px;
+                float: left;
+            }
+
+                #DivTokeiShipCustom .DivTop .DivTopLogo .img-logo-tokeiship {
+                    height: 72px;
+                    width: 280px;
+                    margin-left:10px;
+                }
+
+            #DivTokeiShipCustom .DivTop .DivTopRight {
+                height: 75px;
+                width: 1044px;
+                float: right;
+                display: inline-block;
+                background: #0B5147;
+            }
+
+                #DivTokeiShipCustom .DivTop .DivTopRight .DivTopRightTop {
+                    height: 34px;
+                    width: 1044px;
+                    float: right;
+                    display: inline-block;
+                    margin-top: 7px;
+                    color: white;
+                    background-color: #0B5147;
+                }
+
+                #DivTokeiShipCustom .DivTop .DivTopRight .date {
+                    width:110px;
+                }
+                #DivTokeiShipCustom .DivTop .DivTopRight #btnCreatNew {
+                    margin-right: 30px;
+                }
+
+                #DivTokeiShipCustom .DivTop .DivTopRight #TEXT_SEARCH {
+                    width: 380px !important;
+                    max-width: 380px !important;
+                    margin-left: 20px;
+                }
+
+                #DivTokeiShipCustom .DivTop .DivTopRight #btnSearch {
+                    margin-right: 10px;
+                    margin-left:10px;
+                    margin-bottom:0px;
+                    float:right;
+                }
+
+                #DivTokeiShipCustom .DivTop .DivTopRight #btnClear {
+                    margin-right: 10px;
+                    margin-left: 40px;
+                    margin-bottom: 0px;
+                    float: right;
+                }
+
+                #DivTokeiShipCustom .DivTop .DivTopRight .DivTopRightBottom {
+                    height: 35px;
+                    width: 1044px;
+                    float: right;
+                    display: inline-block;
+                    background: #0B5147;
+                }
+
+                    #DivTokeiShipCustom .DivTop .DivTopRight .DivTopRightBottom .selectStatus {
+                        margin-left: 10px;
+                    }
+
+                        #DivTokeiShipCustom .DivTop .DivTopRight .DivTopRightBottom .selectStatus .selectStatusText {
+                            margin-top: 7px;
+                            color: white;
+                        }
+
+                        #DivTokeiShipCustom .DivTop .DivTopRight .DivTopRightBottom .selectStatus .divStatus {
+                            width: 140px;
+                            display: inline-block;
+                        }
+
+                        #DivTokeiShipCustom .DivTop .DivTopRight .DivTopRightBottom .selectStatus .selectStatusText .textDisp {
+                            font-weight: normal;
+                        }
+
+                        #DivTokeiShipCustom .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu {
+                            text-decoration: none;
+                            display: none;
+                            margin-top: 10px;
+                        }
+
+                            #DivTokeiShipCustom .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu ul {
+                                font-weight: normal;
+                                position: absolute;
+                                top: 42px;
+                                left: 0px;
+                            }
+
+                            #DivTokeiShipCustom .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu li {
+                                float: left;
+                                width: 165px;
+                                line-height: 1.5;
+                                position: relative;
+                                background: #8537A5;
+                                padding-top: 5px;
+                                padding-left: 10px;
+                                z-index:100;
+                            }
+
+                                #DivTokeiShipCustom .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu li:hover {
+                                    background: #00ff21;
+                                    cursor: pointer;
+                                }
+
+                            #DivTokeiShipCustom .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu ul ul {
+                                left: 150px;
+                                top: 0px;
+                            }
+
+                        #DivTokeiShipCustom .DivTop .DivTopRight .DivTopRightBottom .selectStatus .divOtherSelect {
+                            width: 110px;
+                            display: inline-block;
+                        }
+
+                        #DivTokeiShipCustom .DivTop .DivTopRight .DivTopRightBottom .selectStatus .divStatusAll {
+                            width: 200px;
+                            display: inline-block;
+                        }
+
+                        #DivTokeiShipCustom .DivTop .DivTopRight .DivTopRightBottom .selectStatus .divOtherSelect .clickOther {
+                            text-decoration: none;
+                            cursor: pointer;
+                            color: white;
+                        }
+
+    .clickOther a:hover {
+        color: #4cff00;
+    }
+</style>

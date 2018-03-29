@@ -1,0 +1,291 @@
+﻿@using ShipOnline.Resources;
+@using ShipOnline.Models.Entity;
+@using ShipOnline.Models.Define;
+
+@model DistrictModel
+@{
+    ViewBag.Title = AdminLabel.DistrictListTitle;
+    Layout = "~/Views/Layout/_LayoutAdmin.cshtml";
+}
+
+<div id="CityList">
+    <div id="topContent">
+        <div id="title">@AdminLabel.DistrictListTitle</div>
+        @using (Html.BeginForm("Search", "AdminManageDistrict", FormMethod.Post, new { id = "formDistrictSearch", enctype = "multipart/form-data", @class = "form-horizontal" }))
+        {
+            <div id="searchArea" class="clearfix">
+                <div class="form-group">
+                    <label class="title-row">@AdminLabel.CityName</label>
+                    @Html.DropDownListFor(m => m.CITY_CD, Model.CITY_LIST, new { @class = "width-200 padding-left-30  margin-0" })
+
+                </div>
+
+                <div class="form-group">
+                    <label class="title-row">@AdminLabel.DistricName</label>
+                    @Html.TextBoxFor(m => m.DISTRICT_NAME, new { @class = "txt-w-250", @style = "ime-mode: auto;", maxlength = 50 })
+
+                </div>
+                <div class="form-group">
+                    @Html.Label(@AdminLabel.lblInside, new { @for = "INSIDE", @class = "title-row" })
+                    @if (String.IsNullOrEmpty(Model.INSIDE) || Model.INSIDE.Equals("0"))
+                    {
+                        <input id="INSIDE" type="checkbox">
+                        <input id="INSIDE_HIDDEN" name="INSIDE" type="hidden" value="0">
+                    }
+                    else
+                    {
+                        <input id="INSIDE" type="checkbox" checked="checked">
+                        <input id="INSIDE_HIDDEN" name="INSIDE" type="hidden" value="1">
+                    }
+                </div>
+
+                <div class="form-group">
+                    @Html.Label(@AdminLabel.DeleteFlg, new { @for = "DEL_FLG", @class = "title-row" })
+                    @if (String.IsNullOrEmpty(Model.DEL_FLG) || Model.DEL_FLG.Equals("0"))
+                    {
+                        <input id="DEL_FLG" type="checkbox">
+                        <input id="DEL_FLG_HIDDEN" name="DEL_FLG" type="hidden" value="0">
+                    }
+                    else
+                    {
+                        <input id="DEL_FLG" type="checkbox" checked="checked">
+                        <input id="DEL_FLG_HIDDEN" name="DEL_FLG" type="hidden" value="1">
+                    }
+                </div>
+            </div>
+
+            <hr />
+            <div id="searchAction">
+                <div class="pull-right">
+                    <button type="button" id="btnSearch" class="btn btn-green"><i class="btn-icon btn-search-white">@AdminLabel.btnSearch</i></button>
+                    <button type="button" id="btnClear" class="btn btn-default"><i class="btn-icon btn-clear">@AdminLabel.btnClear</i></button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div id="registButton">
+        <form id="frUpdateDistrict" method="POST" action="@Url.Action("DistrictEdit", "AdminManageDistrict")">
+            <input type="hidden" id="hdnCityCd" name="CityCd" value="0" />
+            <input type="hidden" id="hdnDistrictCd" name="DistrictCd" value="0" />
+        </form>
+
+        <button type="button" id="btnRegister" name="btnRegister" class="btn btn-orange"><i class="btn-icon btn-regist"></i>@AdminLabel.btnRegister</button>
+    </div>
+
+    <hr />
+
+    <div id="mainContent">
+        <table id="InfoTable" class="dataTable cellspacing= " 0">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>STT</th>
+                    <th>@AdminLabel.CityName</th>
+                    <th>@AdminLabel.DistricCode</th>
+                    <th>@AdminLabel.DistricName</th>
+                    <th>@AdminLabel.CityDispaly</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<script>
+    var UrlDistrictRegister = '@Url.Action("DistrictEdit", "AdminManageDistrict")';
+    var UrlDistrictList = '@Url.Action("DistrictList", "AdminManageDistrict")';
+
+    var dataTable = null;
+    var sort_colum = 0;
+    var sort_type = 'asc';
+    var deletelink = "Xóa";
+    var CITY_CD = 0;
+    var ORDER = 1;
+    var CITY_NAME = 2;
+    var DISTRICT_CD = 3;
+    var DISTRICT_NAME = 4;
+    var STATUS = 5;
+    var DELETE = 6;
+
+    var rows_checked_list = [];
+
+    $(function () {
+        var oSorting = {
+            "bSort": false
+        };
+
+        var oPaginate = {
+            "bPaginate": true,
+            "iDisplayLength": 5, // setup amount record
+            "bStateSave": false
+        };
+
+        var oServerSide = {
+            "bServerSide": true,
+            "sAjaxSource": '@Url.Action("List", "AdminManageDistrict")',
+            "fnServerParams": serverParams,
+            "fnInitComplete": displayComplete,
+            "fnDrawCallback": drawCallback,
+            "autoWidth": false,
+            "info": false
+        };
+        // Content in table
+        var aoColumnDefs = [
+             { "sName": "CITY_CD", "bVisible": false, "aTargets": [CITY_CD] },
+             { "bSortable": false, "aTargets": [ORDER], "sWidth": "10%", "sClass": "cell_center order text-overflow", "sName": "ORDER" },
+              { "bSortable": false, "aTargets": [CITY_NAME], "sWidth": "10%", "sClass": "cell_center" },
+              { "bSortable": false, "aTargets": [DISTRICT_CD], "sWidth": "20%", "sClass": "cell_center" },
+             {
+                 "bSortable": false, "aTargets": [DISTRICT_NAME], "sWidth": "10%", "sClass": "cell_center",
+                 "mRender": function (data, type, full) { return buildActionLink(full[CITY_CD], full[DISTRICT_CD], full[DISTRICT_NAME]); }
+             },
+
+             { "bSortable": false, "aTargets": [STATUS], "sWidth": "10%", "sClass": "cell_center" },
+
+             { "bSortable": false, "aTargets": [DELETE], "sWidth": "10%", "sClass": "cell_center", "mRender": function (data, type, full) { return bindDeleteElement(full[CITY_CD], full[DISTRICT_CD], 'delete-city-link btn btn-red', deletelink); } }
+
+        ];
+
+        // Tham so search input
+        function serverParams(aoData) {
+            aoData.push(
+                { "name": "CITY_CD", "value": $("#CITY_CD").val() },
+                { "name": "DISTRICT_NAME", "value": $("#DISTRICT_NAME").val() },
+                { "name": "DEL_FLG", "value": $("#DEL_FLG_HIDDEN").val() },
+                { "name": "INSIDE", "value": $("#INSIDE_HIDDEN").val() }
+            );
+        }
+
+        function displayComplete(data) {
+            dataList = data.aaData;
+
+            if (sort_colum == 0) {
+                $('#InfoTable tr th:not(.sorting_disabled)').removeClass('sorting_asc sorting_desc').addClass('sorting').removeAttr('aria-sort');
+            }
+        }
+
+        function drawCallback() { }
+
+        function buildActionLink(id1, id2, content) {
+            var html = '';
+            {
+                html += '<a class="DistrictEdit districtCd link" data-citycd="' + id1 + '" data-districtcd="' + id2 + '">' + content + '</a>';
+            }
+            return html;
+        }
+
+        function bindDeleteElement(id1, id2, className, label) {
+            return '<a class="' + className + '" data-citycd="' + id1 + '" data-districtcd="' + id2 + '">' + label + '</a>';
+        }
+
+        dataTable = CreateDataTable('#InfoTable', oSorting, oPaginate, oServerSide, aoColumnDefs);
+
+    });
+
+    $(function () {
+        $("#DEL_FLG").prop('checked', false).change();
+        $('#DEL_FLG_HIDDEN').val('0');
+
+        $("#INSIDE").prop('checked', false).change();
+        $('#INSIDE_HIDDEN').val('0');
+    });
+
+    $(document).off('#DEL_FLG');
+    $(document).on('change', '#DEL_FLG', function () {
+        if ($('#DEL_FLG').is(":checked")) {
+            $('#DEL_FLG_HIDDEN').val('1');
+        } else {
+            $('#DEL_FLG_HIDDEN').val('0');
+        }
+    });
+
+    $(document).off('#INSIDE');
+    $(document).on('change', '#INSIDE', function () {
+        if ($('#INSIDE').is(":checked")) {
+            $('#INSIDE_HIDDEN').val('1');
+        } else {
+            $('#INSIDE_HIDDEN').val('0');
+        }
+    });
+
+    // Button Search
+    $(document).off('#btnSearch');
+    $(document).on('click', '#btnSearch', function () {
+        searchDistrict();
+    });
+
+    function searchDistrict() {
+
+        dataTable.fnPageChange('first');
+    }
+
+    // Click Button Clear
+    $(document).off('#btnClear');
+    $(document).on('click', '#btnClear', function () {
+        $("#DEL_FLG").prop('checked', false).change();
+        $('#DEL_FLG_HIDDEN').val('0');
+        $("#INSIDE").prop('checked', false).change();
+        $('#INSIDE_HIDDEN').val('0');
+
+        $("#CITY_CD").val(0);
+        $("#DISTRICT_NAME").val("");
+
+        searchDistrict();
+    })
+
+    // Click redirect to Employee Register
+    $(document).off('#btnRegister');
+    $(document).on('click', '#btnRegister', function () {
+        window.location.href = UrlDistrictRegister; // Redirect to other Url
+
+    })
+    // click link edit
+    $(document).off('.DistrictEdit');
+    $(document).on('click', '.DistrictEdit', function () {
+        $('#hdnCityCd').val($(this).data('citycd'));
+        $('#hdnDistrictCd').val($(this).data('districtcd'));
+
+        $('#frUpdateDistrict').submit();
+    });
+
+    // Click link delete   delete-Account-link
+    $(document).off('.delete-city-link');
+    $(document).on('click', '.delete-city-link', function () {
+        //if (!ShipOnline.utility.getDataByAjax(checkTimeoutUrl, null)) return;
+        var cityCd = $(this).data('citycd');
+        var districtCd = $(this).data('districtcd');
+
+        if (cityCd == '') return;
+
+        ShipOnline.utility.showConfirmModal('@string.Format(@Message.ConfirmDelete, "quận/huyện")', function (action) {
+            if (action) {
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: '@Url.Action("DeleteDistrict")',
+                    data: { CITY_CD: cityCd, DISTRICT_CD: districtCd },
+                    success: function (data) {
+                        ShipOnline.utility.showMessageModal("@string.Format(Message.DeleteSuccess)", true);
+                        dataTable.fnStandingRedraw();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        ShipOnline.utility.showMessageModal("@string.Format(Message.ConfirmDeleteError)", true);
+                    }
+                });
+            }
+        });
+    });
+
+</script>
+
+
+
+<style>
+    #CityList {
+        margin: 25px;
+    }
+</style>

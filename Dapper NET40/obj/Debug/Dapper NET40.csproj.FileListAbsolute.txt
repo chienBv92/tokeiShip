@@ -1,0 +1,12 @@
+D:\I-seiq\Dapper NET40\bin\Debug\Dapper.xml
+D:\I-seiq\Dapper NET40\bin\Debug\Dapper.dll
+D:\I-seiq\Dapper NET40\bin\Debug\Dapper.pdb
+D:\I-seiq\Dapper NET40\obj\Debug\Dapper NET40.csprojResolveAssemblyReference.cache
+D:\I-seiq\Dapper NET40\obj\Debug\Dapper.dll
+D:\I-seiq\Dapper NET40\obj\Debug\Dapper.pdb
+D:\Shigoto\EmployeeV2\EmployeeV2\Dapper NET40\bin\Debug\Dapper.xml
+D:\Shigoto\EmployeeV2\EmployeeV2\Dapper NET40\bin\Debug\Dapper.dll
+D:\Shigoto\EmployeeV2\EmployeeV2\Dapper NET40\bin\Debug\Dapper.pdb
+D:\Shigoto\EmployeeV2\EmployeeV2\Dapper NET40\obj\Debug\Dapper NET40.csprojResolveAssemblyReference.cache
+D:\Shigoto\EmployeeV2\EmployeeV2\Dapper NET40\obj\Debug\Dapper.dll
+D:\Shigoto\EmployeeV2\EmployeeV2\Dapper NET40\obj\Debug\Dapper.pdb

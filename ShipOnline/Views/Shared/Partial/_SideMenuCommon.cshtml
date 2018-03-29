@@ -1,0 +1,68 @@
+﻿@using ShipOnline.Resources;
+@using ShipOnline.Models;
+
+@{
+    //var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    //var authorityList = currentUser.AuthorityList as List<string>;
+    bool IsSmallMenu = Page.IsSmallMenu;
+
+    <li class="parent-node">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="500" aria-expanded="false">
+            <i class="btn-icon btn-agreement"></i>
+            @if (!IsSmallMenu)
+            {
+                <span>@SideMenu.ManageOrderShip</span>
+            }
+        </a>
+        @RenderPage("_SideMenuPartialAdminOrderShip.cshtml")
+    </li>
+
+    <li class="parent-node">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="500" aria-expanded="false">
+            <i class="btn-icon btn-agreement"></i>
+            @if (!IsSmallMenu)
+            {
+                <span>@SideMenu.ManageUser</span>
+            }
+        </a>
+        @RenderPage("_SideMenuPartialManageUser.cshtml")
+    </li>
+
+    <li class="parent-node">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="500" aria-expanded="false">
+            <i class="btn-icon btn-agreement"></i>
+            @if (!IsSmallMenu)
+            {
+                <span>@SideMenu.ManageCity</span>
+            }
+        </a>
+        @RenderPage("_SideMenuPartialManageAddress.cshtml")
+    </li>
+
+        <li class="parent-node">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="500" aria-expanded="false">
+            <i class="btn-icon btn-agreement"></i>
+            @if (!IsSmallMenu)
+            {
+                <span>@SideMenu.ManageAdvertisement</span>
+            }
+        </a>
+        @RenderPage("_SideMenuPartialManageAdvertisement.cshtml")
+    </li>
+
+    <li class="parent-node" id="linkLogout">
+        <a href='@Url.Action("Logout","UserAccount")' title="@SideMenu.LogOut" class=" dropdown-toggle">
+            <i class="btn-icon btn-logout"></i>
+        </a>
+    </li>
+
+}
+<script>
+    $('.parent-node').mouseover(function () {
+        $(this).addClass('open');
+    });
+    $('.parent-node').mouseout(function () {
+        $(this).removeClass('open');
+    });
+
+</script>

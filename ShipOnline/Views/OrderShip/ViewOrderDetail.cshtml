@@ -1,0 +1,394 @@
+﻿@using ShipOnline.Models.Define;
+
+@model OrderShipModel
+@{
+    ViewBag.Title = "HÓA ĐƠN VẬN CHUYỂN";
+}
+
+<div id="PopupGetInforOrder">
+
+    <div class="modal-body">
+        <div class="title">
+            HÓA ĐƠN VẬN CHUYỂN
+        </div>
+        <div class="headerLeft">
+            <div class="headerLeftTop">
+                <div class="logo-tokeiShip"><img class="img-logo" src="/Logo/logo_hoa_don.svg" /></div>
+                <div class="shipCode">Mã đơn: @Model.SHIP_CODE</div>
+                <div class="StoreCode"><span>Mã lưu kho: @Model.RECEIVED_CITY<span>. </span>@Model.RECEIVED_DISTRICT<span>. </span>@Model.RECEIVED_TOWN<span>. </span>@Model.RECEIVE_HOUR_FROM<span>-</span>@Model.RECEIVE_HOUR_TO<span>_</span>@Model.RECEIVE_TIME_DATE.ToString("dd")</span></div>
+            </div>
+            <div class="headerLeftBottom">
+                <table class="tblLeftBottom">
+                    <tr class="headerTable">
+                        <td class="col-table-1 center">Trạng thái đơn hàng</td>
+                        <td class="col-table-2 center">Nhân viên tiếp nhận</td>
+                        <td class="col-table-3 center">Dự kiến giao hàng</td>
+                    </tr>
+                    <tr class="contentTable">
+                        <td class="col-table-1 center">@Model.ORDER_STATUS_TEXT</td>
+                        <td class="col-table-2 center">@Model.ACCEPTANCE_NAME</td>
+                        <td class="col-table-3 center">@Model.RECEIVE_HOUR_FROM<span>h -</span>@Model.RECEIVE_HOUR_TO<span>h Ngày: </span>@Model.RECEIVE_TIME_DATE.ToString("dd/MM/yyyy")</td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+        <div class="headerRight">
+
+        </div>
+
+        <div id="MainTable">
+            <table class="tblMainTable">
+                <tr class="headerMainTable">
+                    <td class="col-table-1 center"></td>
+                    <td class="col-table-2 center">THÔNG TIN NGƯỜI GỬI</td>
+                    <td class="col-table-3 center">THÔNG TIN NGƯỜI NHẬN</td>
+                </tr>
+                <tr class="contentTable row-1">
+                    <td class="col-table-1 center text-bold">Họ tên</td>
+                    <td class="col-table-2 center">@Model.SENDER_NAME</td>
+                    <td class="col-table-3 center">@Model.RECEIVED_NAME</td>
+                </tr>
+                <tr class="contentTable row-2">
+                    <td class="col-table-1 center text-bold">Số điện thoại</td>
+                    <td class="col-table-2 center">@Model.SENDER_PHONE</td>
+                    <td class="col-table-3 center">@Model.RECEIVED_PHONE</td>
+                </tr>
+                <tr class="contentTable row-3">
+                    <td class="col-table-1 center text-bold">Địa chỉ</td>
+                    <td class="col-table-2 center">
+                        @if (Model.SENDER_ADDRESS != null && Model.SENDER_ADDRESS.Length > 45)
+                        {
+                            <div title="@Model.SENDER_ADDRESS">@Model.SENDER_ADDRESS.Substring(45) ...</div>
+                        }
+                        else
+                        {
+                            <div title="@Model.SENDER_ADDRESS">@Model.SENDER_ADDRESS</div>
+                        }
+
+                    <div>@Model.SENDER_TOWN_NAME, @Model.SENDER_DISTRICT_NAME, @Model.SENDER_CITY_NAME</div>
+                    </td>
+                    <td class="col-table-3 center">
+                        @if (Model.RECEIVED_ADDRESS != null && Model.RECEIVED_ADDRESS.Length > 45)
+                        {
+                            <div title="@Model.RECEIVED_ADDRESS">@Model.RECEIVED_ADDRESS.Substring(45) ...</div>
+                        }
+                        else
+                        {
+                            <div title="@Model.RECEIVED_ADDRESS">@Model.RECEIVED_ADDRESS</div>
+                        }
+                    <div>@Model.RECEIVE_TOWN_NAME, @Model.RECEIVE_DISTRICT_NAME, @Model.RECEIVE_CITY_NAME</div></td>
+                </tr>
+                <tr class="contentTable row-4">
+                    <td class="col-table-1 center text-bold">Cước phí</td>
+                    <td class="col-table-2 center">
+                        @if (Model.USER_PAYMENT == "0")
+                        {
+                            <div class="money-product">@Model.PRICE_SHIP.ToString("#,##0") VND</div>
+                        }
+                        else
+                        {
+                           <div class="money-product">0 VND</div>
+                        }
+                    </td>
+                    <td class="col-table-3 center">
+                        @if (Model.USER_PAYMENT == "1")
+                        {
+                            <div class="money-product">@Model.PRICE_SHIP.ToString("#,##0") VND</div>
+                        }
+                        else
+                        {
+                            <div class="money-product">0 VND</div>
+                        }
+                    </td>
+                </tr>
+                <tr class="contentTable row-5">
+                    <td class="col-table-1 center"></td>
+                    <td class="col-table-2 "><div class="title-money">Thu hộ: </div> <div class="money-product">@Model.PRICE_PRODUCT.Value.ToString("#,##0") VND</div></td>
+                    <td class="col-table-3 "><div class="title-money">Giá hàng: </div> <div class="money-product">@Model.PRICE_PRODUCT.Value.ToString("#,##0") VND</div></td>
+                </tr>
+                <tr class="contentTable row-6 text-bold">
+                    <td class="col-table-1 center">Tổng</td>
+                    <td class="col-table-2 center">COD</td>
+                    <td class="col-table-3"><div class="title-money">Thu: </div> <div class="money-product">@Model.RECEIVE_TOTAL_MONEY.ToString("#,##0") VND</div></td>
+                </tr>
+            </table>
+        </div>
+        <div id="TableBottom">
+            <table class="tblTableBottom">
+                <tr class="headerTable text-bold">
+                    <td class="col-table-1 center">Tên hàng hóa</td>
+                    <td class="col-table-2 center">Khối lượng</td>
+                    <td class="col-table-3 center">Kích thước</td>
+                    <td class="col-table-4 center">Loại hàng</td>
+                    <td class="col-table-5 center">Giao hàng</td>
+                </tr>
+                <tr class="contentTable row-1">
+                    <td class="col-table-1 center" title="@Model.PRODUCT_NAME">@Model.PRODUCT_NAME</td>       
+                    
+                    <td class="col-table-2 center">@Model.PRODUCT_WEIGHT_TEXT</td>
+                    <td class="col-table-3 center">@Model.PRODUCT_SIZE_TEXT</td>
+                    <td class="col-table-4 center">@Model.PRODUCT_TYPE_TEXT</td>
+                    <td class="col-table-5 center">@Model.OTHER_REQUIREMENT_TEXT</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="action-button-bottom divButton">
+            @Html.AntiForgeryToken()
+            <button type="button" class="btn btn-default" id="btnClosePopup"><i class="btn-icon btn-back">Đóng</i></button>
+            <button type="button" class="btn btn-orange" id="btnCancelOrder"><i class="btn-icon btn-edit">Hủy đơn</i></button>
+            <button type="button" class="btn btn-orange " id="btnEditOrder"><i class="btn-icon btn-edit">Chỉnh sửa</i></button>
+            <button type="button" class="btn btn-orange " id="btnPrintOrder"><i class="btn-icon btn-edit">In hóa đơn</i></button>
+            <button type="button" class="btn btn-orange " id="btnCreatNewOrder"><i class="btn-icon btn-edit">Tạo đơn mới</i></button>
+            <button type="button" class="btn btn-orange " id="btnManageOrder"><i class="btn-icon btn-edit">Quản lí đơn hàng</i></button>
+        </div>
+        <form id="frmPrintPdf" target="_blank" method="post" action="@Url.Action("PrintOrderCustom")">
+            <input id="ORDER_ID_STRING" type="hidden" name="ORDER_ID_STRING" value="" />
+        </form>
+        @Html.HiddenFor(m => m.ORDER_ID, new { @class = "hdnOrderId" })
+    </div>
+</div>
+
+<style>
+    #PopupGetInforOrder .title {
+        color: #70AD47;
+        font-weight: bold;
+        font-size: 18px;
+        text-align: center;
+    }
+
+    #PopupGetInforOrder .headerLeft {
+        width: 750px;
+        height: 120px;
+        display: inline-block;
+    }
+
+    #PopupGetInforOrder .headerLeftTop {
+        width: 750px;
+        height: 70px;
+        display: inline-block;
+    }
+
+    #PopupGetInforOrder .headerLeft .logo-tokeiShip {
+        width: 220px;
+        height: 60px;
+        display: inline-block;
+    }
+
+    #PopupGetInforOrder .headerLeft .img-logo {
+        width: 220px;
+    }
+
+    #PopupGetInforOrder .headerLeft .shipCode {
+        width: 220px;
+        display: inline-block;
+        border: 1px solid #70AD47;
+        padding: 5px;
+        text-align: center;
+        font-weight: bold;
+        margin-left: 30px;
+    }
+
+    #PopupGetInforOrder .headerLeft .StoreCode {
+        display: inline-block;
+        border: 1px solid #70AD47;
+        padding: 5px;
+        text-align: center;
+        font-weight: bold;
+        margin-left: 20px;
+    }
+
+    #PopupGetInforOrder .headerLeftBottom {
+        width: 750px;
+        height: 60px;
+        display: inline-block;
+    }
+
+    #PopupGetInforOrder .tblLeftBottom {
+        width: 750px;
+        height: 60px;
+        border-top: 2px solid #808080;
+        display: inline-block;
+    }
+
+    .tblLeftBottom .headerTable {
+        font-weight: bold;
+        line-height: 33px;
+    }
+
+    .tblLeftBottom .col-table-1 {
+        width: 220px;
+    }
+
+    .tblLeftBottom .col-table-2 {
+        width: 230px;
+    }
+
+    .line-30 {
+        line-height: 30px;
+    }
+
+    .tblLeftBottom .col-table-3 {
+        width: 300px;
+    }
+
+    .tblLeftBottom .contentTable {
+        background: #EDEDED;
+        color: #70AD47;
+        line-height: 21px;
+    }
+
+    #PopupGetInforOrder .headerRight {
+        background: #ffd800;
+        width: 140px;
+        height: 130px;
+        display: inline-block;
+        float: right;
+    }
+
+    .tblMainTable {
+        border: 1px solid #70AD47;
+        margin-top:5px;
+    }
+
+        .tblMainTable .headerMainTable {
+            font-weight: bold;
+            line-height: 33px;
+            background: #70AD47;
+            color: white;
+        }
+
+        .tblMainTable .col-table-1 {
+            width: 190px;
+            border: 1px solid #70AD47;
+        }
+
+        .tblMainTable .col-table-2 {
+            width: 350px;
+            border: 1px solid #70AD47;
+        }
+
+        .tblMainTable .col-table-3 {
+            width: 350px;
+            border: 1px solid #70AD47;
+        }
+
+        .tblMainTable .row-1, .tblMainTable .row-2 {
+            line-height: 23px;
+        }
+
+        .tblMainTable .row-3 {
+            max-height: 34px;
+            white-space: pre-line;
+            text-overflow: ellipsis;
+        }
+
+        .tblMainTable .row-4, .tblMainTable .row-5 {
+            line-height: 23px;
+            color: #70AD47;
+        }
+
+        .tblMainTable .row-6 {
+            line-height: 34px;
+            color: red;
+        }
+        .tblMainTable .money-product {
+            width: 140px;
+            text-align: right;
+            float: right;
+            margin-right: 120px;
+        }
+        .tblMainTable .title-money {
+            margin-left: 10px;
+            width: 70px;
+            float: left;
+        }
+        /*////*/
+    .tblTableBottom {
+        margin-top:10px;
+        border: 1px solid;
+    }
+        .tblTableBottom .headerTable {
+            font-weight: bold;
+            line-height: 33px;
+        }
+
+        .tblTableBottom .col-table-1 {
+            width: 340px;
+            border: 1px solid;
+        }
+
+         .tblTableBottom .col-table-2 {
+            width: 100px;
+            border: 1px solid;
+        }
+        .tblTableBottom .col-table-3 {
+            width: 150px;
+            border: 1px solid;
+        }
+         .tblTableBottom .col-table-4, .tblTableBottom .col-table-5{
+            width: 150px;
+            border: 1px solid;
+        }
+
+        .tblTableBottom .row-1 {
+            line-height: 24px;
+            border:1px solid #000000;
+        }
+        .text-bold{
+            font-weight:bold;
+        }
+
+    #showPopup .modal-popup.viewOrderDetail-screen {
+        width: 950px !important;
+        margin-top: 10px;
+        height: 560px!important;
+        margin-right: 190px;
+    }
+
+    #showPopup .main-popup {
+        overflow-y: hidden;
+    }
+
+    #PopupGetInforOrder .text-green {
+        color: #70AD47;
+    }
+    #PopupGetInforOrder .divButton {
+       margin-top:20px;
+    }
+
+    #showPopup .viewOrderDetail-popup{
+        height:550px!important;
+    }
+</style>
+
+<script>
+    var OrderShipListUrl = '@Url.Action("OrderShipList", "OrderShip")';
+
+    $('#showPopup .modal-popup').addClass('viewOrderDetail-screen');
+    $('#showPopup .main-popup').addClass('viewOrderDetail-popup');
+
+    $("#PopupGetInforOrder #btnClosePopup").click(function () {
+        ShipOnline.utility.ClosePopup();
+    });
+
+    $(document).off('#btnCreatNewOrder');
+    $(document).on('click', '#btnCreatNewOrder', function () {
+        ShipOnline.utility.ClosePopup();
+    });
+
+    $(document).off('#btnManageOrder');
+    $(document).on('click', '#btnManageOrder', function () {
+
+        window.location.href = OrderShipListUrl;
+    });
+
+    $(document).off('#btnPrintOrder');
+    $(document).on('click', '#btnPrintOrder', function () {
+        var orderId = $('#ORDER_ID').val();
+        $('#ORDER_ID_STRING').val(orderId.toString());
+
+        $('#frmPrintPdf').submit();
+    });
+</script>

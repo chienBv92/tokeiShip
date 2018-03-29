@@ -1,0 +1,54 @@
+﻿@using ShipOnline.Resources;
+@using ShipOnline.Models;
+
+@{
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+}
+
+<script>
+
+    // Constant common
+    var Constant = {
+        REGEX_PASSWORD: /[^a-zA-Z0-9\!\""\#\$\%\&\'\(\)\=\~\|\-\_\^\@@\[\;\:\]\,\.\/\`\{\+\*\}\>\?]/g,
+        CONFIRM_LOGOUT: 'Bạn muốn thoát?',
+        CONFIRM_Login: 'Bạn muốn thoát?',
+        ERR_REQUIRED: ' không được để trống!',
+        MENU_STATE_COOKIE: 'MENU_STATE_COOKIE',
+        CITY_ZIP_CD_LENGTH: '6',
+        CITY_NAME_LENGTH: '50',
+        MIN_INPUT_PASS: '6',
+        MAX_INPUT_PASS: '32',
+        MIN_USER_ACCOUNT_LENGTH: '6',
+        MAX_USER_ACCOUNT_LENGTH: '100',
+        MAX_USER_NAME_LENGTH: '50',
+        PRODUCT_NAME: 'Tên hàng hóa',
+        Max_PRICE_PRODUCT: 30000000,
+        DATE_FORMAT: 'dd/mm/yyyy'
+    }
+
+
+    var HTTPCode = {
+        TIME_OUT: 419,
+        NOT_FOUND: 404,
+        // request has been fulfilled and resulted in a new resource being created
+        CREATED: 201,
+        // response for successful HTTP requests
+        SUCCESSFUL: 200,
+        INTERNAL_SERVER_ERROR: 500
+    }
+
+    var KeyCode = {
+        ShiftKey: 16,
+        HomeKey: 36,
+        SelectKey: 41
+    }
+
+
+    function GetPath(path) {
+        var contentPath = '@Url.Content("~/")';
+        var fullPath = path.replace(/^~/, '');
+        fullPath = fullPath.replace(/^\//, contentPath);
+        return fullPath;
+    }
+
+</script>

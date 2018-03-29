@@ -1,0 +1,301 @@
+﻿@using ShipOnline.Resources;
+@using ShipOnline.Models.Entity;
+@using ShipOnline.Models.Define;
+
+@model TownModel
+@{
+    ViewBag.Title = AdminLabel.TownListTitle;
+    Layout = "~/Views/Layout/_LayoutAdmin.cshtml";
+}
+
+<div id="CityList">
+    <div id="topContent">
+        <div id="title">@AdminLabel.TownListTitle</div>
+        @using (Html.BeginForm("Search", "AdminManageTown", FormMethod.Post, new { id = "formTownSearch", enctype = "multipart/form-data", @class = "form-horizontal" }))
+        {
+            <div id="searchArea" class="clearfix">
+                <div class="form-group">
+                    <label class="title-row">@AdminLabel.CityName</label>
+                    @Html.DropDownListFor(m => m.CITY_CD_SEARCH, Model.CITY_LIST, new { @class = "margin-0 renderCity" })
+                    @Html.DropDownListFor(m => m.DISTRICT_CD_KEY, Model.DISTRICT_LIST, "", new { @class = "renderDistrict" })
+                    <input id="DISTRICT_CD_SEARCH" name="DISTRICT_CD_SEARCH" type="hidden" value="0">
+                </div>
+
+                <div class="form-group">
+                    <label class="title-row">@AdminLabel.TownName</label>
+                    @Html.TextBoxFor(m => m.TOWN_NAME, new { @class = "txt-w-250", @style = "ime-mode: auto;", maxlength = 50 })
+
+                </div>
+                <div class="form-group">
+                    @Html.Label(@AdminLabel.DeleteFlg, new { @for = "DEL_FLG", @class = "title-row" })
+                    @if (String.IsNullOrEmpty(Model.DEL_FLG) || Model.DEL_FLG.Equals("0"))
+                    {
+                        <input id="DEL_FLG" type="checkbox">
+                        <input id="DEL_FLG_HIDDEN" name="DEL_FLG" type="hidden" value="0">
+                    }
+                    else
+                    {
+                        <input id="DEL_FLG" type="checkbox" checked="checked">
+                        <input id="DEL_FLG_HIDDEN" name="DEL_FLG" type="hidden" value="1">
+                    }
+                </div>
+            </div>
+
+            <hr />
+            <div id="searchAction">
+                <div class="pull-right">
+                    <button type="button" id="btnSearch" class="btn btn-green"><i class="btn-icon btn-search-white">@AdminLabel.btnSearch</i></button>
+                    <button type="button" id="btnClear" class="btn btn-default"><i class="btn-icon btn-clear">@AdminLabel.btnClear</i></button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div id="registButton">
+        <form id="frUpdateTown" method="POST" action="@Url.Action("TownEdit", "AdminManageTown")">
+            <input type="hidden" id="hdnCityCd" name="CityCd" value="0" />
+            <input type="hidden" id="hdnDistrictCd" name="DistrictCd" value="0" />
+            <input type="hidden" id="hdnTownCd" name="TownCd" value="0" />
+        </form>
+
+        <button type="button" id="btnRegister" name="btnRegister" class="btn btn-orange"><i class="btn-icon btn-regist"></i>@AdminLabel.btnRegister</button>
+    </div>
+
+    <hr />
+
+    <div id="mainContent">
+        <table id="InfoTable" class="dataTable cellspacing= " 0">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>STT</th>
+                    <th>@AdminLabel.CityName</th>
+                    <th>@AdminLabel.DistricName</th>
+                    <th>@AdminLabel.TownCode</th>
+                    <th>@AdminLabel.TownName</th>
+                    <th>@AdminLabel.CityDispaly</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<script>
+    var UrlTownRegister = '@Url.Action("TownEdit", "AdminManageTown")';
+    var UrlTownList = '@Url.Action("TownList", "AdminManageTown")';
+
+    var dataTable = null;
+    var sort_colum = 0;
+    var sort_type = 'asc';
+    var deletelink = "Xóa";
+    var CITY_CD = 0;
+    var DISTRICT_CD = 1;
+    var ORDER = 2;
+    var CITY_NAME = 3;
+    var DISTRICT_NAME = 4;
+    var TOWN_CD = 5;
+    var TOWN_NAME = 6;
+    var STATUS = 7;
+    var DELETE = 8;
+
+    var rows_checked_list = [];
+
+    $(function () {
+        var oSorting = {
+            "bSort": false
+        };
+
+        var oPaginate = {
+            "bPaginate": true,
+            "iDisplayLength": 5, // setup amount record
+            "bStateSave": false
+        };
+
+        var oServerSide = {
+            "bServerSide": true,
+            "sAjaxSource": '@Url.Action("List", "AdminManageTown")',
+            "fnServerParams": serverParams,
+            "fnInitComplete": displayComplete,
+            "fnDrawCallback": drawCallback,
+            "autoWidth": false,
+            "info": false
+        };
+        // Content in table
+        var aoColumnDefs = [
+             { "sName": "CITY_CD", "bVisible": false, "aTargets": [CITY_CD] },
+             { "sName": "DISTRICT_CD", "bVisible": false, "aTargets": [DISTRICT_CD] },
+             { "bSortable": false, "aTargets": [ORDER], "sWidth": "10%", "sClass": "cell_center order text-overflow", "sName": "ORDER" },
+             { "bSortable": false, "aTargets": [CITY_NAME], "sWidth": "10%", "sClass": "cell_center" },
+             { "bSortable": false, "aTargets": [DISTRICT_NAME], "sWidth": "20%", "sClass": "cell_center" },
+             { "bSortable": false, "aTargets": [TOWN_CD], "sWidth": "10%", "sClass": "cell_center" },
+             {
+                 "bSortable": false, "aTargets": [TOWN_NAME], "sWidth": "20%", "sClass": "cell_center",
+                 "mRender": function (data, type, full) { return buildActionLink(full[CITY_CD], full[DISTRICT_CD], full[TOWN_CD], full[TOWN_NAME]); }
+             },
+
+             { "bSortable": false, "aTargets": [STATUS], "sWidth": "10%", "sClass": "cell_center" },
+
+             { "bSortable": false, "aTargets": [DELETE], "sWidth": "10%", "sClass": "cell_center", "mRender": function (data, type, full) { return bindDeleteElement(full[CITY_CD], full[DISTRICT_CD], full[TOWN_CD], 'delete-town-link btn btn-red', deletelink); } }
+
+        ];
+
+        // Tham so search input
+        function serverParams(aoData) {
+            aoData.push(
+                { "name": "CITY_CD_SEARCH", "value": $("#CITY_CD_SEARCH").val() },
+                { "name": "DISTRICT_CD_SEARCH", "value": $("#DISTRICT_CD_SEARCH").val() },
+                { "name": "TOWN_NAME", "value": $("#TOWN_NAME").val() },
+                { "name": "DEL_FLG", "value": $("#DEL_FLG_HIDDEN").val() }
+            );
+        }
+
+        function displayComplete(data) {
+            dataList = data.aaData;
+
+            if (sort_colum == 0) {
+                $('#InfoTable tr th:not(.sorting_disabled)').removeClass('sorting_asc sorting_desc').addClass('sorting').removeAttr('aria-sort');
+            }
+        }
+
+        function drawCallback() { }
+
+        function buildActionLink(id1, id2, id3, content) {
+            var html = '';
+            {
+                html += '<a class="TownEdit townCd link" data-citycd="' + id1 + '" data-districtcd="' + id2 + '" data-towncd="' + id3 + '">' + content + '</a>';
+            }
+            return html;
+        }
+
+        function bindDeleteElement(id1, id2, id3, className, label) {
+            return '<a class="' + className + '" data-citycd="' + id1 + '" data-districtcd="' + id2 + '" data-towncd="' + id3 + '">' + label + '</a>';
+        }
+
+        dataTable = CreateDataTable('#InfoTable', oSorting, oPaginate, oServerSide, aoColumnDefs);
+
+    });
+
+    $(function () {
+        $("#DEL_FLG").prop('checked', false).change();
+        $('#DEL_FLG_HIDDEN').val('0');
+
+        $('.renderCity').val('');
+        $('.renderDistrict').val('');
+        ShipOnline.utility.bindDistrictExtend($('.renderCity'), $('.renderDistrict'));
+    });
+
+    $(document).off('#DEL_FLG');
+    $(document).on('change', '#DEL_FLG', function () {
+        if ($('#DEL_FLG').is(":checked")) {
+            $('#DEL_FLG_HIDDEN').val('1');
+        } else {
+            $('#DEL_FLG_HIDDEN').val('0');
+        }
+    });
+
+    // Button Search
+    $(document).off('#btnSearch');
+    $(document).on('click', '#btnSearch', function () {
+        var districtCodeKey = $('#DISTRICT_CD_KEY').val();
+        $("#CITY_CD_SEARCH").val($("#CITY_CD_SEARCH option:selected").val());
+        $("#DISTRICT_CD_SEARCH").val($("#DISTRICT_CD_SEARCH").val());
+        if (districtCodeKey != null && districtCodeKey != "") {
+            var districtCd = parseInt(districtCodeKey.split('_')[1]);
+            $("#DISTRICT_CD_SEARCH").val(districtCd);
+        } else {
+            $("#DISTRICT_CD_SEARCH").val(0);
+        }
+
+
+        searchTown();
+    });
+
+    function searchTown() {
+
+        dataTable.fnPageChange('first');
+    }
+
+    $(document).off('#CITY_CD_SEARCH');
+    $(document).on('change', '#CITY_CD_SEARCH', function () {
+        //if (!iseiQ.utility.getDataByAjax(checkTimeoutUrl, null)) return;
+
+        $('.renderDistrict').val('');
+
+        ShipOnline.utility.bindDistrictExtend($('.renderCity'), $('.renderDistrict'));
+    });
+
+    // Click Button Clear
+    $(document).off('#btnClear');
+    $(document).on('click', '#btnClear', function () {
+        $("#DEL_FLG").prop('checked', false).change();
+        $('#DEL_FLG_HIDDEN').val('0');
+        $("#CITY_CD_SEARCH").val(0);
+        $("#DISTRICT_CD_SEARCH").val(0);
+        $("#DISTRICT_CD_KEY").val('');
+        $("#TOWN_NAME").val("");
+
+        ShipOnline.utility.bindDistrictExtend($('.renderCity'), $('.renderDistrict'));
+
+
+        searchTown();
+    })
+
+    // Click redirect to Employee Register
+    $(document).off('#btnRegister');
+    $(document).on('click', '#btnRegister', function () {
+        window.location.href = UrlTownRegister; // Redirect to other Url
+
+    })
+    // click link edit
+    $(document).off('.TownEdit');
+    $(document).on('click', '.TownEdit', function () {
+        $('#hdnCityCd').val($(this).data('citycd'));
+        $('#hdnDistrictCd').val($(this).data('districtcd'));
+        $('#hdnTownCd').val($(this).data('towncd'));
+
+        $('#frUpdateTown').submit();
+    });
+
+    // Click link delete   delete-Account-link
+    $(document).off('.delete-town-link');
+    $(document).on('click', '.delete-town-link', function () {
+        //if (!ShipOnline.utility.getDataByAjax(checkTimeoutUrl, null)) return;
+        var cityCd = $(this).data('citycd');
+        var districtCd = $(this).data('districtcd');
+        var townCd = $(this).data('towncd');
+
+        if (cityCd == '') return;
+
+        ShipOnline.utility.showConfirmModal('@string.Format(@Message.ConfirmDelete, "xã/phường")', function (action) {
+            if (action) {
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: '@Url.Action("DeleteTown")',
+                    data: { CITY_CD: cityCd, DISTRICT_CD: districtCd, TOWN_CD: townCd },
+                    success: function (data) {
+                        ShipOnline.utility.showMessageModal("@string.Format(Message.DeleteSuccess)", true);
+                        dataTable.fnStandingRedraw();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        ShipOnline.utility.showMessageModal("@string.Format(Message.ConfirmDeleteError)", true);
+                    }
+                });
+            }
+        });
+    });
+
+</script>
+
+
+
+<style>
+    #CityList {
+        margin: 25px;
+    }
+</style>

@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+
+    <meta name="viewport" content="width=device-width" charset="utf-8" />
+    <title>@ViewBag.Title</title>
+
+    @Scripts.Render("~/bundles/jquery")
+    @RenderPage("~/Views/Shared/_CommonScript.cshtml")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/common")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @Scripts.Render("~/bundles/input")
+    @Scripts.Render("~/bundles/mainScript")
+    @Scripts.Render("~/bundles/dataTables")
+
+    @Scripts.Render("~/bundles/common")
+
+    @Scripts.Render("~/bundles/jquery/bootstrapPlugins")
+    @Scripts.Render("~/bundles/jquery/plugins/dragOn")
+
+    @*@Scripts.Render("~/bundles/jquery/plugins/dragOnSelect")*@
+
+    @if (ViewContext.RouteData.Values["controller"].ToString() != "Login")
+    {
+        @Scripts.Render("~/bundles/loadingPlugin")
+    }
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function () {            
+            window.onload = function () {
+                                
+            }
+        });
+    </script>
+    @RenderSection("scripts", required: false)
+</head>
+<body>    
+    <div id="body" style="min-width: 600px">
+        @RenderBody()
+    </div>
+    <div class="modal" id="showPopup" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-popup" role="document" style="width: 1200px">
+            <div class="modal-content">
+                <div class="modal-body main-popup">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="loadingPopup" class="TB_overlayBG">
+        <div id="TB_load"><img src="/Images/loadingAnimation.gif"></div>
+    </div>
+</body>
+</html>

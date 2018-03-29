@@ -1,0 +1,17 @@
+﻿{
+    "sProcessing": "",
+    "sLengthMenu": "_MENU_ Page",
+    "sZeroRecords": "there aren't data。",
+    "sInfo": "Total _TOTAL_ From _START_ To～ _END_ display",
+    "sInfoEmpty": "",
+    "sInfoFiltered": "（Total _MAX_ record）",
+    "sInfoPostFix": "",
+    "sSearch": "Search:",
+    "sUrl": "",
+    "oPaginate": {
+        "sFirst": "First",
+        "sPrevious": "<i class='btn-previous'></i>",
+        "sNext": "<i class='btn-next'></i>",
+        "sLast": "Last"
+    }
+}

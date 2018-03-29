@@ -1,0 +1,27 @@
+﻿@using ShipOnline.Resources;
+@using ShipOnline.Models;
+
+@{
+    //var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    //var authorityList = currentUser.AuthorityList as List<string>;
+}
+
+<ul class="dropdown-menu">
+    <b class="caret"></b>
+
+    <li><a href='@Url.Action("CityList", "AdminManageCity")'><i class="fa fa-angle-right pull-left"></i>Danh sách tỉnh- thành phố</a></li>
+
+    <li><a href='@Url.Action("CityEdit", "AdminManageCity")'><i class="fa fa-angle-right pull-left"></i>Đăng kí tỉnh/ thành phố</a></li>
+
+    <li><a href='@Url.Action("DistrictList", "AdminManageDistrict")'><i class="fa fa-angle-right pull-left"></i>Danh sách các quận huyện</a></li>
+
+    <li><a href='@Url.Action("DistrictEdit", "AdminManageDistrict")'><i class="fa fa-angle-right pull-left"></i>Đăng kí quận huyện</a></li>
+
+    <li><a href='@Url.Action("TownList", "AdminManageTown")'><i class="fa fa-angle-right pull-left"></i>Danh sách xã, phường</a></li>
+
+    <li><a href='@Url.Action("TownEdit", "AdminManageTown")'><i class="fa fa-angle-right pull-left"></i>Đăng kí xã, phường</a></li>
+
+    <li><a href='@Url.Action("GroupList", "AdminManageDistrict")'><i class="fa fa-angle-right pull-left"></i>Danh sách nhóm quận</a></li>
+
+    <li><a href='@Url.Action("GroupDistrictEdit", "AdminManageDistrict")'><i class="fa fa-angle-right pull-left"></i>Đăng kí nhóm quận</a></li>
+</ul>

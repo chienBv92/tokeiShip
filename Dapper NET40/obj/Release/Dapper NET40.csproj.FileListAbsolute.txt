@@ -4,3 +4,9 @@ D:\I-seiq\Dapper NET40\bin\Release\Dapper.pdb
 D:\I-seiq\Dapper NET40\obj\Release\Dapper.dll
 D:\I-seiq\Dapper NET40\obj\Release\Dapper.pdb
 D:\I-seiq\Dapper NET40\obj\Release\Dapper NET40.csprojResolveAssemblyReference.cache
+D:\TokeiShip\Dapper NET40\bin\Release\Dapper.xml
+D:\TokeiShip\Dapper NET40\bin\Release\Dapper.dll
+D:\TokeiShip\Dapper NET40\bin\Release\Dapper.pdb
+D:\TokeiShip\Dapper NET40\obj\Release\Dapper NET40.csprojResolveAssemblyReference.cache
+D:\TokeiShip\Dapper NET40\obj\Release\Dapper.dll
+D:\TokeiShip\Dapper NET40\obj\Release\Dapper.pdb

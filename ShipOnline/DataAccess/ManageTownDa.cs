@@ -8,6 +8,7 @@ using ShipOnline.Models.Extend;
 using ShipOnline.Resources;
 using SystemSetup.UtilityServices.PagingHelper;
 using System.Text;
+using ShipOnline.UtilityService;
 
 namespace ShipOnline.DataAccess
 {
@@ -44,6 +45,7 @@ namespace ShipOnline.DataAccess
             //Check create new customer
             StringBuilder sqlinsert = new StringBuilder();
             model.DEL_FLG = DeleteFlag.NON_DELETE;
+            model.INS_DATE = Utility.GetCurrentDateTime();
 
             sqlinsert.Append(@" 
                     INSERT INTO [MstTown] 
@@ -51,16 +53,16 @@ namespace ShipOnline.DataAccess
                         ,[DISTRICT_CD]
                         ,[TOWN_CD]
                         ,[TOWN_NAME]
-                        ,[DSP_ORDER]
                         ,[DEL_FLG]
+                        ,[INS_DATE]
                         ,[STATUS])
                     VALUES
                         (@CITY_CD,
                         @DISTRICT_CD,
                         @TOWN_CD,
                         @TOWN_NAME,
-                        @DSP_ORDER,
                         @DEL_FLG,
+                        @INS_DATE,
                         @STATUS)");
 
             result = base.DbAdd(sqlinsert.ToString(), model);
@@ -74,12 +76,13 @@ namespace ShipOnline.DataAccess
             //Check create new customer
             StringBuilder sqlinsert = new StringBuilder();
             model.DEL_FLG = DeleteFlag.NON_DELETE;
+            model.UPD_DATE = Utility.GetCurrentDateTime();
 
             sqlinsert.Append(@" 
                     UPDATE [dbo].[MstTown]
                     SET [TOWN_NAME] = @TOWN_NAME
-                    ,[DSP_ORDER] = @DSP_ORDER
                     ,[DEL_FLG] = @DEL_FLG
+                    ,[UPD_DATE] = @UPD_DATE
                     ,[STATUS] = @STATUS
                     WHERE [CITY_CD] = @CITY_CD_HIDDEN AND DISTRICT_CD = @DISTRICT_CD_HIDDEN AND TOWN_CD = @TOWN_CD_HIDDEN");
 
@@ -118,7 +121,7 @@ namespace ShipOnline.DataAccess
                 sql.Append(" AND    (A.TOWN_NAME LIKE @TOWN_NAME)");
             }
 
-            sql.Append(" ORDER BY CITY_NAME, DISTRICT_NAME, TOWN_NAME");
+            sql.Append(" ORDER BY CITY_NAME asc, DISTRICT_NAME asc, TOWN_NAME asc, UPD_DATE desc");
 
             int lower = dt.iDisplayStart + 1;
             int upper = dt.iDisplayStart + dt.iDisplayLength;

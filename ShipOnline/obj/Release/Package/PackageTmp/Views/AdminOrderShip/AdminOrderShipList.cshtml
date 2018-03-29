@@ -2,7 +2,7 @@
 @using ShipOnline.Models.Entity;
 @using ShipOnline.Models.Define;
 
-@model OrderShipCondition
+@model AdminOrderList
 @{
     ViewBag.Title = AdminLabel.OrderShipListTitle;
     Layout = "~/Views/Layout/_LayoutAdmin.cshtml";
@@ -10,12 +10,17 @@
 
 }
 
-<div id="OrderShipList">
+<div id="AdminOrderShipList">
     <div class="DivTop">
         <div class="DivTopRight">
             @using (Html.BeginForm("List", "OrderShip", FormMethod.Post, new { id = "formUserSearch", enctype = "multipart/form-data", @class = "form-horizontal" }))
             {
                 <div class="DivTopRightTop">
+                    <span>Khu vực người nhận  </span>
+                    @Html.DropDownListFor(m => m.GROUP_CD_SENDER, Model.GROUP_CD_SENDER_LIST, new { @class = "margin-left-15 renderCity height-30" })
+                    <span>Khu vực người nhận  </span>
+                    @Html.DropDownListFor(m => m.GROUP_CD_RECEIVE, Model.GROUP_CD_RECEIVE_LIST, new { @class = "margin-left-15 renderCity height-30" })
+                    @Html.DropDownListFor(m => m.PRODUCT_TYPE, new SelectList(Product_Type.Items, "Key", "Value"), new { @class = "product_type" })
                     <span style="margin-right:5px; margin-left:35px">Từ:</span><input type="text" id="FROM_DATE" name="FROM_DATE" value="" class=" date ime-mode" maxlength=10 />
                     <span style="margin-right:5px">Đến:</span>
                     <input type="text" id="TO_DATE" name="TO_DATE" value="" class="date ime-mode" maxlength=10 />
@@ -95,6 +100,8 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="DivTopRightBottom"></div>
             }
 
         </div>
@@ -126,7 +133,7 @@
                 <input id="ORDER_ID_STRING" type="hidden" name="ORDER_ID_STRING" value="" />
             </form>
         </div>
-        @Html.HiddenFor(m => m.ORDER_STATUS_LIST, new { @class = "orderShipList" })
+        @Html.HiddenFor(m => m.ORDER_STATUS_LIST, new { @class = "AdminOrderShipList" })
         @Html.HiddenFor(m => m.FROM_DATE, new { @class = "hdnFromDate" })
         @Html.HiddenFor(m => m.TO_DATE, new { @class = "" })
         @Html.HiddenFor(m => m.TEXT_SEARCH, new { @class = "" })
@@ -602,7 +609,7 @@
 
 
 <style>
-    #OrderShipList {
+    #AdminOrderShipList {
         margin: 0px;
     }
 
@@ -610,18 +617,18 @@
         background: #fcc !important;
     }
 
-    #OrderShipList .DivTop {
+    #AdminOrderShipList .DivTop {
         height: 85px;
         width: 100%;
     }
-        #OrderShipList .DivTop .DivTopRight {
+        #AdminOrderShipList .DivTop .DivTopRight {
             height: 85px;
             float: right;
             display: inline-block;
             background: #0B5147;
         }
 
-            #OrderShipList .DivTop .DivTopRight .DivTopRightTop {
+            #AdminOrderShipList .DivTop .DivTopRight .DivTopRightTop {
                 height: 34px;
                 /*float: right;*/
                 display: inline-block;
@@ -629,33 +636,33 @@
                 color: white;
             }
 
-            #OrderShipList .DivTop .DivTopRight .date {
+            #AdminOrderShipList .DivTop .DivTopRight .date {
                 width: 110px;
             }
 
-            #OrderShipList .DivTop .DivTopRight #btnCreatNew {
+            #AdminOrderShipList .DivTop .DivTopRight #btnCreatNew {
                 margin-right: 30px;
             }
 
-            #OrderShipList .DivTop .DivTopRight #TEXT_SEARCH {
+            #AdminOrderShipList .DivTop .DivTopRight #TEXT_SEARCH {
                 width: 325px !important;
                 max-width: 325px !important;
                 margin-left: 20px;
             }
 
-            #OrderShipList .DivTop .DivTopRight #btnSearch {
+            #AdminOrderShipList .DivTop .DivTopRight #btnSearch {
                 margin-right: 10px;
                 margin-left: 10px;
                 margin-bottom: 0px;
                 float: right;
             }
 
-            #OrderShipList .DivTop .DivTopRight #btnClear {
+            #AdminOrderShipList .DivTop .DivTopRight #btnClear {
                 margin-bottom: 0px;
                 float: right;
             }
 
-            #OrderShipList .DivTop .DivTopRight .DivTopRightBottom {
+            #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom {
                 height: 35px;
                 width: 1044px;
                 float: right;
@@ -663,38 +670,38 @@
                 background: #0B5147;
             }
 
-                #OrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus {
+                #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus {
                     margin-left: 10px;
                 }
 
-                    #OrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .selectStatusText {
+                    #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .selectStatusText {
                         margin-top: 7px;
                         color: white;
                     }
 
-                    #OrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .divStatus {
+                    #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .divStatus {
                         width: 140px;
                         display: inline-block;
                     }
 
-                    #OrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .selectStatusText .textDisp {
+                    #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .selectStatusText .textDisp {
                         font-weight: normal;
                     }
 
-                    #OrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu {
+                    #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu {
                         text-decoration: none;
                         display: none;
                         margin-top: 10px;
                     }
 
-                        #OrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu ul {
+                        #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu ul {
                             font-weight: normal;
                             position: absolute;
                             top: 42px;
                             left: 0px;
                         }
 
-                        #OrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu li {
+                        #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu li {
                             float: left;
                             width: 165px;
                             line-height: 1.5;
@@ -705,27 +712,27 @@
                             z-index: 100;
                         }
 
-                            #OrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu li:hover {
+                            #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu li:hover {
                                 background: #00ff21;
                                 cursor: pointer;
                             }
 
-                        #OrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu ul ul {
+                        #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .menu ul ul {
                             left: 150px;
                             top: 0px;
                         }
 
-                    #OrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .divOtherSelect {
+                    #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .divOtherSelect {
                         width: 110px;
                         display: inline-block;
                     }
 
-                    #OrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .divStatusAll {
+                    #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .divStatusAll {
                         width: 200px;
                         display: inline-block;
                     }
 
-                    #OrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .divOtherSelect .clickOther {
+                    #AdminOrderShipList .DivTop .DivTopRight .DivTopRightBottom .selectStatus .divOtherSelect .clickOther {
                         text-decoration: none;
                         cursor: pointer;
                         color: white;
@@ -735,7 +742,7 @@
         color: #4cff00;
     }
 
-    #OrderShipList #divResultLeft {
+    #AdminOrderShipList #divResultLeft {
         float: left;
         width: 300px;
         min-height: 565px;
@@ -743,36 +750,37 @@
         color: white;
     }
 
-    #OrderShipList #divResulRight {
+    #AdminOrderShipList #divResulRight {
         float: right;
-        width: 1044px;
+        width: 100%;
+        margin:20px;
         min-height: 500px;
     }
 
-        #OrderShipList #divResulRight #mainContent {
+        #AdminOrderShipList #divResulRight #mainContent {
             /*margin: 20px;*/
         }
 
-            #OrderShipList #divResulRight #mainContent #InfoTable {
+            #AdminOrderShipList #divResulRight #mainContent #InfoTable {
                 width: 100%;
             }
 
-    #OrderShipList .col-left {
+    #AdminOrderShipList .col-left {
         float: left;
         width: 45%;
     }
 
-        #OrderShipList .col-left tr {
+        #AdminOrderShipList .col-left tr {
             height: 43px;
         }
 
-    #OrderShipList .col-right {
+    #AdminOrderShipList .col-right {
         float: left;
         margin-left: -1px;
         max-width: 55%;
     }
 
-        #OrderShipList .col-right tr {
+        #AdminOrderShipList .col-right tr {
             height: 43px;
         }
 
@@ -876,22 +884,22 @@
         overflow-x: hidden;
     }
 
-    #OrderShipList #btnExportCsv {
+    #AdminOrderShipList #btnExportCsv {
         float: left;
         margin-left: 20px;
     }
 
-    #OrderShipList #btnCreatNew {
+    #AdminOrderShipList #btnCreatNew {
         float: left;
         margin-left: 20px;
     }
 
-    #OrderShipList #btnPrintPDF {
+    #AdminOrderShipList #btnPrintPDF {
         float: left;
         margin-left: 20px;
     }
 
-    #OrderShipList .dataTables_info {
+    #AdminOrderShipList .dataTables_info {
         margin-left: 20px;
     }
 </style>

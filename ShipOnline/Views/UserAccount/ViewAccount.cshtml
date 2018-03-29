@@ -1,0 +1,93 @@
+﻿@using ShipOnline.Resources;
+@using ShipOnline.Models.Entity;
+@using ShipOnline.Models.Define;
+
+@model UserAccountModel
+@{
+    ViewBag.Title = AdminLabel.UserViewTittle;
+    Layout = "~/Views/Layout/_LayoutMain.cshtml";
+}
+
+<div id="RegisterUser" class="edit-screen">
+    <div id="title" class="title">@ViewBag.Title</div>
+    <input id="USER_ID_HIDDEN" name="USER_ID_HIDDEN" type="hidden" value="@Model.USER_ID">
+
+    @Html.HiddenFor(m => m.DEL_FLG, new { @class = "sp-id" })
+    <div class="Content">
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.lblEmail:</label>
+            <span>@Model.USER_EMAIL</span>
+        </div>
+
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.lblUserName:</label>
+            <span>@Model.USER_NAME</span>
+        </div>
+
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.lblShopName:</label>
+            <span>@Model.SHOP_NAME</span>
+        </div>
+
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.lblArea:</label>
+            <span>@Area.Items[@Model.AREA]</span>
+        </div>
+
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.lblAddress:</label>
+            <span>@Model.CITY_NAME</span>/
+            <span>@Model.DISTRICT_NAME</span>/
+            <span>@Model.TOWN_NAME</span> -
+            <span>@Model.USER_ADDRESS</span>
+        </div>
+
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.lblPhone:</label>
+            <span>@Model.USER_PHONE</span>
+        </div>
+        <div class="form-group">
+            <label class="title-row">@AdminLabel.lblStartDate:</label>
+            @if (Model.INS_DATE.HasValue)
+            {
+                <span>
+                    @Model.INS_DATE.Value.ToString("dd/MM/yyyy")
+                </span>
+            }
+        </div>
+        <form id="frEditUser" method="POST" action="@Url.Action("Register", "UserAccount")">
+            <input type="hidden" id="hdnUserIdEdit" name="UserId" value="0" />
+        </form>
+        <div class="form-group action-button-bottom">
+            <button type="button" id="btnChangeInfo" name="btnChangeInfo" class="btn btn-green"><i class="btn-edit">@AdminLabel.btnChangeInfo</i></button>
+            <button type="button" id="btnChangePassword" name="btnChangePassword" class="btn btn-orange"><i class="btn-edit">@AdminLabel.btnChangePassword</i></button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    @*var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new { area = "Common" })';*@
+    var UrlLogin = '@Url.Action("Login", "UserAccount")';
+    var UrlHome = '@Url.Action("Index", "Home")';
+
+    $(document).off('#btnChangeInfo');
+    $(document).on('click', '#btnChangeInfo', function () {
+        $('#hdnUserIdEdit').val($('#USER_ID_HIDDEN').val());
+
+        $('#frEditUser').submit();
+    });
+
+
+</script>
+
+<style>
+    #btnChangePassword {
+        float: right;
+    }
+
+    #btnChangePassword {
+        margin-left: 200px;
+    }
+</style>
+
